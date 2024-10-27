@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:background="@color/backgroundColor">
 
-    <!--    Import TopHeader-->
+    <!-- Import TopHeader -->
     <com.khiemnv.cinezone.components.TopHeader
         android:id="@+id/topHeaderLayout"
         android:layout_width="0dp"
@@ -17,8 +17,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/text_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text trên"
+        android:textSize="24sp"
+        android:textColor="@color/textColor"
+        app:layout_constraintBottom_toTopOf="@+id/text_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="10dp" />
 
-    <Button
+    <TextView
+        android:id="@+id/text_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text dưới"
+        android:textSize="16sp"
+        android:textColor="#808080"
+        app:layout_constraintBottom_toTopOf="@+id/start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="30dp" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -27,14 +50,13 @@
         android:layout_marginBottom="20dp"
         android:text="@string/start"
         android:textAllCaps="true"
-        android:backgroundTint="@color/mainColor"
         android:textColor="#ffffff"
         android:textSize="16sp"
+        app:backgroundTint="@color/mainColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.95"
+        app:cornerRadius="2dp"
         />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

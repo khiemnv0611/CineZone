@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/top_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/mainColor"
+    android:background="@color/backgroundColor"
     android:paddingTop="44dp"
     android:paddingBottom="4dp"
-    android:paddingHorizontal="4dp"
-    >
+    android:paddingHorizontal="4dp">
 
-    <Button
-        android:id="@+id/change_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/change_language"
-        android:backgroundTint="#FFFFFF"
-        android:textColor="@color/mainColor"
-        android:layout_marginEnd="8dp" />
+    <!-- Logo -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo"
+        android:layout_gravity="center_vertical" />
 
     <!-- Spacer for equal spacing between buttons -->
     <Space
@@ -26,11 +26,30 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/change_theme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/change_theme"
-        android:backgroundTint="#FFFFFF"
-        android:textColor="@color/mainColor" />
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/change_theme"
+        android:text=""
+        app:backgroundTint="@color/backgroundColor"
+        app:icon="@drawable/ic_light_mode"
+        app:iconTint="@color/changeTheme"
+        app:cornerRadius="50dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/change_language"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="4dp"
+        android:layout_gravity="center_vertical"
+        android:text=""
+        android:contentDescription="@string/change_language"
+        android:foreground="@drawable/ic_vietnam_flag"
+        app:icon="@drawable/ic_vietnam_flag"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"/>
+
 </LinearLayout>
