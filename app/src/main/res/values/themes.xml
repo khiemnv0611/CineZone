@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+    <style name="Base.Theme.CineZone" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/backgroundColor</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="Theme.CineZone" parent="Base.Theme.CineZone" />
+</resources>
