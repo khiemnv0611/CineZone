@@ -1,5 +1,6 @@
 package com.khiemnv.cinezone;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.ViewCompat;
+
+import com.khiemnv.cinezone.pages.LoginActivity;
 
 import java.util.Locale;
 
@@ -61,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
                     isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
             prefs.edit().putBoolean(KEY_IS_NIGHT_MODE, isNightMode).apply();
             recreate();  // Tải lại Activity để áp dụng theme
+        });
+
+        Button buttonLogin = findViewById(R.id.start);
+        buttonLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
     }
 

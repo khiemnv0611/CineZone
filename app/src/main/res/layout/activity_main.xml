@@ -19,14 +19,22 @@
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/start"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/start"
+        android:textAllCaps="true"
         android:backgroundTint="@color/mainColor"
         android:textColor="#ffffff"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintWidth_percent="0.95"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
