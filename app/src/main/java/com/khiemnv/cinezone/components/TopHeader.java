@@ -52,7 +52,7 @@ public class TopHeader extends LinearLayout {
         updateThemeIcon(); // Cập nhật biểu tượng ban đầu
         changeThemeButton.setOnClickListener(v -> {
             toggleTheme(context);
-            Toast.makeText(context, isNightMode ? "Night Mode On" : "Day Mode On", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, isNightMode ? context.getString(R.string.night_mode) : context.getString(R.string.day_mode), Toast.LENGTH_SHORT).show();
         });
     }
 

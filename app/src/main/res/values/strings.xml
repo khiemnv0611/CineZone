@@ -2,6 +2,8 @@
     <string name="app_name">CineZone</string>
     <string name="change_language">English</string>
     <string name="change_theme">Change theme</string>
+    <string name="night_mode">Night Mode On</string>
+    <string name="day_mode">Day Mode On</string>
     <string name="start">Start</string>
     <string name="intro">Explore a diverse library of movies and TV shows, indulge in millions of options</string>
     <string name="sub_intro">Flexible movie viewing experience, store your favorites and enjoy them anytime</string>

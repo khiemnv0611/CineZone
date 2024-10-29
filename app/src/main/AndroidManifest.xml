@@ -23,11 +23,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Khai báo Login -->
-        <activity
-            android:name=".pages.LoginActivity"
-            android:exported="true" />
-
     </application>
 
 </manifest>
