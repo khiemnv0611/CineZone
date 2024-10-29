@@ -7,13 +7,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.khiemnv.cinezone.pages.LoginActivity;
+import com.khiemnv.cinezone.pages.StartPageFragment;
 
 import java.util.Locale;
 
@@ -38,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Add StartPageFragment to fragment_container when MainActivity starts
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new StartPageFragment());
+            transaction.commit();
+        }
 
         // Lấy LinearLayout từ bố cục và tham chiếu các nút bên trong nó
         LinearLayout topHeaderLayout = findViewById(R.id.topHeaderLayout);
@@ -64,12 +73,6 @@ public class MainActivity extends AppCompatActivity {
                     isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
             prefs.edit().putBoolean(KEY_IS_NIGHT_MODE, isNightMode).apply();
             recreate();  // Tải lại Activity để áp dụng theme
-        });
-
-        Button buttonLogin = findViewById(R.id.start);
-        buttonLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
         });
     }
 
