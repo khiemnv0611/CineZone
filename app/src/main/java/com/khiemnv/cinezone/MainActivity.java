@@ -10,15 +10,20 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.khiemnv.cinezone.components.BottomNavManager;
 import com.khiemnv.cinezone.pages.LoginFragment;
 import com.khiemnv.cinezone.pages.StartPageFragment;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private View topHeader;
+    private BottomNavigationView bottomNav;
     private boolean isEnglish;
     private boolean isNightMode;
     private SharedPreferences prefs;
@@ -43,37 +48,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Hiển thị layout loading chỉ một lần
+        setContentView(R.layout.loading_screen); // Layout loading
+
+        // Đặt màu cho thanh trạng thái luôn là màu đen
+        getWindow().setStatusBarColor(getResources().getColor(R.color.black));
+
+        // Tạo loading
+        CircularProgressIndicator progressIndicator = findViewById(R.id.progress_bar);
+        progressIndicator.setVisibility(View.VISIBLE);
+
+        // Chuyển sang layout chính sau 2 giây
         if (savedInstanceState == null) {
-            setContentView(R.layout.loading_screen); // Layout loading
-
-            // Đặt màu cho thanh trạng thái luôn là màu đen
-            getWindow().setStatusBarColor(getResources().getColor(R.color.black));
-
-            // Tạo loading
-            CircularProgressIndicator progressIndicator = findViewById(R.id.progress_bar);
-            progressIndicator.setVisibility(View.VISIBLE);
-
-            // Chuyển sang layout chính sau 2 giây
-            new Handler().postDelayed(() -> loadMainActivity(), 2000);
+            new Handler().postDelayed(this::loadMainActivity, 2000);
         } else {
             loadMainActivity();
         }
     }
 
     private void loadMainActivity() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // Đặt layout chính
+
+        // Tham chiếu đến TopHeader và BottomNavigationView
+        topHeader = findViewById(R.id.topHeaderLayout);
+        bottomNav = findViewById(R.id.bottomNavigationView);
+
+        // Hiển thị fragment mặc định
+        displayFragment(new StartPageFragment(), true, false);
+
+        // Đặt màu cho thanh trạng thái
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
 
-        // Thêm fragment
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new StartPageFragment())
-                .commit();
-
         // Lấy các nút từ TopHeader
-        LinearLayout topHeaderLayout = findViewById(R.id.topHeaderLayout);
-        Button changeLanguageButton = topHeaderLayout.findViewById(R.id.change_language);
-        Button changeThemeButton = topHeaderLayout.findViewById(R.id.change_theme);
+        Button changeLanguageButton = topHeader.findViewById(R.id.change_language);
+        Button changeThemeButton = topHeader.findViewById(R.id.change_theme);
 
         changeLanguageButton.setOnClickListener(v -> {
             isEnglish = !isEnglish;
@@ -88,6 +95,23 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(
                     isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         });
+
+        // Khởi tạo BottomNavigationView
+        BottomNavManager bottomNavManager = new BottomNavManager(this, bottomNav);
+
+        // Thiết lập BottomNavigationView
+        bottomNavManager.setupBottomNavigation();
+    }
+
+    private void displayFragment(Fragment fragment, boolean showTopHeader, boolean showBottomNav) {
+        // Cài đặt visibility cho TopHeader và BottomNavigationView
+        topHeader.setVisibility(showTopHeader ? View.VISIBLE : View.GONE);
+        bottomNav.setVisibility(showBottomNav ? View.VISIBLE : View.GONE);
+
+        // Thay thế fragment hiện tại bằng fragment mới
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     private void setLocale(String lang) {
