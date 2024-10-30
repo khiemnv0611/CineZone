@@ -3,6 +3,7 @@ package com.khiemnv.cinezone;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,14 +21,17 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private boolean isEnglish;
     private boolean isNightMode;
+    private SharedPreferences prefs;
     private static final String PREFS_NAME = "app_prefs";
     private static final String KEY_IS_ENGLISH = "isEnglish";
     private static final String KEY_IS_NIGHT_MODE = "isNightMode";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Khởi tạo SharedPreferences
+        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
         // Load ngôn ngữ và theme từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         isEnglish = prefs.getBoolean(KEY_IS_ENGLISH, true);
         isNightMode = prefs.getBoolean(KEY_IS_NIGHT_MODE, false);
 
@@ -49,67 +53,42 @@ public class MainActivity extends AppCompatActivity {
             CircularProgressIndicator progressIndicator = findViewById(R.id.progress_bar);
             progressIndicator.setVisibility(View.VISIBLE);
 
-            // Tải StartPageFragment sau 2 giây
-            new Thread(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                // Sau khi tải xong, quay lại MainActivity
-                runOnUiThread(() -> {
-                    setContentView(R.layout.activity_main); // Chuyển sang layout chính
-
-                    // Đặt màu cho thanh trạng thái luôn là màu đen
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.black));
-
-                    // Thêm StartPageFragment vào fragment_container
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, new StartPageFragment());
-                    transaction.commit();
-
-                    // Lấy LinearLayout từ bố cục và tham chiếu các nút bên trong nó
-                    LinearLayout topHeaderLayout = findViewById(R.id.topHeaderLayout);
-                    Button changeLanguageButton = topHeaderLayout.findViewById(R.id.change_language);
-                    Button changeThemeButton = topHeaderLayout.findViewById(R.id.change_theme);
-
-                    // Cài đặt hệ thống UI để không cho thanh trạng thái bị ảnh hưởng
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
-                    // Lưu các giá trị vào SharedPreferences khi người dùng thay đổi
-                    changeLanguageButton.setOnClickListener(v -> {
-                        isEnglish = !isEnglish;
-                        setLocale(isEnglish ? "en" : "vi");
-                        prefs.edit().putBoolean(KEY_IS_ENGLISH, isEnglish).apply();
-                        recreateFragment();  // Cập nhật lại fragment
-                    });
-
-                    changeThemeButton.setOnClickListener(v -> {
-                        isNightMode = !isNightMode;
-                        AppCompatDelegate.setDefaultNightMode(
-                                isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-                        // Không thay đổi màu sắc thanh trạng thái ở đây
-                        prefs.edit().putBoolean(KEY_IS_NIGHT_MODE, isNightMode).apply();
-                    });
-                });
-            }).start();
+            // Chuyển sang layout chính sau 2 giây
+            new Handler().postDelayed(() -> loadMainActivity(), 2000);
         } else {
-            // Nếu Activity đã được khởi tạo, hiển thị activity_main
-            setContentView(R.layout.activity_main);
-            // Đặt màu cho thanh trạng thái luôn là màu đen
-            getWindow().setStatusBarColor(getResources().getColor(R.color.black));
+            loadMainActivity();
         }
     }
 
-    // Phương thức cập nhật lại fragment
-    private void recreateFragment() {
-        // Cập nhật fragment mà không cần khởi động lại activity
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new StartPageFragment());
-        transaction.commit();
-    }
+    private void loadMainActivity() {
+        setContentView(R.layout.activity_main);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.black));
 
+        // Thêm fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new StartPageFragment())
+                .commit();
+
+        // Lấy các nút từ TopHeader
+        LinearLayout topHeaderLayout = findViewById(R.id.topHeaderLayout);
+        Button changeLanguageButton = topHeaderLayout.findViewById(R.id.change_language);
+        Button changeThemeButton = topHeaderLayout.findViewById(R.id.change_theme);
+
+        changeLanguageButton.setOnClickListener(v -> {
+            isEnglish = !isEnglish;
+            prefs.edit().putBoolean(KEY_IS_ENGLISH, isEnglish).apply();
+            setLocale(isEnglish ? "en" : "vi");
+            recreate(); // Khởi động lại Activity để áp dụng ngôn ngữ mới
+        });
+
+        changeThemeButton.setOnClickListener(v -> {
+            isNightMode = !isNightMode;
+            prefs.edit().putBoolean(KEY_IS_NIGHT_MODE, isNightMode).apply();
+            AppCompatDelegate.setDefaultNightMode(
+                    isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        });
+    }
 
     private void setLocale(String lang) {
         Locale locale = new Locale(lang);

@@ -6,9 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@color/backgroundColor"
-    android:paddingTop="44dp"
-    android:paddingBottom="4dp"
-    android:paddingHorizontal="4dp">
+    android:padding="4dp">
 
     <!-- Logo -->
     <ImageView

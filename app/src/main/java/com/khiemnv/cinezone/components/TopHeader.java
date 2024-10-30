@@ -38,17 +38,18 @@ public class TopHeader extends LinearLayout {
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.top_header, this, true);
 
+        // Đọc trạng thái từ SharedPreferences
         isEnglish = prefs.getBoolean(KEY_IS_ENGLISH, true);
         isNightMode = prefs.getBoolean(KEY_IS_NIGHT_MODE, false);
 
-        changeLanguageButton = findViewById(R.id.change_language); // Khởi tạo nút thay đổi ngôn ngữ
+        changeLanguageButton = findViewById(R.id.change_language);
         updateLanguageIcon(); // Cập nhật biểu tượng ngôn ngữ ban đầu
         changeLanguageButton.setOnClickListener(v -> {
             switchLanguage(context);
             Toast.makeText(context, isEnglish ? "Switched to English" : "Đã chuyển sang tiếng Việt", Toast.LENGTH_SHORT).show();
         });
 
-        changeThemeButton = findViewById(R.id.change_theme); // Khởi tạo nút thay đổi theme
+        changeThemeButton = findViewById(R.id.change_theme);
         updateThemeIcon(); // Cập nhật biểu tượng ban đầu
         changeThemeButton.setOnClickListener(v -> {
             toggleTheme(context);
@@ -60,14 +61,9 @@ public class TopHeader extends LinearLayout {
         isEnglish = !isEnglish;
         setLocale(context, isEnglish ? "en" : "vi");
 
+        // Cập nhật lại SharedPreferences
         prefs.edit().putBoolean(KEY_IS_ENGLISH, isEnglish).apply();
-
         updateLanguageIcon(); // Cập nhật biểu tượng ngôn ngữ khi chuyển đổi
-
-        // Notify Activity to refresh UI if needed
-        if (context instanceof Activity) {
-            ((Activity) context).recreate();
-        }
     }
 
     private void setLocale(Context context, String lang) {
@@ -76,23 +72,20 @@ public class TopHeader extends LinearLayout {
         Configuration config = context.getResources().getConfiguration();
         config.setLocale(locale);
 
-        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        // Áp dụng cấu hình mới cho context
+        context.createConfigurationContext(config);
     }
 
     private void toggleTheme(Context context) {
         isNightMode = !isNightMode;
 
+        // Lưu trạng thái theme mới vào SharedPreferences
         prefs.edit().putBoolean(KEY_IS_NIGHT_MODE, isNightMode).apply();
         AppCompatDelegate.setDefaultNightMode(
                 isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
 
         updateThemeIcon(); // Cập nhật biểu tượng khi thay đổi theme
-
-        // If needed, force Activity to recreate to apply the theme
-        if (context instanceof Activity) {
-            ((Activity) context).recreate();
-        }
     }
 
     private void updateThemeIcon() {
@@ -111,5 +104,5 @@ public class TopHeader extends LinearLayout {
             changeLanguageButton.setForeground(getResources().getDrawable(R.drawable.ic_vietnam_flag, null));
         }
     }
-
 }
+
