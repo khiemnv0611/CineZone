@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.button.MaterialButton;
 import com.khiemnv.cinezone.R;
@@ -72,8 +73,8 @@ public class TopHeader extends LinearLayout {
         Configuration config = context.getResources().getConfiguration();
         config.setLocale(locale);
 
-        // Áp dụng cấu hình mới cho context
-        context.createConfigurationContext(config);
+        // Áp dụng cấu hình mới cho toàn bộ ứng dụng
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
     }
 
     private void toggleTheme(Context context) {
@@ -99,9 +100,9 @@ public class TopHeader extends LinearLayout {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void updateLanguageIcon() {
         if (isEnglish) {
-            changeLanguageButton.setForeground(getResources().getDrawable(R.drawable.ic_united_states_flag, null));
+            changeLanguageButton.setForeground(AppCompatResources.getDrawable(getContext(), R.drawable.ic_united_states_flag));
         } else {
-            changeLanguageButton.setForeground(getResources().getDrawable(R.drawable.ic_vietnam_flag, null));
+            changeLanguageButton.setForeground(AppCompatResources.getDrawable(getContext(), R.drawable.ic_vietnam_flag));
         }
     }
 }
