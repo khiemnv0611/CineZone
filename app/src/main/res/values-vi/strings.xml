@@ -10,4 +10,5 @@
     <string name="profile">Hồ sơ</string>
     <string name="intro">Khám phá kho tàng phim ảnh và chương trình truyền hình đa dạng, thỏa sức đắm chìm trong hàng triệu lựa chọn</string>
     <string name="sub_intro">Trải nghiệm xem phim linh hoạt, lưu trữ yêu thích và thưởng thức bất cứ lúc nào</string>
+    <string name="login">Đăng nhập</string>
 </resources>
