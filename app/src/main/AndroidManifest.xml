@@ -30,7 +30,7 @@
 
         <!-- Login Activity-->
         <activity
-            android:name=".pages.LoginActivity"
+            android:name=".pages.AuthActivity"
             android:exported="true" />
 
         <!-- Home Activity-->

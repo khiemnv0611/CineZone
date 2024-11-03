@@ -20,7 +20,7 @@ public class StartActivity extends BaseActivity {
         MaterialButton btnStart = findViewById(R.id.btnStart);
         btnStart.setOnClickListener(v -> {
             // Điều hướng tới LoginActivity
-            Intent intent = new Intent(StartActivity.this, LoginActivity.class);
+            Intent intent = new Intent(StartActivity.this, AuthActivity.class);
             startActivity(intent);
         });
     }
