@@ -14,7 +14,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final String KEY_IS_ENGLISH = "isEnglish";
     private static final String KEY_IS_NIGHT_MODE = "isNightMode";
 
-    protected boolean isEnglish;
+    public boolean isEnglish;
     protected boolean isNightMode;
     protected SharedPreferences prefs;
 

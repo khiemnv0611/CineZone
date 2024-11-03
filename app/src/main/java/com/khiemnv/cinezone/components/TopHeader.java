@@ -48,9 +48,11 @@ public class TopHeader extends LinearLayout {
         updateLanguageIcon();
         changeLanguageButton.setOnClickListener(v -> {
             baseActivity.switchLanguage(); // Call switchLanguage from BaseActivity
-            updateLanguageIcon(); // Update icon based on new language state
+            isEnglish = baseActivity.isEnglish; // Update isEnglish based on the new state in BaseActivity
+            updateLanguageIcon(); // Update icon based on the new language state
             Toast.makeText(context, isEnglish ? "Switched to English" : "Đã chuyển sang tiếng Việt", Toast.LENGTH_SHORT).show();
         });
+
 
         changeThemeButton = findViewById(R.id.change_theme);
         updateThemeIcon();

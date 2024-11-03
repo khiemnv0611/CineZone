@@ -16,12 +16,12 @@ public class LoginActivity extends BaseActivity {
 
         findViewById(R.id.topHeaderLayout);
 
-        MaterialButton btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(v -> {
-            // Logic xác thực đăng nhập ở đây
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-        });
+//        MaterialButton btnLogin = findViewById(R.id.btnSignUp);
+//        btnLogin.setOnClickListener(v -> {
+//            // Logic xác thực đăng nhập ở đây
+//            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//            startActivity(intent);
+//        });
     }
 }
 

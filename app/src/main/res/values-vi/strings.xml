@@ -2,13 +2,19 @@
     <string name="app_name">CineZone</string>
     <string name="change_language">Tiếng Việt</string>
     <string name="change_theme">Đổi nền</string>
-    <string name="night_mode">Chế độ ban ngày</string>
-    <string name="day_mode">Chế độ ban đêm</string>
+    <string name="night_mode">Chế độ ban đêm</string>
+    <string name="day_mode">Chế độ ban ngày</string>
     <string name="start">Bắt đầu</string>
     <string name="home">Trang chủ</string>
     <string name="search">Tìm kiếm</string>
     <string name="profile">Hồ sơ</string>
     <string name="intro">Khám phá kho tàng phim ảnh và chương trình truyền hình đa dạng, thỏa sức đắm chìm trong hàng triệu lựa chọn</string>
     <string name="sub_intro">Trải nghiệm xem phim linh hoạt, lưu trữ yêu thích và thưởng thức bất cứ lúc nào</string>
+    <string name="first_name">Tên</string>
+    <string name="last_name">Họ</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="enter_email">Nhập email của bạn</string>
+    <string name="enter_password">Nhập mật khẩu của bạn</string>
     <string name="login">Đăng nhập</string>
 </resources>

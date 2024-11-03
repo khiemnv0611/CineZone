@@ -2,10 +2,12 @@
     <!-- Base application theme. -->
     <color name="backgroundColor">#FFFFFF</color>
     <color name="textColor">#000000</color>
+    <color name="textColorDark">#FFFFFF</color>
     <color name="changeTheme">#000000</color>
     <style name="Base.Theme.CineZone" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/backgroundColor</item>
         <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorSecondary">@color/textColorDark</item>
         <item name="colorAccent">@color/changeTheme</item>
     </style>
 
