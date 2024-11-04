@@ -2,6 +2,7 @@ package com.khiemnv.cinezone.pages;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -19,19 +20,26 @@ public class StartActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
 
-        findViewById(R.id.topHeaderLayout);
+        showLoading();
 
-        // Start btn
-        MaterialButton btnStart = findViewById(R.id.btnStart);
-        btnStart.setOnClickListener(v -> {
-            // Điều hướng tới AuthActivity
-            Intent intent = new Intent(StartActivity.this, AuthActivity.class);
-            startActivity(intent);
-            // Hiệu ứng
-            overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
-        });
+        new Handler().postDelayed(() -> {
+            hideLoading();
+            setContentLayout(R.layout.activity_start);
+
+            // Thiết lập top header và nút Start
+            findViewById(R.id.topHeaderLayout);
+
+            MaterialButton btnStart = findViewById(R.id.btnStart);
+            btnStart.setOnClickListener(v -> {
+                // Điều hướng tới AuthActivity
+                Intent intent = new Intent(StartActivity.this, AuthActivity.class);
+                startActivity(intent);
+
+                // Hiệu ứng chuyển màn hình
+                overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+            });
+        }, 2000);
     }
 }
 

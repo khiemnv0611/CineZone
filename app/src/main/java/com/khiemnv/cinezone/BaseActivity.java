@@ -3,9 +3,13 @@ package com.khiemnv.cinezone;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.Locale;
 
@@ -18,9 +22,12 @@ public class BaseActivity extends AppCompatActivity {
     protected boolean isNightMode;
     protected SharedPreferences prefs;
 
+    private CircularProgressIndicator progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
 
         // Initialize SharedPreferences
         prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -32,6 +39,9 @@ public class BaseActivity extends AppCompatActivity {
         setLocale(isEnglish ? "en" : "vi"); // Ensure the correct language is set
 
         setStatusBarColor();
+
+        // Loading
+        progressBar = findViewById(R.id.progress_bar);
     }
 
     private void setStatusBarColor() {
@@ -60,5 +70,25 @@ public class BaseActivity extends AppCompatActivity {
         prefs.edit().putBoolean(KEY_IS_ENGLISH, isEnglish).apply();
         setLocale(isEnglish ? "en" : "vi"); // Set the new language
         recreate(); // Restart activity to apply changes
+    }
+
+    // Hiển thị loading
+    public void showLoading() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // Ẩn loading
+    public void hideLoading() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    // Phương thức cho phép nạp layout riêng cho từng Activity kế thừa
+    protected void setContentLayout(int layoutResID) {
+        ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
+        getLayoutInflater().inflate(layoutResID, rootView, true);
     }
 }
