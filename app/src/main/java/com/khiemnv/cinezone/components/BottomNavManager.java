@@ -2,8 +2,6 @@ package com.khiemnv.cinezone.components;
 
 import android.content.Context;
 import android.view.Menu;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khiemnv.cinezone.R;

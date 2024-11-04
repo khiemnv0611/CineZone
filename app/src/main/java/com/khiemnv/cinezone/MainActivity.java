@@ -2,17 +2,11 @@ package com.khiemnv.cinezone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.khiemnv.cinezone.pages.HomeActivity;
 import com.khiemnv.cinezone.pages.StartActivity;
-
-import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
     @Override
@@ -22,15 +16,15 @@ public class MainActivity extends BaseActivity {
         // Kiểm tra trạng thái đăng nhập
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
 
+        Intent intent;
         if (isLoggedIn) {
             // Nếu đã đăng nhập, chuyển đến HomeActivity
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
+            intent = new Intent(MainActivity.this, HomeActivity.class);
         } else {
             // Nếu chưa đăng nhập, chuyển đến StartActivity
-            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-            startActivity(intent);
+            intent = new Intent(MainActivity.this, StartActivity.class);
         }
+        startActivity(intent);
 
         finish(); // Đóng MainActivity sau khi điều hướng
     }

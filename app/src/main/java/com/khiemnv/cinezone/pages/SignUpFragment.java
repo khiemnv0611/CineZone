@@ -42,7 +42,7 @@ public class SignUpFragment extends Fragment {
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.mainColor));
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
-            public void onClick(View widget) {
+            public void onClick(@NonNull View widget) {
                 // Chuyển sang fragment_signin khi nhấn
                 Fragment fragment = new SignInFragment();
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -61,7 +61,7 @@ public class SignUpFragment extends Fragment {
             }
 
             @Override
-            public void updateDrawState(TextPaint ds) {
+            public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
                 ds.setColor(ContextCompat.getColor(requireContext(), R.color.mainColor)); // Đảm bảo màu vẫn hiển thị khi nhấn
                 ds.setUnderlineText(false); // Gạch chân

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -40,7 +41,7 @@ public class SignInFragment extends Fragment {
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.mainColor));
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
-            public void onClick(View widget) {
+            public void onClick(@NonNull View widget) {
                 // Chuyển sang fragment_signup khi nhấn
                 Fragment fragment = new SignUpFragment();
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -59,7 +60,7 @@ public class SignInFragment extends Fragment {
             }
 
             @Override
-            public void updateDrawState(TextPaint ds) {
+            public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
                 ds.setColor(ContextCompat.getColor(requireContext(), R.color.mainColor)); // Đảm bảo màu vẫn hiển thị khi nhấn
                 ds.setUnderlineText(false); // Gạch chân
@@ -90,25 +91,22 @@ public class SignInFragment extends Fragment {
         loginText.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Xử lý sự kiện nhấn cho TextView "Quên mật khẩu"
-        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển sang ForgotPasswordFragment
-                Fragment fragment = new ForgotPasswordFragment();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        forgotPasswordText.setOnClickListener(v -> {
+            // Chuyển sang ForgotPasswordFragment
+            Fragment fragment = new ForgotPasswordFragment();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
-                // Áp dụng hiệu ứng chuyển đổi
-                transaction.setCustomAnimations(
-                        R.anim.slide_in_left, // Animation vào của fragment mới
-                        R.anim.slide_out_right, // Animation ra của fragment hiện tại
-                        R.anim.slide_in_right, // Animation quay lại vào của fragment cũ (khi nhấn Back)
-                        R.anim.slide_out_left // Animation quay lại ra của fragment mới
-                );
+            // Áp dụng hiệu ứng chuyển đổi
+            transaction.setCustomAnimations(
+                    R.anim.slide_in_left, // Animation vào của fragment mới
+                    R.anim.slide_out_right, // Animation ra của fragment hiện tại
+                    R.anim.slide_in_right, // Animation quay lại vào của fragment cũ (khi nhấn Back)
+                    R.anim.slide_out_left // Animation quay lại ra của fragment mới
+            );
 
-                transaction.replace(R.id.auth_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+            transaction.replace(R.id.auth_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         return view;

@@ -3,7 +3,6 @@ package com.khiemnv.cinezone.components;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -16,8 +15,6 @@ import com.google.android.material.button.MaterialButton;
 import com.khiemnv.cinezone.BaseActivity;
 import com.khiemnv.cinezone.R;
 
-import java.util.Locale;
-
 public class TopHeader extends LinearLayout {
     private boolean isEnglish;
     private boolean isNightMode;
@@ -28,7 +25,7 @@ public class TopHeader extends LinearLayout {
     private final SharedPreferences prefs;
     private MaterialButton changeThemeButton;
     private MaterialButton changeLanguageButton;
-    private BaseActivity baseActivity;
+    private final BaseActivity baseActivity;
 
     public TopHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -57,12 +54,12 @@ public class TopHeader extends LinearLayout {
         changeThemeButton = findViewById(R.id.change_theme);
         updateThemeIcon();
         changeThemeButton.setOnClickListener(v -> {
-            toggleTheme(context);
+            toggleTheme();
             Toast.makeText(context, isNightMode ? context.getString(R.string.night_mode) : context.getString(R.string.day_mode), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void toggleTheme(Context context) {
+    private void toggleTheme() {
         isNightMode = !isNightMode;
         prefs.edit().putBoolean(KEY_IS_NIGHT_MODE, isNightMode).apply();
         AppCompatDelegate.setDefaultNightMode(
