@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">CineZone</string>
+    <string name="logo">Logo</string>
+    <string name="close">Close</string>
     <string name="change_language">English</string>
     <string name="change_theme">Change theme</string>
     <string name="night_mode">Night Mode On</string>
@@ -19,9 +21,17 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="enter_email">Enter your email</string>
     <string name="enter_password">Enter your password</string>
-    <string name="login">Log In</string>
+    <string name="remember_password">Remember password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="send_verification_code">Send verification code</string>
+    <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="create_acc">Create new account</string>
-    <string name="enter_info">Enter your personal information to create an account</string>
-    <string name="login_prompt">Already have an account? Login</string>
+    <string name="create_info">Enter your personal information to create an account</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="welcome_info">Sign in to your account to continue</string>
+    <string name="signin_prompt">Already have an account? Sign in</string>
+    <string name="signup_prompt">Don\'t have an account? Sign up</string>
+    <string name="return_to_login">Return to Sign in</string>
+    <string name="arrow_description">Arrow</string>
 </resources>

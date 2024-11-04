@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">CineZone</string>
+    <string name="logo">Logo</string>
+    <string name="close">Đóng</string>
     <string name="change_language">Tiếng Việt</string>
     <string name="change_theme">Đổi nền</string>
     <string name="night_mode">Chế độ ban đêm</string>
@@ -19,9 +21,17 @@
     <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="enter_email">Nhập email của bạn</string>
     <string name="enter_password">Nhập mật khẩu của bạn</string>
-    <string name="login">Đăng nhập</string>
+    <string name="remember_password">Nhớ mật khẩu</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="send_verification_code">Gửi mã xác minh</string>
+    <string name="sign_in">Đăng nhập</string>
     <string name="sign_up">Đăng ký</string>
     <string name="create_acc">Tạo tài khoản mới</string>
-    <string name="enter_info">Nhập thông tin cá nhân của bạn để tạo tài khoản</string>
-    <string name="login_prompt">Bạn đã có tài khoản? Đăng nhập</string>
+    <string name="create_info">Nhập thông tin cá nhân của bạn để tạo tài khoản</string>
+    <string name="welcome_back">Chào mừng trở lại!</string>
+    <string name="welcome_info">Đăng nhập vào tài khoản của bạn để tiếp tục</string>
+    <string name="signin_prompt">Bạn đã có tài khoản? Đăng nhập</string>
+    <string name="signup_prompt">Bạn chưa có tài khoản? Đăng ký</string>
+    <string name="return_to_login">Trở về Đăng nhập</string>
+    <string name="arrow_description">Mũi tên</string>
 </resources>

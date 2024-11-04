@@ -12,28 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.khiemnv.cinezone.R;
 
-public class SignUpFragment extends Fragment {
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate layout cho fragment
-        View view = inflater.inflate(R.layout.fragment_signup, container, false);
+import androidx.core.content.ContextCompat;
 
-        // Lấy TextView từ layout
+public class SignInFragment extends Fragment {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate layout cho fragment
+        View view = inflater.inflate(R.layout.fragment_signin, container, false);
+
+        // Quên mật khẩu
         TextView loginText = view.findViewById(R.id.login_text);
+        TextView forgotPasswordText = view.findViewById(R.id.forgotPasswordText);
 
         // Lấy nội dung chuỗi từ resources
-        String text = getString(R.string.signin_prompt); // Đảm bảo bạn có chuỗi này trong resources
+        String text = getString(R.string.signup_prompt);
 
         // Sử dụng SpannableString để thay đổi màu và tạo sự kiện nhấn
         SpannableString spannable = new SpannableString(text);
@@ -43,16 +41,16 @@ public class SignUpFragment extends Fragment {
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                // Chuyển sang fragment_signin khi nhấn
-                Fragment fragment = new SignInFragment();
+                // Chuyển sang fragment_signup khi nhấn
+                Fragment fragment = new SignUpFragment();
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
                 // Áp dụng hiệu ứng chuyển đổi
                 transaction.setCustomAnimations(
-                        R.anim.slide_in_left, // Animation vào của fragment mới
-                        R.anim.slide_out_right, // Animation ra của fragment hiện tại
-                        R.anim.slide_in_right, // Animation quay lại vào của fragment cũ (khi nhấn Back)
-                        R.anim.slide_out_left // Animation quay lại ra của fragment mới
+                        R.anim.slide_in_right, // Animation vào của fragment mới
+                        R.anim.slide_out_left, // Animation ra của fragment hiện tại
+                        R.anim.slide_in_left, // Animation quay lại vào của fragment cũ (khi nhấn Back)
+                        R.anim.slide_out_right // Animation quay lại ra của fragment mới
                 );
 
                 transaction.replace(R.id.auth_container, fragment);
@@ -69,21 +67,21 @@ public class SignUpFragment extends Fragment {
             }
         };
 
-        // Xác định vị trí của từ "Sign in" hoặc "Đăng nhập" dựa trên chuỗi hiện tại
+        // Xác định vị trí của từ "Sign up" hoặc "Đăng ký" dựa trên chuỗi hiện tại
         int start, end;
-        if (text.contains("Sign in")) {
-            start = text.indexOf("Sign in");
-            end = start + "Sign in".length();
-        } else if (text.contains("Đăng nhập")) {
-            start = text.indexOf("Đăng nhập");
-            end = start + "Đăng nhập".length();
+        if (text.contains("Sign up")) {
+            start = text.indexOf("Sign up");
+            end = start + "Sign up".length();
+        } else if (text.contains("Đăng ký")) {
+            start = text.indexOf("Đăng ký");
+            end = start + "Đăng ký".length();
         } else {
             // Đề phòng trường hợp không tìm thấy chuỗi
             start = 0;
             end = 0;
         }
 
-        // Áp dụng màu và tính nhấn cho phần "Sign in" hoặc "Đăng nhập"
+        // Áp dụng màu và tính nhấn cho phần "Sign up" hoặc "Đăng ký"
         spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannable.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -91,26 +89,29 @@ public class SignUpFragment extends Fragment {
         loginText.setText(spannable);
         loginText.setMovementMethod(LinkMovementMethod.getInstance());
 
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Xử lý sự kiện nhấn nút Back
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        // Xử lý sự kiện nhấn cho TextView "Quên mật khẩu"
+        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void handleOnBackPressed() {
-                // Quay lại fragment trước đó
-                FragmentManager fragmentManager = getParentFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    fragmentManager.popBackStack();
-                } else {
-                    // Nếu không có fragment nào để quay lại, gọi super để thoát activity
-                    requireActivity().finish();
-                }
+            public void onClick(View v) {
+                // Chuyển sang ForgotPasswordFragment
+                Fragment fragment = new ForgotPasswordFragment();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+                // Áp dụng hiệu ứng chuyển đổi
+                transaction.setCustomAnimations(
+                        R.anim.slide_in_left, // Animation vào của fragment mới
+                        R.anim.slide_out_right, // Animation ra của fragment hiện tại
+                        R.anim.slide_in_right, // Animation quay lại vào của fragment cũ (khi nhấn Back)
+                        R.anim.slide_out_left // Animation quay lại ra của fragment mới
+                );
+
+                transaction.replace(R.id.auth_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
+
+        return view;
     }
 }
 
