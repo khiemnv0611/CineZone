@@ -1,5 +1,6 @@
 package com.khiemnv.cinezone.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.button.MaterialButton;
+import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 
 import androidx.core.content.ContextCompat;
@@ -107,6 +110,21 @@ public class SignInFragment extends Fragment {
             transaction.replace(R.id.auth_container, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
+        });
+
+        // Tìm nút btnLogIn trong layout
+        MaterialButton btnLogIn = view.findViewById(R.id.btnLogIn);
+
+        // Thiết lập sự kiện khi nhấn vào nút
+        btnLogIn.setOnClickListener(v -> {
+            // Tạo intent để chuyển đến MainActivity
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+
+            // Đóng SignInFragment hoặc Activity hiện tại nếu cần
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
         });
 
         return view;
