@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.pages;
+package com.khiemnv.cinezone.fragments;
 
 import android.os.Bundle;
 import android.text.SpannableString;

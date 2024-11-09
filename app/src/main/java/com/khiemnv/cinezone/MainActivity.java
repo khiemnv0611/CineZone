@@ -5,8 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.khiemnv.cinezone.pages.HomeActivity;
-import com.khiemnv.cinezone.pages.StartActivity;
+import com.khiemnv.cinezone.activities.StartActivity;
 
 public class MainActivity extends BaseActivity {
     @Override
@@ -17,12 +16,12 @@ public class MainActivity extends BaseActivity {
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
 
         Intent intent;
-        if (isLoggedIn) {
-            // Nếu đã đăng nhập, chuyển đến HomeActivity
-            intent = new Intent(MainActivity.this, HomeActivity.class);
-        } else {
+        if (!isLoggedIn) {
             // Nếu chưa đăng nhập, chuyển đến StartActivity
             intent = new Intent(MainActivity.this, StartActivity.class);
+        } else {
+            // Nếu đã đăng nhập, vào MainActivity
+            intent = new Intent(MainActivity.this, MainActivity.class);
         }
         startActivity(intent);
 
