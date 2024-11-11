@@ -35,4 +35,8 @@
     <string name="signup_prompt">Don\'t have an account? Sign up</string>
     <string name="return_to_login">Return to Sign in</string>
     <string name="arrow_description">Arrow</string>
+    <string name="trend">Currently trending</string>
+    <string name="genre">Genre</string>
+    <string name="movie_theater">Movie theater</string>
+    <string name="coming_soon">Coming soon</string>
 </resources>
