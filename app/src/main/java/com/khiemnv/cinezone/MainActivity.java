@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khiemnv.cinezone.activities.StartActivity;
 import com.khiemnv.cinezone.fragments.HomeFragment;
+import com.khiemnv.cinezone.fragments.NotificationsFragment;
 import com.khiemnv.cinezone.fragments.ProfileFragment;
 import com.khiemnv.cinezone.fragments.SearchFragment;
 
@@ -48,6 +49,8 @@ public class MainActivity extends BaseActivity {
                 selectedFragment = new HomeFragment();
             } else if (item.getItemId() == R.id.nav_search) {
                 selectedFragment = new SearchFragment();
+            } else if (item.getItemId() == R.id.nav_notifications) {
+                selectedFragment = new NotificationsFragment();  // Fragment thông báo
             } else if (item.getItemId() == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }

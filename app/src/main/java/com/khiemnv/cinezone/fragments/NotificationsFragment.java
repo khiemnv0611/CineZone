@@ -11,18 +11,13 @@ import androidx.fragment.app.Fragment;
 
 import com.khiemnv.cinezone.R;
 
-public class HomeFragment extends Fragment {
+public class NotificationsFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate layout fragment_home và trả về View
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        // Thiết lập top header
-        View topHeaderLayout = view.findViewById(R.id.topHeaderLayout);
-
-        // Trả về view sau khi thực hiện các thao tác cần thiết
-        return view;
+        // Inflate layout cho fragment Notifications
+        return inflater.inflate(R.layout.fragment_notifications, container, false);
     }
 }
 

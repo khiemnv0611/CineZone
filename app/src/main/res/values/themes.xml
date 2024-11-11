@@ -4,11 +4,18 @@
     <color name="textColor">#000000</color>
     <color name="textColorDark">#FFFFFF</color>
     <color name="changeTheme">#000000</color>
+    <color name="thirtyBlur">#FFFFFF</color>
+    <color name="fortyBlur">#FFFFFF</color>
+    <color name="fiftyBlur">#FFFFFF</color>
+    <color name="sixtyBlur">#FFFFFF</color>
+    <color name="seventyBlur">#FFFFFF</color>
+    <color name="eightyBlur">#FFFFFF</color>
     <style name="Base.Theme.CineZone" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/backgroundColor</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textColorDark</item>
         <item name="colorAccent">@color/changeTheme</item>
+        <item name="colorSurface">@color/fortyBlur</item>
     </style>
 
     <style name="Theme.CineZone" parent="Base.Theme.CineZone" />

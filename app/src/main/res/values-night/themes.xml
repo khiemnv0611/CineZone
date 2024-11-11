@@ -4,10 +4,17 @@
     <color name="textColor">#FFFFFF</color>
     <color name="textColorDark">#000000</color>
     <color name="changeTheme">#FFFF00</color>
+    <color name="thirtyBlur">#4C000000</color>  <!-- 30% opacity, 70% transparency -->
+    <color name="fortyBlur">#66000000</color>  <!-- 40% opacity, 60% transparency -->
+    <color name="fiftyBlur">#80000000</color>  <!-- 50% opacity, 50% transparency -->
+    <color name="sixtyBlur">#99000000</color>  <!-- 60% opacity, 40% transparency -->
+    <color name="seventyBlur">#B3000000</color>  <!-- 70% opacity, 30% transparency -->
+    <color name="eightyBlur">#CC000000</color>  <!-- 80% opacity, 20% transparency -->
     <style name="Base.Theme.CineZone" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/backgroundColor</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textColorDark</item>
         <item name="colorAccent">@color/changeTheme</item>
+        <item name="colorSurface">@color/fortyBlur</item>
     </style>
 </resources>

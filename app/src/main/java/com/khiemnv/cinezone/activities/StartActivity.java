@@ -43,7 +43,7 @@ public class StartActivity extends BaseActivity {
 
         setContentLayout(R.layout.activity_start);
 
-        // Thiết lập top header và nút Start
+        // Thiết lập top header
         findViewById(R.id.topHeaderLayout);
 
         MaterialButton btnStart = findViewById(R.id.btnStart);
