@@ -15,7 +15,7 @@
 
         <!-- Main Activity -->
         <activity
-            android:name=".activity.StartActivity"
+            android:name=".activities.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
 
         <!-- Login Activity-->
         <activity
-            android:name=".activity.AuthActivity"
+            android:name=".activities.AuthActivity"
             android:exported="true" />
 
     </application>

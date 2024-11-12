@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.fragment;
+package com.khiemnv.cinezone.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

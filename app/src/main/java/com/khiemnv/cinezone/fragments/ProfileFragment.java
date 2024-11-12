@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.fragment;
+package com.khiemnv.cinezone.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.khiemnv.cinezone.R;
 
-public class SearchFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 }

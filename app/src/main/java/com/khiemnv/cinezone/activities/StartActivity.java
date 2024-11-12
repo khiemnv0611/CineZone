@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.activity;
+package com.khiemnv.cinezone.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

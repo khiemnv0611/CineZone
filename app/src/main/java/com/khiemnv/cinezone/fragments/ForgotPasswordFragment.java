@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.fragment;
+package com.khiemnv.cinezone.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
