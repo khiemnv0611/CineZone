@@ -1,6 +1,6 @@
 package com.khiemnv.cinezone.model;
 
-public class Movie {
+public class MovieModel {
     private String movieId;
     private String title;
     private String genre;
@@ -15,9 +15,9 @@ public class Movie {
     private int totalRatings;
 
     // Constructor
-    public Movie() {}
+    public MovieModel() {}
 
-    public Movie(String movieId, String title, String genre, String status, String description,
+    public MovieModel(String movieId, String title, String genre, String status, String description,
                  String imageUrl, String videoUrl, String trailerUrl, String season,
                  String releaseDate, double averageRating, int totalRatings) {
         this.movieId = movieId;

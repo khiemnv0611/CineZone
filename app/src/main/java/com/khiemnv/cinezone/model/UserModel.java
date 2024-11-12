@@ -2,7 +2,7 @@ package com.khiemnv.cinezone.model;
 
 import java.util.List;
 
-public class User {
+public class UserModel {
     private String userId;
     private String username;
     private String email;
@@ -13,9 +13,9 @@ public class User {
     private List<String> favoriteMovieIds;
 
     // Constructor
-    public User() {}
+    public UserModel() {}
 
-    public User(String userId, String username, String email, String password, boolean isAdmin, long createdAt, long updatedAt, List<String> favoriteMovieIds) {
+    public UserModel(String userId, String username, String email, String password, boolean isAdmin, long createdAt, long updatedAt, List<String> favoriteMovieIds) {
         this.userId = userId;
         this.username = username;
         this.email = email;
