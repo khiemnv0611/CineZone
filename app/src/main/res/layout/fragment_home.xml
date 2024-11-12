@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <!-- Import TopHeader -->
-        <com.khiemnv.cinezone.components.TopHeader
+        <com.khiemnv.cinezone.component.TopHeader
             android:id="@+id/topHeaderLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

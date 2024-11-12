@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.components;
+package com.khiemnv.cinezone.component;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

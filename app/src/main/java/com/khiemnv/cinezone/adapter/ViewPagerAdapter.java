@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.adapters;
+package com.khiemnv.cinezone.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
