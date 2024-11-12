@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.fragments;
+package com.khiemnv.cinezone.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.khiemnv.cinezone.R;
-import com.khiemnv.cinezone.adapters.ViewPagerAdapter;
+import com.khiemnv.cinezone.adapter.ViewPagerAdapter;
 
 import java.util.Arrays;
 import java.util.List;

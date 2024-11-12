@@ -1,4 +1,4 @@
-package com.khiemnv.cinezone.activities;
+package com.khiemnv.cinezone.activity;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -7,7 +7,7 @@ import androidx.activity.OnBackPressedCallback;
 
 import com.khiemnv.cinezone.BaseActivity;
 import com.khiemnv.cinezone.R;
-import com.khiemnv.cinezone.fragments.SignInFragment;
+import com.khiemnv.cinezone.fragment.SignInFragment;
 
 public class AuthActivity extends BaseActivity {
     @Override
