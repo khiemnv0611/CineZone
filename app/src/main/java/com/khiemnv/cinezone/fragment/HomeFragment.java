@@ -27,7 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView recyclerViewMovies;
+    private RecyclerView recyclerViewTop10Movies;
+    private RecyclerView recyclerViewTheaterMovies;
+    private RecyclerView recyclerViewUpComingMovies;
     private MovieAdapter movieAdapter;
     private MovieViewModel movieViewModel;
 
@@ -57,23 +59,50 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(adapter);
 
         // Liên kết ViewPager2 với TabLayout
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {}).attach();
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+        }).attach();
 
         // Card
-        // Khởi tạo RecyclerView
-        recyclerViewMovies = view.findViewById(R.id.recyclerViewMovies);
-        recyclerViewMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        // Currently trending
+        recyclerViewTop10Movies = view.findViewById(R.id.recyclerViewTop10Movies);
+        recyclerViewTop10Movies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        // Khởi tạo Adapter
         movieAdapter = new MovieAdapter(getContext());
-        recyclerViewMovies.setAdapter(movieAdapter);
+        recyclerViewTop10Movies.setAdapter(movieAdapter);
 
-        // Khởi tạo ViewModel và quan sát dữ liệu
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-        movieViewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
+        movieViewModel.getTop10Movies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
-                movieAdapter.setMovieList(movieModels);  // Cập nhật Adapter với dữ liệu mới
+                movieAdapter.setMovieList(movieModels);
+            }
+        });
+
+        // Theater Movies
+        recyclerViewTheaterMovies = view.findViewById(R.id.recyclerViewTheaterMovies);
+        recyclerViewTheaterMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        MovieAdapter movieAdapterTheater = new MovieAdapter(getContext());  // Adapter cho theater movies
+        recyclerViewTheaterMovies.setAdapter(movieAdapterTheater);
+
+        movieViewModel.getMoviesInTheater().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(List<MovieModel> movieModels) {
+                movieAdapterTheater.setMovieList(movieModels);  // Cập nhật dữ liệu cho theater adapter
+            }
+        });
+
+        // Upcoming Movies
+        recyclerViewUpComingMovies = view.findViewById(R.id.recyclerViewUpComingMovies);
+        recyclerViewUpComingMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        MovieAdapter movieAdapterUpcoming = new MovieAdapter(getContext());  // Adapter cho upcoming movies
+        recyclerViewUpComingMovies.setAdapter(movieAdapterUpcoming);
+
+        movieViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(List<MovieModel> movieModels) {
+                movieAdapterUpcoming.setMovieList(movieModels);  // Cập nhật dữ liệu cho upcoming adapter
             }
         });
 

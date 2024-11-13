@@ -13,15 +13,18 @@ public class MovieModel {
     private String trailerUrl;
     private String season;
     private String releaseDate;
+    private int duration;
+    private int viewCount;
     private double averageRating;
     private int totalRatings;
 
     // Constructor
-    public MovieModel() {}
+    public MovieModel() {
+    }
 
     public MovieModel(String title, String genre, String status, String description,
-                 String imageUrl, String videoUrl, String trailerUrl, String season,
-                 String releaseDate, double averageRating, int totalRatings) {
+                      String imageUrl, String videoUrl, String trailerUrl, String season,
+                      String releaseDate, int duration, int viewCount, double averageRating, int totalRatings) {
         this.movieId = UUID.randomUUID().toString();
         this.title = title;
         this.genre = genre;
@@ -32,6 +35,8 @@ public class MovieModel {
         this.trailerUrl = trailerUrl;
         this.season = season;
         this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.viewCount = viewCount;
         this.averageRating = averageRating;
         this.totalRatings = totalRatings;
     }
@@ -116,6 +121,22 @@ public class MovieModel {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
     }
 
     public double getAverageRating() {
