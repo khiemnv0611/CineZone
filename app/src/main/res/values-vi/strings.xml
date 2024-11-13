@@ -39,4 +39,9 @@
     <string name="genre">Thể loại</string>
     <string name="movie_theater">Phim chiếu rạp</string>
     <string name="coming_soon">Sắp ra mắt</string>
+    <string name="trailer">Trailer</string>
+    <string name="watch">Xem</string>
+    <string name="review">Đánh giá :</string>
+    <string name="actor">Diễn viên</string>
+    <string name="similar_content">Nội dung tương tự</string>
 </resources>

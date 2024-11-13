@@ -28,9 +28,14 @@
             android:name=".MainActivity"
             android:exported="true" />
 
-        <!-- Login Activity-->
+        <!-- Login Activity -->
         <activity
             android:name=".activity.AuthActivity"
+            android:exported="true" />
+
+        <!-- Movie Detail -->
+        <activity
+            android:name=".activity.MovieDetailActivity"
             android:exported="true" />
 
     </application>

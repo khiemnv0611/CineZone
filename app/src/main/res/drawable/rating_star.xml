@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu của các sao đã được chọn -->
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#D3D3D3" /> <!-- Màu của sao chưa được chọn -->
+        </shape>
+    </item>
+    <!-- Màu của các sao đã chọn -->
+    <item android:id="@android:id/secondaryProgress">
+        <shape>
+            <solid android:color="#FFD700" /> <!-- Màu vàng cho sao đã chọn -->
+        </shape>
+    </item>
+    <!-- Màu của sao đang chọn (khi người dùng tương tác) -->
+    <item android:id="@android:id/progress">
+        <shape>
+            <solid android:color="#FFD700" /> <!-- Màu vàng cho sao đang chọn -->
+        </shape>
+    </item>
+</layer-list>

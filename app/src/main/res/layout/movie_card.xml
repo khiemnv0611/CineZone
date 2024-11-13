@@ -1,74 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:radius="8dp"
     android:elevation="4dp"
-    android:padding="8dp">
+    android:padding="8dp"
+    app:strokeWidth="2dp">
 
-    <!-- Vertical layout to stack image and details -->
+    <!-- LinearLayout chính để sắp xếp các phần tử theo chiều dọc -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Image for Movie Poster -->
-        <ImageView
-            android:id="@+id/moviePoster"
-            android:layout_width="134dp"
-            android:layout_height="160dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sample_poster" />
+        <!-- RelativeLayout chứa poster và các phần tử chồng lên nhau -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <!-- Container for Movie Details with Grey Background -->
+            <!-- Hình ảnh poster -->
+            <ImageView
+                android:id="@+id/moviePoster"
+                android:layout_width="146dp"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sample_poster" />
+
+            <TextView
+                android:id="@+id/movieRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/moviePoster"
+                android:layout_alignStart="@id/moviePoster"
+                android:background="#E0E0E0"
+                android:padding="4dp"
+                android:text="⭐ 10"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/movieStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/moviePoster"
+                android:layout_alignEnd="@id/moviePoster"
+                android:background="#D32F2F"
+                android:padding="4dp"
+                android:text="status"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-medium" />
+        </RelativeLayout>
+
+        <!-- Container cho phần chi tiết phim, nằm dưới poster -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#E0E0E0"
+            android:background="@color/backgroundColor"
             android:padding="8dp">
 
-            <!-- Movie Title -->
             <TextView
                 android:id="@+id/movieTitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Movie Title"
+                android:layout_gravity="center_horizontal"
+                android:text="Movie Name"
                 android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:textColor="@color/textColor"
+                android:fontFamily="sans-serif-medium" />
 
-            <!-- Genre and Rating in Horizontal Layout with Justify-Between -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Thể loại phim, căn giữa -->
+            <TextView
+                android:id="@+id/movieGenre"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp">
-
-                <!-- Genre aligned to the left -->
-                <TextView
-                    android:id="@+id/movieGenre"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/genre"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray" />
-
-                <!-- Rating aligned to the right -->
-                <TextView
-                    android:id="@+id/movieRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⭐ 4.5"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/holo_orange_dark" />
-            </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:text="Genre"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
