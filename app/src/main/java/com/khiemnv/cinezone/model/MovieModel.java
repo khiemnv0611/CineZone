@@ -1,5 +1,7 @@
 package com.khiemnv.cinezone.model;
 
+import java.util.UUID;
+
 public class MovieModel {
     private String movieId;
     private String title;
@@ -17,10 +19,10 @@ public class MovieModel {
     // Constructor
     public MovieModel() {}
 
-    public MovieModel(String movieId, String title, String genre, String status, String description,
+    public MovieModel(String title, String genre, String status, String description,
                  String imageUrl, String videoUrl, String trailerUrl, String season,
                  String releaseDate, double averageRating, int totalRatings) {
-        this.movieId = movieId;
+        this.movieId = UUID.randomUUID().toString();
         this.title = title;
         this.genre = genre;
         this.status = status;
