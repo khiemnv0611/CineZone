@@ -11,16 +11,92 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/moviePoster"
+        <FrameLayout
+            android:id="@+id/moviePosterContainer"
             android:layout_width="0dp"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/poster_1"
+            android:layout_height="500dp"
             app:layout_constraintWidth_percent="1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Movie poster -->
+            <ImageView
+                android:id="@+id/moviePoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/poster_1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_overlay"
+                android:layout_gravity="bottom" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonTrailerLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_transparent_border"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="24dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@id/moviePosterContainer"
+            app:layout_constraintStart_toStartOf="@id/moviePosterContainer"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/trailer"
+                android:src="@drawable/ic_trailer"
+                app:tint="@color/mainColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trailer"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/mainColor"
+                android:paddingStart="10dp" />
+        </LinearLayout>
+
+        <!-- Bottom-right button inside the image -->
+        <LinearLayout
+            android:id="@+id/buttonTrailerRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_button"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="24dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@id/moviePosterContainer"
+            app:layout_constraintEnd_toEndOf="@id/moviePosterContainer"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/watch"
+                android:src="@drawable/ic_play"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/watch"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:paddingStart="10dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/innerLinearLayout"
@@ -29,76 +105,9 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/moviePoster"
+            app:layout_constraintTop_toBottomOf="@id/moviePosterContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <LinearLayout
-                    android:id="@+id/buttonTrailerLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_transparent_border"
-                    android:paddingVertical="10dp"
-                    android:paddingHorizontal="24dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="@string/trailer"
-                        android:src="@drawable/ic_trailer"
-                        app:tint="@color/mainColor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/trailer"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="@color/mainColor"
-                        android:paddingStart="10dp"
-                        tools:ignore="RtlSymmetry" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:id="@+id/buttonTrailerRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_button"
-                    android:paddingVertical="10dp"
-                    android:paddingHorizontal="24dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="@string/watch"
-                        android:src="@drawable/ic_play"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/watch"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="@color/white"
-                        android:paddingStart="10dp" />
-                </LinearLayout>
-            </LinearLayout>
 
             <!-- Title and Info Section -->
             <TextView
@@ -126,9 +135,10 @@
                     app:tint="@color/textColor" />
 
                 <TextView
+                    android:id="@+id/movieReleaseDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="12dp"
                     android:text="2023"
                     android:textColor="@color/grey"
                     android:gravity="center_vertical" />
@@ -146,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginEnd="24dp">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -155,22 +165,24 @@
                         app:tint="@color/textColor" />
 
                     <TextView
+                        android:id="@+id/movieDuration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginStart="12dp"
                         android:text="120 phút"
                         android:textColor="@color/grey"
                         android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/movieAgeRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
                     android:text="16+"
                     android:textSize="12sp"
                     android:textColor="@color/textColor"
-                    android:background="@drawable/border_rating"
+                    android:background="@drawable/border_age_rating"
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="2dp"
                     android:gravity="center" />
@@ -180,7 +192,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp">
 
@@ -194,7 +205,7 @@
                     android:id="@+id/movieGenre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="12dp"
                     android:text="Thể loại"
                     android:textColor="@color/grey"
                     android:gravity="center_vertical" />
@@ -217,13 +228,22 @@
                     android:textColor="@color/textColor" />
 
                 <TextView
-                    android:id="@+id/movieRating"
+                    android:id="@+id/movieAverageRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="4.5 ⭐"
                     android:textSize="16sp"
                     android:textColor="@android:color/holo_orange_dark" />
+
+                <TextView
+                    android:id="@+id/movieTotalRatings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="4.5"
+                    android:textSize="16sp"
+                    android:textColor="@color/grey" />
 
                 <View
                     android:layout_width="0dp"
@@ -241,6 +261,7 @@
 
             <!-- Description Section -->
             <TextView
+                android:id="@+id/movieDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

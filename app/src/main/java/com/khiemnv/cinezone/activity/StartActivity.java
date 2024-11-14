@@ -16,6 +16,7 @@ public class StartActivity extends BaseActivity {
         super.onResume();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class StartActivity extends BaseActivity {
 //            });
 //        }, 2000);
 
-        setContentLayout(R.layout.activity_start);
+        setContentView(R.layout.activity_start);
 
         // Thiết lập top header
         findViewById(R.id.topHeaderLayout);
@@ -53,6 +54,7 @@ public class StartActivity extends BaseActivity {
 
             // Hiệu ứng chuyển màn hình
             overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
-    });
-}};
+        });
+    }
+};
 

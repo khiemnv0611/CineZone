@@ -13,7 +13,7 @@ public class AuthActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentLayout(R.layout.activity_auth);
+        setContentView(R.layout.activity_auth);
 
         // Hiển thị fragment ban đầu
         getSupportFragmentManager().beginTransaction()

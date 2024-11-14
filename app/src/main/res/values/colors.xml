@@ -3,6 +3,9 @@
     <color name="mainColor">#FF6200EE</color>
     <color name="semiTransparentBlack50">#80000000</color>
     <color name="semiTransparentBlack60">#99000000</color>
+    <color name="semiTransparentBlack70">#B3000000</color>
+    <color name="semiTransparentBlack80">#CC000000</color>
+    <color name="semiTransparentBlack90">#E6000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#FF808080</color>

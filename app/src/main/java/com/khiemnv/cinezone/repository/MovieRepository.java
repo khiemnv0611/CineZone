@@ -45,7 +45,7 @@ public class MovieRepository {
 //                "Inception",
 //                Arrays.asList("Khoa học viễn tưởng", "Hành động"),  // genre
 //                "Phim lẻ",                             // type
-//                "Một bộ phim kinh dị rối trí",        // ageRating
+//                "14+",        // ageRating
 //                "Hoàn thành",                         // status
 //                "Bộ phim này kể về một giấc mơ",      // description
 //                "https://images-na.ssl-images-amazon.com/images/I/71uKM+LdgFL.jpg", // imageUrl
@@ -66,7 +66,7 @@ public class MovieRepository {
 //                "Titanic",
 //                Collections.singletonList("Tình cảm"),             // genre
 //                "Phim chiếu rạp",                          // type
-//                "Một câu chuyện tình bi thảm",         // ageRating
+//                "18+",                                    // ageRating
 //                "Hoàn thành",                          // status
 //                "Chuyện tình đẹp giữa Jack và Rose",  // description
 //                "https://i.ebayimg.com/images/g/gnEAAOSwP~tW4HMS/s-l1200.jpg", // imageUrl
@@ -88,7 +88,7 @@ public class MovieRepository {
 //                "Avatar 3",
 //                Arrays.asList("Khoa học viễn tưởng", "Phiêu lưu"),    // genre
 //                "Phim chiếu rạp",                                     // type
-//                "Một thế giới ngoài Trái Đất",                        // ageRating
+//                "18+",                                                // ageRating
 //                "Sắp ra mắt",                                         // status
 //                "Một người lính bị liệt trở thành người Na'vi và chiến đấu bảo vệ Pandora.", // description
 //                "https://upload.wikimedia.org/wikipedia/en/b/b0/Avatar-Teaser-Poster.jpg", // imageUrl
@@ -110,7 +110,7 @@ public class MovieRepository {
 //                "Avengers: Endgame",
 //                Arrays.asList("Hành động", "Khoa học viễn tưởng", "Siêu anh hùng"),  // genre
 //                "Phim chiếu rạp",                                                // type
-//                "Kết thúc của một cuộc chiến vĩ đại",                            // ageRating
+//                "14+",                                                           // ageRating
 //                "Hoàn thành",                                                    // status
 //                "Các Avengers phải hợp tác để sửa chữa thiệt hại mà Thanos gây ra.", // description
 //                "https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg", // imageUrl
@@ -132,7 +132,7 @@ public class MovieRepository {
 //                "Breaking Bad",
 //                Arrays.asList("Hình sự", "Tội phạm", "Drama"),  // genre
 //                "Phim bộ",                                       // type
-//                "Bộ phim này mô tả cuộc sống của một giáo viên hóa học trở thành trùm ma túy", // ageRating
+//                "18+", // ageRating
 //                "Hoàn thành",                                    // status
 //                "Walter White, một giáo viên hóa học, biến thành trùm ma túy trong nỗ lực cứu gia đình khỏi cảnh nghèo.", // description
 //                "https://upload.wikimedia.org/wikipedia/commons/7/7d/Breaking_Bad_title_card.png", // imageUrl
@@ -157,16 +157,16 @@ public class MovieRepository {
 //    }
 
     // Phương thức chuyển chuỗi ngày thành Date
-    private Date parseDate(String dateStr) {
-        try {
-            // Dùng SimpleDateFormat để chuyển chuỗi thành Date
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            return format.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;  // Trả về null nếu có lỗi
-        }
-    }
+//    private Date parseDate(String dateStr) {
+//        try {
+//            // Dùng SimpleDateFormat để chuyển chuỗi thành Date
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//            return format.parse(dateStr);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return null;  // Trả về null nếu có lỗi
+//        }
+//    }
 
     // Get all
     public LiveData<List<MovieModel>> getMoviesFromFirebase() {

@@ -44,4 +44,6 @@
     <string name="review">Review :</string>
     <string name="actor">Actor</string>
     <string name="similar_content">Similar content</string>
+    <string name="hours">hours</string>
+    <string name="minutes">minutes</string>
 </resources>

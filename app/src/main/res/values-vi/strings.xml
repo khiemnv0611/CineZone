@@ -44,4 +44,6 @@
     <string name="review">Đánh giá :</string>
     <string name="actor">Diễn viên</string>
     <string name="similar_content">Nội dung tương tự</string>
+    <string name="hours">tiếng</string>
+    <string name="minutes">phút</string>
 </resources>

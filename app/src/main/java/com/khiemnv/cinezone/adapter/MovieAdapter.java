@@ -2,6 +2,7 @@ package com.khiemnv.cinezone.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.activity.MovieDetailActivity;
 import com.khiemnv.cinezone.model.MovieModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,16 +52,45 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         } else {
             holder.movieGenre.setText("N/A");
         }
-        holder.movieRating.setText("⭐ " + movie.getAverageRating());
+        holder.movieAverageRating.setText("⭐ " + movie.getAverageRating());
         // Sử dụng thư viện như Glide hoặc Picasso để tải ảnh từ URL
         Glide.with(context).load(movie.getImageUrl()).into(holder.moviePoster);
+
+        // Định dạng ngày tháng
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Tính giờ và phút
+        int hours = movie.getDuration() / 60;
+        int minutes = movie.getDuration() % 60;
+
+        // Chuyển đổi thành chuỗi
+        String formattedDuration;
+        if (hours > 0) {
+            formattedDuration = hours + " " + context.getString(R.string.hours) + " " + minutes + " " + context.getString(R.string.minutes);
+        } else {
+            formattedDuration = minutes + " " + context.getString(R.string.minutes);
+        }
 
         // Thiết lập sự kiện click cho mỗi item
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MovieDetailActivity.class);
             intent.putExtra("title", movie.getTitle());
-            intent.putExtra("genre", genreList != null && !genreList.isEmpty() ? genreList.get(0) : "N/A");
+            intent.putExtra("genre", genreList != null && !genreList.isEmpty() ? TextUtils.join(", ", genreList) : "N/A");
+            intent.putExtra("type", movie.getType());
+            intent.putExtra("ageRating", movie.getAgeRating());
+            intent.putExtra("status", movie.getStatus());
+            intent.putExtra("description", movie.getDescription());
+            intent.putExtra("country", movie.getCountry());
+            intent.putExtra("productionCompanies", movie.getProductionCompanies() != null ? String.join(", ", movie.getProductionCompanies()) : "N/A");
+
+            // Định dạng ngày tháng trước khi truyền vào Intent
+            String formattedDate = (movie.getReleaseDate() != null) ? dateFormat.format(movie.getReleaseDate()) : "N/A";
+            intent.putExtra("releaseDate", formattedDate);
+
+            intent.putExtra("duration", formattedDuration);
+            intent.putExtra("viewCount", movie.getViewCount());
             intent.putExtra("averageRating", movie.getAverageRating());
+            intent.putExtra("totalRatings", movie.getTotalRatings());
             intent.putExtra("imageUrl", movie.getImageUrl());
             context.startActivity(intent);
         });
@@ -71,14 +102,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView movieTitle, movieGenre, movieRating;
+        TextView movieTitle, movieGenre, movieAverageRating;
         ImageView moviePoster;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             movieTitle = itemView.findViewById(R.id.movieTitle);
             movieGenre = itemView.findViewById(R.id.movieGenre);
-            movieRating = itemView.findViewById(R.id.movieRating);
+            movieAverageRating = itemView.findViewById(R.id.movieAverageRating);
             moviePoster = itemView.findViewById(R.id.moviePoster);
         }
     }

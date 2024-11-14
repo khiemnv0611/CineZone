@@ -44,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
     }
 
-    private void setStatusBarColor() {
+    protected void setStatusBarColor() {
         // Đặt màu cho thanh trạng thái
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
     }
