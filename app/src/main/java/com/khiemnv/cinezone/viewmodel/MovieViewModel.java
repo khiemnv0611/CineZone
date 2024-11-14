@@ -11,7 +11,6 @@ import java.util.List;
 public class MovieViewModel extends ViewModel {
     private final LiveData<List<MovieModel>> movies;
     private final LiveData<List<MovieModel>> top10Movies;
-    private final LiveData<List<MovieModel>> actionMovies;
     private final LiveData<List<MovieModel>> upcomingMovies;
     private final LiveData<List<MovieModel>> inTheaterMovies;
 
@@ -22,7 +21,6 @@ public class MovieViewModel extends ViewModel {
         // Khởi tạo dữ liệu từ repository
         movies = movieRepository.getMoviesFromFirebase();
         top10Movies = movieRepository.getTop10Movies();
-        actionMovies = movieRepository.getMoviesByGenre("Hành động");
         upcomingMovies = movieRepository.getUpcomingMovies();
         inTheaterMovies = movieRepository.getMoviesInTheater();
     }
@@ -33,10 +31,6 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<List<MovieModel>> getTop10Movies() {
         return top10Movies;
-    }
-
-    public LiveData<List<MovieModel>> getActionMovies() {
-        return actionMovies;
     }
 
     public LiveData<List<MovieModel>> getUpcomingMovies() {

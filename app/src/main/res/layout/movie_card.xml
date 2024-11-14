@@ -4,85 +4,101 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
-    android:radius="8dp"
     android:elevation="4dp"
     android:padding="8dp"
-    app:strokeWidth="2dp">
+    app:strokeWidth="0dp"
+    app:cardCornerRadius="0dp">
 
-    <!-- LinearLayout chính để sắp xếp các phần tử theo chiều dọc -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- RelativeLayout chứa poster và các phần tử chồng lên nhau -->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <!-- Hình ảnh poster -->
-            <ImageView
-                android:id="@+id/moviePoster"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/moviePosterContainer"
                 android:layout_width="146dp"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sample_poster" />
+                android:layout_height="210dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:id="@+id/moviePoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_poster" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/movieRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/moviePoster"
-                android:layout_alignStart="@id/moviePoster"
-                android:background="#E0E0E0"
-                android:padding="4dp"
+                android:layout_alignTop="@id/moviePosterContainer"
+                android:layout_alignStart="@id/moviePosterContainer"
+                android:background="@drawable/border_rating"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
                 android:text="⭐ 10"
                 android:textSize="14sp"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/white"
+                android:elevation="4dp" />
 
-            <TextView
-                android:id="@+id/movieStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/moviePoster"
-                android:layout_alignEnd="@id/moviePoster"
-                android:background="#D32F2F"
-                android:padding="4dp"
-                android:text="status"
-                android:textSize="14sp"
-                android:textColor="@android:color/white"
-                android:fontFamily="sans-serif-medium" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/movieStatus"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_alignTop="@id/moviePosterContainer"-->
+            <!--                android:layout_alignEnd="@id/moviePosterContainer"-->
+            <!--                android:background="#D32F2F"-->
+            <!--                android:padding="4dp"-->
+            <!--                android:text="status"-->
+            <!--                android:textSize="14sp"-->
+            <!--                android:textColor="@android:color/white"-->
+            <!--                android:fontFamily="sans-serif-medium"-->
+            <!--                android:elevation="4dp" />-->
         </RelativeLayout>
 
-        <!-- Container cho phần chi tiết phim, nằm dưới poster -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/backgroundColor"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/movieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:text="Movie Name"
                 android:textSize="16sp"
                 android:textColor="@color/textColor"
-                android:fontFamily="sans-serif-medium" />
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_gravity="center_horizontal" />
 
             <!-- Thể loại phim, căn giữa -->
             <TextView
                 android:id="@+id/movieGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:text="Genre"
                 android:textSize="14sp"
                 android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
+
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

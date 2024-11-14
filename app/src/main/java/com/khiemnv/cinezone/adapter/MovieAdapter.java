@@ -1,6 +1,7 @@
 package com.khiemnv.cinezone.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.khiemnv.cinezone.R;
+import com.khiemnv.cinezone.activity.MovieDetailActivity;
 import com.khiemnv.cinezone.model.MovieModel;
 
 import java.util.ArrayList;
@@ -42,10 +44,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         MovieModel movie = movieList.get(position);
         holder.movieTitle.setText(movie.getTitle());
-        holder.movieGenre.setText(movie.getGenre());
+        List<String> genreList = movie.getGenre();
+        if (genreList != null && !genreList.isEmpty()) {
+            holder.movieGenre.setText(genreList.get(0));  // Hiển thị phần tử đầu tiên
+        } else {
+            holder.movieGenre.setText("N/A");
+        }
         holder.movieRating.setText("⭐ " + movie.getAverageRating());
         // Sử dụng thư viện như Glide hoặc Picasso để tải ảnh từ URL
         Glide.with(context).load(movie.getImageUrl()).into(holder.moviePoster);
+
+        // Thiết lập sự kiện click cho mỗi item
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MovieDetailActivity.class);
+            intent.putExtra("title", movie.getTitle());
+            intent.putExtra("genre", genreList != null && !genreList.isEmpty() ? genreList.get(0) : "N/A");
+            intent.putExtra("averageRating", movie.getAverageRating());
+            intent.putExtra("imageUrl", movie.getImageUrl());
+            context.startActivity(intent);
+        });
     }
 
     @Override
