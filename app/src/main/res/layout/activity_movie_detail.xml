@@ -14,7 +14,7 @@
         <FrameLayout
             android:id="@+id/moviePosterContainer"
             android:layout_width="0dp"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             app:layout_constraintWidth_percent="1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,13 +24,13 @@
             <ImageView
                 android:id="@+id/moviePoster"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="500dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/poster_1" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="120dp"
                 android:background="@drawable/gradient_overlay"
                 android:layout_gravity="bottom" />
         </FrameLayout>
@@ -66,7 +66,6 @@
                 android:paddingStart="10dp" />
         </LinearLayout>
 
-        <!-- Bottom-right button inside the image -->
         <LinearLayout
             android:id="@+id/buttonTrailerRight"
             android:layout_width="wrap_content"
