@@ -83,26 +83,35 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             // Định dạng thời gian
             String formattedDuration;
             if (hours > 0) {
-                formattedDuration = hours + " " + context.getString(R.string.hours);
+                // Kiểm tra nếu hours == 1, sử dụng "hour" thay vì "hours"
+                formattedDuration = hours + " " + (hours == 1 ? context.getString(R.string.hour) : context.getString(R.string.hours));
                 if (minutes > 0) {
-                    formattedDuration += " " + minutes + " " + context.getString(R.string.minutes);
+                    // Kiểm tra nếu minutes == 1, sử dụng "minute" thay vì "minutes"
+                    formattedDuration += " " + minutes + " " + (minutes == 1 ? context.getString(R.string.minute) : context.getString(R.string.minutes));
                 }
             } else {
                 if (minutes > 0) {
-                    formattedDuration = minutes + " " + context.getString(R.string.minutes);
+                    // Kiểm tra nếu minutes == 1, sử dụng "minute" thay vì "minutes"
+                    formattedDuration = minutes + " " + (minutes == 1 ? context.getString(R.string.minute) : context.getString(R.string.minutes));
                 } else {
                     formattedDuration = "0 " + context.getString(R.string.minutes);
                 }
             }
+
             intent.putExtra("duration", formattedDuration);
 
-            intent.putExtra("viewCount", movie.getViewCount());
+            // Định dạng số cho viewCount
+            int viewCount = movie.getViewCount();
+            NumberFormat numberFormatViewCount = NumberFormat.getInstance();
+            String formattedViewCount = numberFormatViewCount.format(viewCount);
+            intent.putExtra("viewCount", formattedViewCount);
+
             intent.putExtra("averageRating", movie.getAverageRating());
 
             // Định dạng số
             int totalRatings = movie.getTotalRatings();
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            String formattedRatings = numberFormat.format(totalRatings);
+            NumberFormat numberFormatRating = NumberFormat.getInstance();
+            String formattedRatings = numberFormatRating.format(totalRatings);
             intent.putExtra("totalRatings", formattedRatings);
 
             intent.putExtra("imageUrl", movie.getImageUrl());

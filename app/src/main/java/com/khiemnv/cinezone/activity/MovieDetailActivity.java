@@ -30,15 +30,15 @@ public class MovieDetailActivity extends BaseActivity {
         // Ánh xạ các view
         movieTitle = findViewById(R.id.movieTitle);
         movieGenre = findViewById(R.id.movieGenre);
-//        movieType = findViewById(R.id.movieType);
+        movieType = findViewById(R.id.movieType);
         movieAgeRating = findViewById(R.id.movieAgeRating);
 //        movieStatus = findViewById(R.id.movieStatus);
         movieDescription = findViewById(R.id.movieDescription);
-//        movieCountry = findViewById(R.id.movieCountry);
-//        movieProductionCompanies = findViewById(R.id.movieProductionCompanies);
+        movieCountry = findViewById(R.id.movieCountry);
+        movieProductionCompanies = findViewById(R.id.movieProductionCompanies);
         movieReleaseDate = findViewById(R.id.movieReleaseDate);
         movieDuration = findViewById(R.id.movieDuration);
-//        movieViewCount = findViewById(R.id.movieViewCount);
+        movieViewCount = findViewById(R.id.movieViewCount);
         movieAverageRating = findViewById(R.id.movieAverageRating);
         movieTotalRatings = findViewById(R.id.movieTotalRatings);
         moviePoster = findViewById(R.id.moviePoster);
@@ -47,11 +47,14 @@ public class MovieDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
         String genre = intent.getStringExtra("genre");
-//        movieType.setText(intent.getStringExtra("type"));
+        String type = intent.getStringExtra("type");
         String ageRating = intent.getStringExtra("ageRating");
         String description = intent.getStringExtra("description");
+        String country = intent.getStringExtra("country");
+        String productionCompanies = intent.getStringExtra("productionCompanies");
         String releaseDate = intent.getStringExtra("releaseDate");
         String duration = intent.getStringExtra("duration");
+        String viewCount = intent.getStringExtra("viewCount");
         double averageRating = intent.getDoubleExtra("averageRating", 0);
         String totalRatings = intent.getStringExtra("totalRatings");
         String imageUrl = intent.getStringExtra("imageUrl");
@@ -59,13 +62,21 @@ public class MovieDetailActivity extends BaseActivity {
         // Hiển thị dữ liệu lên giao diện
         movieTitle.setText(title);
         movieGenre.setText(genre);
-//        movieType.setText(type);
+        movieType.setText(type);
         movieAgeRating.setText(ageRating);
         movieDescription.setText(description);
+        movieCountry.setText(country);
+        movieProductionCompanies.setText(productionCompanies);
         movieReleaseDate.setText(releaseDate);
         movieDuration.setText(duration);
+
+        String views = getString(R.string.views);
+        movieViewCount.setText(viewCount + " " + views);
+
         movieAverageRating.setText("⭐ " + averageRating + "/10");
-        movieTotalRatings.setText("( " + totalRatings + " reviews )");
+
+        String ratings = getString(R.string.ratings);
+        movieTotalRatings.setText("( " + totalRatings + " " + ratings + " )");
 
         // Tải ảnh poster của phim (nếu có)
         Glide.with(this).load(imageUrl).into(moviePoster);

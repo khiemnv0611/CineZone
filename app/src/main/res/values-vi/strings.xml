@@ -36,14 +36,20 @@
     <string name="return_to_login">Trở về Đăng nhập</string>
     <string name="arrow_description">Mũi tên</string>
     <string name="trend">Hiện đang thịnh hành</string>
-    <string name="genre">Thể loại</string>
+    <string name="genre">Thể loại :</string>
     <string name="movie_theater">Phim chiếu rạp</string>
     <string name="coming_soon">Sắp ra mắt</string>
     <string name="trailer">Trailer</string>
     <string name="watch">Xem</string>
-    <string name="review">Đánh giá :</string>
+    <string name="rating">Đánh giá</string>
+    <string name="views">lượt xem</string>
+    <string name="ratings">lượt đánh giá</string>
     <string name="actor">Diễn viên</string>
     <string name="similar_content">Nội dung tương tự</string>
+    <string name="hour">tiếng</string>
     <string name="hours">tiếng</string>
+    <string name="minute">phút</string>
     <string name="minutes">phút</string>
+    <string name="country">Quốc gia :</string>
+    <string name="productionCompanies">Hãng sản xuất :</string>
 </resources>

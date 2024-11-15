@@ -36,14 +36,20 @@
     <string name="return_to_login">Return to Sign in</string>
     <string name="arrow_description">Arrow</string>
     <string name="trend">Currently trending</string>
-    <string name="genre">Genre</string>
+    <string name="genre">Genre :</string>
     <string name="movie_theater">Movie theater</string>
     <string name="coming_soon">Coming soon</string>
     <string name="trailer">Trailer</string>
     <string name="watch">Watch</string>
-    <string name="review">Review :</string>
+    <string name="rating">Rating</string>
+    <string name="views">views</string>
+    <string name="ratings">ratings</string>
     <string name="actor">Actor</string>
     <string name="similar_content">Similar content</string>
+    <string name="hour">hour</string>
     <string name="hours">hours</string>
+    <string name="minute">minute</string>
     <string name="minutes">minutes</string>
+    <string name="country">Country :</string>
+    <string name="productionCompanies">Production Companies :</string>
 </resources>
