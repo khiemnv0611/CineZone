@@ -9,13 +9,14 @@ public class MovieModel {
     private String title;
     private List<String> genre;
     private String type;
-    private String ageRating;
+    private int ageRating;
     private String status;
     private String description;
     private String imageUrl;
     private String videoUrl;
     private String trailerUrl;
     private List<String> productionCompanies;
+    private List<String> directors;
     private String country;
     private String season;
     private Date releaseDate;
@@ -29,9 +30,9 @@ public class MovieModel {
     public MovieModel() {
     }
 
-    public MovieModel(String title, List<String> genre, String type, String ageRating, String status, String description,
+    public MovieModel(String title, List<String> genre, String type, int ageRating, String status, String description,
                       String imageUrl, String videoUrl, String trailerUrl, String season, String country, List<String> productionCompanies,
-                      Date releaseDate, int duration, int viewCount, double averageRating, int totalRatings, List<Actor> actors) {
+                      List<String> directors, Date releaseDate, int duration, int viewCount, double averageRating, int totalRatings, List<Actor> actors) {
         this.movieId = UUID.randomUUID().toString();
         this.title = title;
         this.genre = genre;
@@ -43,6 +44,7 @@ public class MovieModel {
         this.videoUrl = videoUrl;
         this.trailerUrl = trailerUrl;
         this.season = season;
+        this.directors = directors;
         this.productionCompanies = productionCompanies;
         this.country = country;
         this.releaseDate = releaseDate;
@@ -87,11 +89,11 @@ public class MovieModel {
         this.type = type;
     }
 
-    public String getAgeRating() {
+    public int getAgeRating() {
         return ageRating;
     }
 
-    public void setAgeRating(String ageRating) {
+    public void setAgeRating(int ageRating) {
         this.ageRating = ageRating;
     }
 
@@ -141,6 +143,14 @@ public class MovieModel {
 
     public void setSeason(String season) {
         this.season = season;
+    }
+
+    public List<String> getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(List<String> directors) {
+        this.directors = directors;
     }
 
     public List<String> getProductionCompanies() {

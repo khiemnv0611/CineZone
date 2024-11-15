@@ -1,8 +1,9 @@
 package com.khiemnv.cinezone.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Actor {
+public class Actor implements Serializable {
     private String id;
     private String name;
     private String avatarUrl;
@@ -10,7 +11,7 @@ public class Actor {
     // Constructor
     public Actor() {
     }
-    
+
     public Actor(String name, String avatarUrl) {
         this.id = UUID.randomUUID().toString();
         this.name = name;

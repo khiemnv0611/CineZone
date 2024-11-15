@@ -17,6 +17,7 @@ import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.activity.MovieDetailActivity;
 import com.khiemnv.cinezone.model.MovieModel;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,6 +75,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             intent.putExtra("status", movie.getStatus());
             intent.putExtra("description", movie.getDescription());
             intent.putExtra("country", movie.getCountry());
+            intent.putExtra("season", movie.getSeason());
+            intent.putExtra("directors", movie.getDirectors() != null ? String.join(", ", movie.getDirectors()) : "N/A");
             intent.putExtra("productionCompanies", movie.getProductionCompanies() != null ? String.join(", ", movie.getProductionCompanies()) : "N/A");
 
             // Định dạng ngày tháng
@@ -115,6 +118,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             intent.putExtra("totalRatings", formattedRatings);
 
             intent.putExtra("imageUrl", movie.getImageUrl());
+            intent.putExtra("actors", (Serializable) movie.getActors());
             context.startActivity(intent);
         });
     }

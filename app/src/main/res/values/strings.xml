@@ -50,6 +50,8 @@
     <string name="hours">hours</string>
     <string name="minute">minute</string>
     <string name="minutes">minutes</string>
+    <string name="season">Season :</string>
     <string name="country">Country :</string>
-    <string name="productionCompanies">Production Companies :</string>
+    <string name="directors">Directors :</string>
+    <string name="production_companies">Production Companies :</string>
 </resources>

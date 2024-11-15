@@ -12,15 +12,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.khiemnv.cinezone.BaseActivity;
 import com.khiemnv.cinezone.R;
+import com.khiemnv.cinezone.adapter.ActorAdapter;
+import com.khiemnv.cinezone.model.Actor;
+
+import java.util.List;
 
 public class MovieDetailActivity extends BaseActivity {
     private TextView movieTitle, movieGenre, movieType, movieAgeRating, movieStatus, movieDescription,
-            movieCountry, movieProductionCompanies, movieReleaseDate, movieDuration, movieViewCount, movieAverageRating, movieTotalRatings;
+            movieCountry, movieSeason, movieDirectors, movieProductionCompanies, movieReleaseDate, movieDuration,
+            movieViewCount, movieAverageRating, movieTotalRatings;
     private ImageView moviePoster;
+    private RecyclerView recyclerViewActors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +40,11 @@ public class MovieDetailActivity extends BaseActivity {
         movieGenre = findViewById(R.id.movieGenre);
         movieType = findViewById(R.id.movieType);
         movieAgeRating = findViewById(R.id.movieAgeRating);
-//        movieStatus = findViewById(R.id.movieStatus);
+        movieStatus = findViewById(R.id.movieStatus);
         movieDescription = findViewById(R.id.movieDescription);
         movieCountry = findViewById(R.id.movieCountry);
+        movieSeason = findViewById(R.id.movieSeason);
+        movieDirectors = findViewById(R.id.movieDirectors);
         movieProductionCompanies = findViewById(R.id.movieProductionCompanies);
         movieReleaseDate = findViewById(R.id.movieReleaseDate);
         movieDuration = findViewById(R.id.movieDuration);
@@ -43,14 +53,21 @@ public class MovieDetailActivity extends BaseActivity {
         movieTotalRatings = findViewById(R.id.movieTotalRatings);
         moviePoster = findViewById(R.id.moviePoster);
 
+        // Ánh xạ RecyclerView
+        recyclerViewActors = findViewById(R.id.recyclerViewActors);
+        recyclerViewActors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         // Lấy dữ liệu từ Intent
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
         String genre = intent.getStringExtra("genre");
         String type = intent.getStringExtra("type");
-        String ageRating = intent.getStringExtra("ageRating");
+        int ageRating = intent.getIntExtra("ageRating", -1);
+        String status = intent.getStringExtra("status");
         String description = intent.getStringExtra("description");
         String country = intent.getStringExtra("country");
+        String season = intent.getStringExtra("season");
+        String directors = intent.getStringExtra("directors");
         String productionCompanies = intent.getStringExtra("productionCompanies");
         String releaseDate = intent.getStringExtra("releaseDate");
         String duration = intent.getStringExtra("duration");
@@ -58,14 +75,32 @@ public class MovieDetailActivity extends BaseActivity {
         double averageRating = intent.getDoubleExtra("averageRating", 0);
         String totalRatings = intent.getStringExtra("totalRatings");
         String imageUrl = intent.getStringExtra("imageUrl");
+        List<Actor> actors = (List<Actor>) getIntent().getSerializableExtra("actors");
 
         // Hiển thị dữ liệu lên giao diện
         movieTitle.setText(title);
         movieGenre.setText(genre);
         movieType.setText(type);
-        movieAgeRating.setText(ageRating);
+
+        if (ageRating > 0) {
+            movieAgeRating.setText(ageRating + "+");
+        } else {
+            movieAgeRating.setText(String.valueOf(ageRating));
+        }
+
+        movieStatus.setText(status);
+        if ("Hoàn thành".equals(status)) {
+            movieStatus.setBackgroundResource(R.drawable.border_status_green);
+        } else if ("Sắp ra mắt".equals(status)) {
+            movieStatus.setBackgroundResource(R.drawable.border_status_red);
+        } else {
+            movieStatus.setBackgroundResource(R.drawable.border_status_blue);
+        }
+
         movieDescription.setText(description);
         movieCountry.setText(country);
+        movieSeason.setText(season);
+        movieDirectors.setText(directors);
         movieProductionCompanies.setText(productionCompanies);
         movieReleaseDate.setText(releaseDate);
         movieDuration.setText(duration);
@@ -77,6 +112,11 @@ public class MovieDetailActivity extends BaseActivity {
 
         String ratings = getString(R.string.ratings);
         movieTotalRatings.setText("( " + totalRatings + " " + ratings + " )");
+
+        if (actors != null && !actors.isEmpty()) {
+            ActorAdapter actorAdapter = new ActorAdapter(this, actors);
+            recyclerViewActors.setAdapter(actorAdapter);
+        }
 
         // Tải ảnh poster của phim (nếu có)
         Glide.with(this).load(imageUrl).into(moviePoster);

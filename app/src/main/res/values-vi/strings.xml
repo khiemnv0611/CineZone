@@ -50,6 +50,8 @@
     <string name="hours">tiếng</string>
     <string name="minute">phút</string>
     <string name="minutes">phút</string>
+    <string name="season">Mùa :</string>
     <string name="country">Quốc gia :</string>
-    <string name="productionCompanies">Hãng sản xuất :</string>
+    <string name="directors">Đạo diễn :</string>
+    <string name="production_companies">Hãng sản xuất :</string>
 </resources>

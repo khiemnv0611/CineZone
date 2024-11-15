@@ -33,120 +33,43 @@ public class MovieRepository {
 //    public void uploadSampleMovies() {
 //        List<MovieModel> movieList = new ArrayList<>();
 //
-//        // Tạo các actor mẫu
-//        Actor actor1 = new Actor("Leonardo DiCaprio", "https://upload.wikimedia.org/wikipedia/commons/3/36/Leonardo_DiCaprio_2014.jpg");
-//        Actor actor2 = new Actor("Kate Winslet", "https://upload.wikimedia.org/wikipedia/commons/8/8e/Kate_Winslet.jpg");
-//        Actor actor3 = new Actor("Robert Downey Jr.", "https://upload.wikimedia.org/wikipedia/commons/d/d6/Robert_Downey_Jr_in_2014.jpg");
-//        Actor actor4 = new Actor("Ezra Miller", "https://upload.wikimedia.org/wikipedia/commons/5/5e/Ezra_Miller_2018.jpg");
-//        Actor actor5 = new Actor("Sam Worthington", "https://upload.wikimedia.org/wikipedia/commons/e/ec/Sam_Worthington_2013.jpg");
+//        // Tạo một số diễn viên mẫu
+//        Actor actor1 = new Actor("Tom Hanks", "https://example.com/actor1.jpg");
+//        Actor actor2 = new Actor("Natalie Portman", "https://example.com/actor2.jpg");
+//        Actor actor3 = new Actor("Robert Downey Jr.", "https://example.com/actor3.jpg");
 //
-//        // Tạo dữ liệu mẫu với ID ngẫu nhiên và thêm actors vào mỗi phim
-//        movieList.add(new MovieModel(
-//                "Inception",
-//                Arrays.asList("Khoa học viễn tưởng", "Hành động"),  // genre
-//                "Phim lẻ",                             // type
-//                "14+",        // ageRating
-//                "Hoàn thành",                         // status
-//                "Bộ phim này kể về một giấc mơ",      // description
-//                "https://images-na.ssl-images-amazon.com/images/I/71uKM+LdgFL.jpg", // imageUrl
-//                "",                                   // videoUrl
-//                "",                                   // trailerUrl
-//                "1",                                  // season
-//                "USA",                                // country
-//                Arrays.asList("Warner Bros.", "Syncopy"), // productionCompanies
-//                parseDate("2010-07-16"),              // releaseDate (Date type)
-//                120,                                  // duration
-//                60,                                   // viewCount
-//                9.8,                                  // averageRating
-//                1000,                                 // totalRatings
-//                Arrays.asList(actor1, actor2)         // actors
-//        ));
+//        List<Actor> actors = Arrays.asList(actor1, actor2, actor3);
 //
-//        movieList.add(new MovieModel(
-//                "Titanic",
-//                Collections.singletonList("Tình cảm"),             // genre
-//                "Phim chiếu rạp",                          // type
-//                "18+",                                    // ageRating
-//                "Hoàn thành",                          // status
-//                "Chuyện tình đẹp giữa Jack và Rose",  // description
-//                "https://i.ebayimg.com/images/g/gnEAAOSwP~tW4HMS/s-l1200.jpg", // imageUrl
-//                "",                                    // videoUrl
-//                "",                                    // trailerUrl
-//                "1",                                   // season
-//                "USA",                                 // country
-//                Arrays.asList("20th Century Fox", "Paramount Pictures"), // productionCompanies
-//                parseDate("1997-12-19"),               // releaseDate (Date type)
-//                120,                                   // duration
-//                10,                                    // viewCount
-//                9.7,                                   // averageRating
-//                1500,                                  // totalRatings
-//                Arrays.asList(actor1, actor2)          // actors
-//        ));
+//        // Tạo một số đạo diễn mẫu
+//        List<String> directors = Arrays.asList("Steven Spielberg", "Christopher Nolan");
 //
-//        // Thêm bộ phim "Avatar"
-//        movieList.add(new MovieModel(
-//                "Avatar 3",
-//                Arrays.asList("Khoa học viễn tưởng", "Phiêu lưu"),    // genre
-//                "Phim chiếu rạp",                                     // type
-//                "18+",                                                // ageRating
-//                "Sắp ra mắt",                                         // status
-//                "Một người lính bị liệt trở thành người Na'vi và chiến đấu bảo vệ Pandora.", // description
-//                "https://upload.wikimedia.org/wikipedia/en/b/b0/Avatar-Teaser-Poster.jpg", // imageUrl
-//                "",                                                    // videoUrl
-//                "",                                                    // trailerUrl
-//                "1",                                                   // season
-//                "USA",                                                 // country
-//                Arrays.asList("20th Century Fox", "Lightstorm Entertainment"), // productionCompanies
-//                parseDate("2009-12-18"),                               // releaseDate (Date type)
-//                162,                                                   // duration
-//                500,                                                   // viewCount
-//                7.9,                                                   // averageRating
-//                2000,                                                  // totalRatings
-//                Arrays.asList(actor3, actor5)                          // actors
-//        ));
+//        // Tạo một số công ty sản xuất mẫu
+//        List<String> productionCompanies = Arrays.asList("Warner Bros.", "Marvel Studios");
 //
-//        // Thêm bộ phim "Avengers: Endgame"
-//        movieList.add(new MovieModel(
-//                "Avengers: Endgame",
-//                Arrays.asList("Hành động", "Khoa học viễn tưởng", "Siêu anh hùng"),  // genre
-//                "Phim chiếu rạp",                                                // type
-//                "14+",                                                           // ageRating
-//                "Hoàn thành",                                                    // status
-//                "Các Avengers phải hợp tác để sửa chữa thiệt hại mà Thanos gây ra.", // description
-//                "https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg", // imageUrl
-//                "",                                                              // videoUrl
-//                "",                                                              // trailerUrl
-//                "1",                                                             // season
-//                "USA",                                                           // country
-//                Arrays.asList("Marvel Studios", "Walt Disney Studios Motion Pictures"), // productionCompanies
-//                parseDate("2019-04-26"),                                         // releaseDate (Date type)
-//                181,                                                             // duration
-//                1000,                                                            // viewCount
-//                9.7,                                                             // averageRating
-//                5000,                                                            // totalRatings
-//                Arrays.asList(actor3, actor4, actor5)                            // actors
-//        ));
+//        // Tạo một số thể loại mẫu
+//        List<String> genre = Arrays.asList("Action", "Drama", "Adventure");
 //
-//        // Thêm bộ phim "Breaking Bad" (Series)
+//        // Tạo movie mẫu đầu tiên
 //        movieList.add(new MovieModel(
-//                "Breaking Bad",
-//                Arrays.asList("Hình sự", "Tội phạm", "Drama"),  // genre
-//                "Phim bộ",                                       // type
-//                "18+", // ageRating
-//                "Hoàn thành",                                    // status
-//                "Walter White, một giáo viên hóa học, biến thành trùm ma túy trong nỗ lực cứu gia đình khỏi cảnh nghèo.", // description
-//                "https://upload.wikimedia.org/wikipedia/commons/7/7d/Breaking_Bad_title_card.png", // imageUrl
-//                "",                                               // videoUrl
-//                "",                                               // trailerUrl
-//                "1",                                              // season
-//                "USA",                                            // country
-//                Arrays.asList("Sony Pictures Television", "AMC Studios"), // productionCompanies
-//                parseDate("2008-01-20"),                          // releaseDate (Date type)
-//                47,                                               // duration (each episode duration)
-//                2000,                                             // viewCount
-//                9.5,                                              // averageRating
-//                10000,                                            // totalRatings
-//                Arrays.asList(actor2, actor3, actor4)             // actors
+//                "Phi vụ triệu đô",  // Tên phim
+//                Arrays.asList("Crime", "Comedy", "Thriller"),  // Thể loại
+//                "Phim lẻ",  // Loại phim
+//                13,  // Đánh giá độ tuổi
+//                "Hoàn thành",  // Trạng thái
+//                "Một nhóm tội phạm tài ba thực hiện một vụ cướp khổng lồ tại Las Vegas.",  // Mô tả
+//                "https://example.com/heist.jpg",  // Hình ảnh
+//                "https://example.com/heist_video.mp4",  // Video chính
+//                "https://example.com/heist_trailer.mp4",  // Trailer
+//                "N/A",  // Season
+//                "Mỹ",  // Quốc gia
+//                Arrays.asList("Warner Bros."),  // Công ty sản xuất
+//                Arrays.asList("The Duffer Brothers"),  // Đạo diễn
+//                parseDate("2001-12-7"),  // Ngày phát hành
+//                116,  // Thời gian (phút)
+//                4000000,  // Số lượt xem
+//                8.0,  // Điểm đánh giá trung bình
+//                700000,  // Tổng số đánh giá
+//                actors  // Danh sách diễn viên
 //        ));
 //
 //        // Đẩy từng đối tượng MovieModel lên Firebase
@@ -156,7 +79,7 @@ public class MovieRepository {
 //        }
 //    }
 
-    // Phương thức chuyển chuỗi ngày thành Date
+    //     Phương thức chuyển chuỗi ngày thành Date
 //    private Date parseDate(String dateStr) {
 //        try {
 //            // Dùng SimpleDateFormat để chuyển chuỗi thành Date
@@ -215,31 +138,6 @@ public class MovieRepository {
 
         return top10MoviesLiveData;
     }
-
-    // Get by genre
-//    public LiveData<List<MovieModel>> getMoviesByGenre(String genre) {
-//        MutableLiveData<List<MovieModel>> genreMoviesLiveData = new MutableLiveData<>();
-//        Query genreQuery = databaseReference.orderByChild("genre").equalTo(genre);
-//
-//        genreQuery.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                List<MovieModel> movieList = new ArrayList<>();
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    MovieModel movie = snapshot.getValue(MovieModel.class);
-//                    movieList.add(movie);
-//                }
-//                genreMoviesLiveData.setValue(movieList);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Xử lý lỗi nếu cần
-//            }
-//        });
-//
-//        return genreMoviesLiveData;
-//    }
 
     // Up coming
     public LiveData<List<MovieModel>> getUpcomingMovies() {
