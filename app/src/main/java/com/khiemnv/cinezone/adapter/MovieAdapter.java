@@ -17,6 +17,7 @@ import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.activity.MovieDetailActivity;
 import com.khiemnv.cinezone.model.MovieModel;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +64,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         int hours = movie.getDuration() / 60;
         int minutes = movie.getDuration() % 60;
 
-        // Chuyển đổi thành chuỗi
-        String formattedDuration;
-        if (hours > 0) {
-            formattedDuration = hours + " " + context.getString(R.string.hours) + " " + minutes + " " + context.getString(R.string.minutes);
-        } else {
-            formattedDuration = minutes + " " + context.getString(R.string.minutes);
-        }
-
         // Thiết lập sự kiện click cho mỗi item
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MovieDetailActivity.class);
@@ -83,14 +76,35 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             intent.putExtra("country", movie.getCountry());
             intent.putExtra("productionCompanies", movie.getProductionCompanies() != null ? String.join(", ", movie.getProductionCompanies()) : "N/A");
 
-            // Định dạng ngày tháng trước khi truyền vào Intent
+            // Định dạng ngày tháng
             String formattedDate = (movie.getReleaseDate() != null) ? dateFormat.format(movie.getReleaseDate()) : "N/A";
             intent.putExtra("releaseDate", formattedDate);
 
+            // Định dạng thời gian
+            String formattedDuration;
+            if (hours > 0) {
+                formattedDuration = hours + " " + context.getString(R.string.hours);
+                if (minutes > 0) {
+                    formattedDuration += " " + minutes + " " + context.getString(R.string.minutes);
+                }
+            } else {
+                if (minutes > 0) {
+                    formattedDuration = minutes + " " + context.getString(R.string.minutes);
+                } else {
+                    formattedDuration = "0 " + context.getString(R.string.minutes);
+                }
+            }
             intent.putExtra("duration", formattedDuration);
+
             intent.putExtra("viewCount", movie.getViewCount());
             intent.putExtra("averageRating", movie.getAverageRating());
-            intent.putExtra("totalRatings", movie.getTotalRatings());
+
+            // Định dạng số
+            int totalRatings = movie.getTotalRatings();
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            String formattedRatings = numberFormat.format(totalRatings);
+            intent.putExtra("totalRatings", formattedRatings);
+
             intent.putExtra("imageUrl", movie.getImageUrl());
             context.startActivity(intent);
         });

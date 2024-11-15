@@ -53,7 +53,7 @@ public class MovieDetailActivity extends BaseActivity {
         String releaseDate = intent.getStringExtra("releaseDate");
         String duration = intent.getStringExtra("duration");
         double averageRating = intent.getDoubleExtra("averageRating", 0);
-        int totalRatings = intent.getIntExtra("totalRatings", 0);
+        String totalRatings = intent.getStringExtra("totalRatings");
         String imageUrl = intent.getStringExtra("imageUrl");
 
         // Hiển thị dữ liệu lên giao diện
@@ -64,7 +64,7 @@ public class MovieDetailActivity extends BaseActivity {
         movieDescription.setText(description);
         movieReleaseDate.setText(releaseDate);
         movieDuration.setText(duration);
-        movieAverageRating.setText("⭐ " + averageRating);
+        movieAverageRating.setText("⭐ " + averageRating + "/10");
         movieTotalRatings.setText("( " + totalRatings + " reviews )");
 
         // Tải ảnh poster của phim (nếu có)
