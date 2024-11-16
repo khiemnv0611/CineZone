@@ -18,26 +18,26 @@
     <!-- Screen Rotation Button -->
     <ImageView
         android:id="@+id/rotateToLandscapeButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="62dp"
         android:src="@drawable/ic_screen_rotation"
         android:contentDescription="Rotate Screen"
-        app:tint="@color/textColor"
+        app:tint="@color/grey"
         app:layout_constraintBottom_toBottomOf="@id/trailerPlayerView"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/rotateToPortraitButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="102dp"
         android:src="@drawable/ic_screen_rotation"
         android:contentDescription="Rotate to portrait"
-        app:tint="@color/textColor"
+        app:tint="@color/grey"
         app:layout_constraintBottom_toBottomOf="@id/trailerPlayerView"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="visible" />
@@ -51,7 +51,7 @@
         android:layout_marginBottom="62dp"
         android:src="@drawable/ic_fullscreen"
         android:contentDescription="Fullscreen"
-        app:tint="@color/textColor"
+        app:tint="@color/grey"
         app:layout_constraintBottom_toBottomOf="@id/trailerPlayerView"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone" />
@@ -65,7 +65,7 @@
         android:layout_marginBottom="62dp"
         android:src="@drawable/ic_collapse"
         android:contentDescription="Collapse"
-        app:tint="@color/textColor"
+        app:tint="@color/grey"
         app:layout_constraintBottom_toBottomOf="@id/trailerPlayerView"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone" />
