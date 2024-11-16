@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -26,10 +27,12 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Context context;
     private List<MovieModel> movieList;
+    private boolean isWhiteTitle;
 
-    public MovieAdapter(Context context) {
+    public MovieAdapter(Context context, boolean isWhiteTitle) {
         this.context = context;
         this.movieList = new ArrayList<>();
+        this.isWhiteTitle = isWhiteTitle;
     }
 
     public void setMovieList(List<MovieModel> movieList) {
@@ -48,6 +51,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         MovieModel movie = movieList.get(position);
         holder.movieTitle.setText(movie.getTitle());
+
+        // Thay đổi màu chữ trắng
+        if (isWhiteTitle) {
+            holder.movieTitle.setTextColor(ContextCompat.getColor(context, R.color.white));
+        } else {
+            holder.movieTitle.setTextColor(ContextCompat.getColor(context, R.color.textColor));
+        }
+
         List<String> genreList = movie.getGenre();
         if (genreList != null && !genreList.isEmpty()) {
             holder.movieGenre.setText(genreList.get(0));  // Hiển thị phần tử đầu tiên
@@ -68,6 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         // Thiết lập sự kiện click cho mỗi item
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MovieDetailActivity.class);
+            intent.putExtra("movieId", movie.getMovieId());
             intent.putExtra("title", movie.getTitle());
             intent.putExtra("genre", genreList != null && !genreList.isEmpty() ? TextUtils.join(", ", genreList) : "N/A");
             intent.putExtra("type", movie.getType());
@@ -118,6 +130,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             intent.putExtra("totalRatings", formattedRatings);
 
             intent.putExtra("imageUrl", movie.getImageUrl());
+            intent.putExtra("trailerUrl", movie.getTrailerUrl());
             intent.putExtra("actors", (Serializable) movie.getActors());
             context.startActivity(intent);
         });

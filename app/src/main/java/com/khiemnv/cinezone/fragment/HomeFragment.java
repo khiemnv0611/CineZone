@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         recyclerViewTop10Movies = view.findViewById(R.id.recyclerViewTop10Movies);
         recyclerViewTop10Movies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        movieAdapter = new MovieAdapter(getContext());
+        movieAdapter = new MovieAdapter(getContext(), false);
         recyclerViewTop10Movies.setAdapter(movieAdapter);
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
         recyclerViewTheaterMovies = view.findViewById(R.id.recyclerViewTheaterMovies);
         recyclerViewTheaterMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        MovieAdapter movieAdapterTheater = new MovieAdapter(getContext());  // Adapter cho theater movies
+        MovieAdapter movieAdapterTheater = new MovieAdapter(getContext(), false);  // Adapter cho theater movies
         recyclerViewTheaterMovies.setAdapter(movieAdapterTheater);
 
         movieViewModel.getMoviesInTheater().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
         recyclerViewUpComingMovies = view.findViewById(R.id.recyclerViewUpComingMovies);
         recyclerViewUpComingMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        MovieAdapter movieAdapterUpcoming = new MovieAdapter(getContext());  // Adapter cho upcoming movies
+        MovieAdapter movieAdapterUpcoming = new MovieAdapter(getContext(), false);  // Adapter cho upcoming movies
         recyclerViewUpComingMovies.setAdapter(movieAdapterUpcoming);
 
         movieViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {

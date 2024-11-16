@@ -1,6 +1,7 @@
 package com.khiemnv.cinezone.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.khiemnv.cinezone.model.MovieModel;
@@ -13,9 +14,12 @@ public class MovieViewModel extends ViewModel {
     private final LiveData<List<MovieModel>> top10Movies;
     private final LiveData<List<MovieModel>> upcomingMovies;
     private final LiveData<List<MovieModel>> inTheaterMovies;
+    private final MutableLiveData<List<MovieModel>> suggestedMovies = new MutableLiveData<>();
+
+    private final MovieRepository movieRepository;
 
     public MovieViewModel() {
-        MovieRepository movieRepository = new MovieRepository();
+        movieRepository = new MovieRepository();
         // Đẩy dữ liệu mẫu lên Firebase (nếu chưa có)
 //        movieRepository.uploadSampleMovies();
         // Khởi tạo dữ liệu từ repository
@@ -39,5 +43,11 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<List<MovieModel>> getMoviesInTheater() {
         return inTheaterMovies;
+    }
+
+    // Lấy danh sách phim gợi ý theo thể loại
+    public LiveData<List<MovieModel>> getSuggestedMoviesByGenres(List<String> genres, String currentMovieId) {
+        movieRepository.getMoviesByGenres(genres, currentMovieId).observeForever(suggestedMovies::setValue);
+        return suggestedMovies;
     }
 }

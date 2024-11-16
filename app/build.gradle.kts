@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidyoutubeplayer.core)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     implementation(platform(libs.firebase.bom))

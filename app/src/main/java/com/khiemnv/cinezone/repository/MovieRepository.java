@@ -1,5 +1,6 @@
 package com.khiemnv.cinezone.repository;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -188,4 +189,59 @@ public class MovieRepository {
 
         return moviesInTheaterLiveData;
     }
+
+    // Similar genre
+    public LiveData<List<MovieModel>> getMoviesByGenres(List<String> genres, String currentMovieId) {
+        MutableLiveData<List<MovieModel>> moviesByGenres = new MutableLiveData<>();
+        List<MovieModel> aggregatedList = new ArrayList<>();
+        List<String> checkedGenres = new ArrayList<>();
+
+        // Gọi hàm đệ quy
+        getMoviesByGenreRecursive(genres, 0, aggregatedList, moviesByGenres, checkedGenres, currentMovieId);
+
+        return moviesByGenres;
+    }
+
+    private void getMoviesByGenreRecursive(List<String> genres, int index, List<MovieModel> aggregatedList,
+                                           MutableLiveData<List<MovieModel>> moviesByGenres,
+                                           List<String> checkedGenres, String currentMovieId) {
+        if (index >= genres.size() || aggregatedList.size() >= 10) {
+            moviesByGenres.setValue(aggregatedList);
+            return;
+        }
+
+        String currentGenre = genres.get(index);
+
+        if (checkedGenres.contains(currentGenre)) {
+            getMoviesByGenreRecursive(genres, index + 1, aggregatedList, moviesByGenres, checkedGenres, currentMovieId);
+            return;
+        }
+
+        databaseReference.orderByChild("genre/0").equalTo(currentGenre)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            MovieModel movie = data.getValue(MovieModel.class);
+
+                            // Loại bỏ phim hiện tại và kiểm tra trùng lặp
+                            if (!aggregatedList.contains(movie) && !movie.getMovieId().equals(currentMovieId)) {
+                                aggregatedList.add(movie);
+                            }
+
+                            if (aggregatedList.size() >= 10) break;
+                        }
+
+                        checkedGenres.add(currentGenre);
+                        getMoviesByGenreRecursive(genres, index + 1, aggregatedList, moviesByGenres, checkedGenres, currentMovieId);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Xử lý lỗi nếu cần
+                        getMoviesByGenreRecursive(genres, index + 1, aggregatedList, moviesByGenres, checkedGenres, currentMovieId);
+                    }
+                });
+    }
+
 }

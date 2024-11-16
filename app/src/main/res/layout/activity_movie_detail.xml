@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movie_detail"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/moviePoster"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/poster_1" />
+        android:src="@drawable/poster_1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,6 +51,7 @@
                     android:layout_gravity="center_horizontal">
 
                     <LinearLayout
+                        android:id="@+id/trailer_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -104,46 +116,6 @@
                     android:textSize="26sp"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="1.2" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/season"
-                        android:textSize="16sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/movieSeason"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="season"
-                        android:layout_marginStart="12dp"
-                        android:textColor="@color/white"
-                        android:gravity="center_vertical"
-                        android:lineSpacingMultiplier="1.2" />
-
-                    <TextView
-                        android:id="@+id/movieStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="4dp"
-                        android:text="status"
-                        android:textSize="14sp"
-                        android:textColor="@color/white"
-                        android:background="@drawable/border_status_green"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="4dp"
-                        android:gravity="center"
-                        android:layout_marginStart="24dp" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -270,6 +242,45 @@
                         android:gravity="center" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/season"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/movieSeason"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="season"
+                        android:layout_marginStart="12dp"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:lineSpacingMultiplier="1.2" />
+
+                    <TextView
+                        android:id="@+id/movieStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:text="status"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:background="@drawable/border_status_green"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="4dp"
+                        android:gravity="center"
+                        android:layout_marginStart="24dp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -436,8 +447,6 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:clipToPadding="false"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="10dp"
                     android:scrollbars="horizontal" />
 
                 <TextView
@@ -450,13 +459,14 @@
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewTheaterMovies"
+                    android:id="@+id/recyclerViewSimilarMovies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:scrollbars="horizontal" />
+
             </LinearLayout>
         </LinearLayout>
-
-
     </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
