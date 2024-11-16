@@ -1,5 +1,6 @@
 package com.khiemnv.cinezone.activity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -14,6 +15,9 @@ public class AuthActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        // Khóa màn hình dọc
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Hiển thị fragment ban đầu
         getSupportFragmentManager().beginTransaction()

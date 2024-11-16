@@ -1,6 +1,7 @@
 package com.khiemnv.cinezone;
 
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -29,14 +30,14 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        // Initialize SharedPreferences
+        // Khởi tạo SharedPreferences
         prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         isEnglish = prefs.getBoolean(KEY_IS_ENGLISH, true);
         isNightMode = prefs.getBoolean(KEY_IS_NIGHT_MODE, false);
 
-        // Apply theme and language
+        // Áp dụng chủ đề và ngôn ngữ
         applyTheme();
-        setLocale(isEnglish ? "en" : "vi"); // Ensure the correct language is set
+        setLocale(isEnglish ? "en" : "vi");
 
         setStatusBarColor();
 
@@ -50,7 +51,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void applyTheme() {
-        // Apply the saved theme
+        // Áp dụng chủ đề đã lưu
         AppCompatDelegate.setDefaultNightMode(
                 isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
@@ -64,12 +65,12 @@ public class BaseActivity extends AppCompatActivity {
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 
-    // Method can be called from TopHeader to save the language state
+    // Phương thức có thể được gọi từ TopHeader để lưu trạng thái ngôn ngữ
     public void switchLanguage() {
         isEnglish = !isEnglish;
         prefs.edit().putBoolean(KEY_IS_ENGLISH, isEnglish).apply();
-        setLocale(isEnglish ? "en" : "vi"); // Set the new language
-        recreate(); // Restart activity to apply changes
+        setLocale(isEnglish ? "en" : "vi"); // Thiết lập ngôn ngữ mới
+        recreate(); // Khởi động lại activity để áp dụng thay đổi
     }
 
     // Hiển thị loading

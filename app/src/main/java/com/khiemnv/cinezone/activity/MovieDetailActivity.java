@@ -1,6 +1,7 @@
 package com.khiemnv.cinezone.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +47,9 @@ public class MovieDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Khóa màn hình dọc
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Ẩn thanh trạng thái (status bar) và cho giao diện tràn lên
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
