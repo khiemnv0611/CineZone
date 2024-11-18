@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.khiemnv.cinezone.BaseActivity;
+import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.adapter.ActorAdapter;
 import com.khiemnv.cinezone.adapter.MovieAdapter;
@@ -43,6 +45,7 @@ public class MovieDetailActivity extends BaseActivity {
             movieViewCount, movieAverageRating, movieTotalRatings;
     private ImageView moviePoster;
     private RecyclerView recyclerViewActors;
+    private ImageButton homeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +184,26 @@ public class MovieDetailActivity extends BaseActivity {
         // Nút trailer
         LinearLayout trailerButton = findViewById(R.id.trailer_btn);
         trailerButton.setOnClickListener(v -> openTrailerActivity(trailerUrl));
+
+        // Ánh xạ nút Home
+        homeButton = findViewById(R.id.home_button);
+
+        // Xử lý sự kiện click
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Điều hướng về HomeFragment
+                navigateToHomeFragment();
+            }
+        });
+    }
+
+    private void navigateToHomeFragment() {
+        // Lấy MainActivity từ Intent
+        Intent intent = new Intent(MovieDetailActivity.this, MainActivity.class);
+        intent.putExtra("navigate_to_home", true); // Thêm dữ liệu để MainActivity biết rằng cần chuyển sang HomeFragment
+        startActivity(intent);
+        finish(); // Đóng MovieDetailActivity
     }
 
     private void openTrailerActivity(String trailerUrl) {

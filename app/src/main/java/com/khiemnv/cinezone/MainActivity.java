@@ -1,9 +1,12 @@
 package com.khiemnv.cinezone;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khiemnv.cinezone.fragment.HomeFragment;
 import com.khiemnv.cinezone.fragment.NotificationsFragment;
@@ -17,17 +20,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Kiểm tra trạng thái đăng nhập
-//        boolean isLoggedIn = getSharedPreferences("MyPrefs", MODE_PRIVATE)
-//                .getBoolean("isLoggedIn", false);
-//
-//        if (!isLoggedIn) {
-//            // Nếu chưa đăng nhập, chuyển đến StartActivity
-//            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-//            startActivity(intent);
-//            finish();
-//            return; // Kết thúc onCreate nếu chưa đăng nhập
-//        }
+        // Kiểm tra Intent để xem có yêu cầu chuyển tới HomeFragment không
+        if (getIntent().getBooleanExtra("navigate_to_home", false)) {
+            navigateToHomeFragment();
+        }
 
         // Cấu hình BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -63,5 +59,15 @@ public class MainActivity extends BaseActivity {
 
             return false; // Nếu selectedFragment null, không thay đổi
         });
+    }
+
+    private void navigateToHomeFragment() {
+        // Tạo đối tượng HomeFragment
+        HomeFragment homeFragment = new HomeFragment();
+
+        // Thực hiện thay thế fragment hiện tại bằng HomeFragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, homeFragment)
+                .commit();
     }
 }
