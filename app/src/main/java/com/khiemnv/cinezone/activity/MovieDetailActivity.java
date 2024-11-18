@@ -198,11 +198,21 @@ public class MovieDetailActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Áp dụng hiệu ứng khi trở về
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void navigateToHomeFragment() {
         // Lấy MainActivity từ Intent
         Intent intent = new Intent(MovieDetailActivity.this, MainActivity.class);
         intent.putExtra("navigate_to_home", true); // Thêm dữ liệu để MainActivity biết rằng cần chuyển sang HomeFragment
         startActivity(intent);
+
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
         finish(); // Đóng MovieDetailActivity
     }
 

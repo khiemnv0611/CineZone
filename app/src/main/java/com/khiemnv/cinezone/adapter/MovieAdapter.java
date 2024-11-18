@@ -1,5 +1,6 @@
 package com.khiemnv.cinezone.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -133,6 +134,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             intent.putExtra("trailerUrl", movie.getTrailerUrl());
             intent.putExtra("actors", (Serializable) movie.getActors());
             context.startActivity(intent);
+
+            // Hiệu ứng
+            ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }
 
