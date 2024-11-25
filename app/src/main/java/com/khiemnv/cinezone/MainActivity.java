@@ -25,6 +25,9 @@ public class MainActivity extends BaseActivity {
             navigateToHomeFragment();
         }
 
+        // Nhận trạng thái admin từ Intent
+        boolean isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+
         // Cấu hình BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 

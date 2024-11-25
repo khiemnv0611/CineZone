@@ -8,22 +8,34 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DataSnapshot;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
+import com.khiemnv.cinezone.model.UserModel;
+import com.khiemnv.cinezone.viewmodel.UserViewModel;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 public class SignInFragment extends Fragment {
+    private UserViewModel viewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,19 +124,67 @@ public class SignInFragment extends Fragment {
             transaction.commit();
         });
 
-        // Tìm nút btnLogIn trong layout
-        MaterialButton btnLogIn = view.findViewById(R.id.btnLogIn);
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        // Thiết lập sự kiện khi nhấn vào nút
-        btnLogIn.setOnClickListener(v -> {
-            // Tạo intent để chuyển đến MainActivity
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
+        EditText etEmail = view.findViewById(R.id.etEmail);
+        EditText etPassword = view.findViewById(R.id.etPassword);
 
-            // Đóng SignInFragment hoặc Activity hiện tại nếu cần
-            if (getActivity() != null) {
-                getActivity().finish();
+        MaterialButton btnSignIn = view.findViewById(R.id.btnSignIn);
+
+        btnSignIn.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim().toLowerCase(); // Normalize email
+            String password = etPassword.getText().toString();
+
+            // Kiểm tra đầu vào
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Email and password are required!", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(getContext(), "Invalid email format!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Hash mật khẩu
+            String hashedPassword = viewModel.hashPassword(password);
+
+            // Đăng nhập user
+            viewModel.loginUser(email, password, task -> {
+                if (task.isSuccessful()) {
+                    if (task.getResult() != null && task.getResult().exists()) {
+                        boolean isPasswordCorrect = false;
+
+                        for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                            UserModel user = snapshot.getValue(UserModel.class);
+                            if (user != null) {
+                                boolean isPasswordValid = BCrypt.checkpw(password, user.getPassword());
+
+                                if (isPasswordValid) {
+                                    isPasswordCorrect = true;
+
+                                    Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_LONG).show();
+
+                                    // Điều hướng tới MainActivity
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    intent.putExtra("isAdmin", user.isAdmin());
+                                    startActivity(intent);
+                                    if (getActivity() != null) getActivity().finish();
+                                    return;
+                                }
+                            }
+                        }
+
+                        if (!isPasswordCorrect) {
+                            Toast.makeText(getContext(), "Incorrect password!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Email not found!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Login failed! Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         return view;

@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.jbcrypt)
     implementation(libs.androidyoutubeplayer.core)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)

@@ -1,5 +1,6 @@
 package com.khiemnv.cinezone.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -10,7 +11,10 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -19,10 +23,16 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
+import com.khiemnv.cinezone.model.UserModel;
+import com.khiemnv.cinezone.viewmodel.UserViewModel;
 
 public class SignUpFragment extends Fragment {
+    private UserViewModel viewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,31 +53,19 @@ public class SignUpFragment extends Fragment {
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                // Chuyển sang fragment_signin khi nhấn
-                Fragment fragment = new SignInFragment();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-
-                // Áp dụng hiệu ứng chuyển đổi
-                transaction.setCustomAnimations(
-                        R.anim.slide_in_left, // Animation vào của fragment mới
-                        R.anim.slide_out_right, // Animation ra của fragment hiện tại
-                        R.anim.slide_in_right, // Animation quay lại vào của fragment cũ (khi nhấn Back)
-                        R.anim.slide_out_left // Animation quay lại ra của fragment mới
-                );
-
-                transaction.replace(R.id.auth_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                // Chuyển sang SignInFragment khi nhấn
+                navigateToFragment(new SignInFragment());
             }
 
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
-                ds.setColor(ContextCompat.getColor(requireContext(), R.color.mainColor)); // Đảm bảo màu vẫn hiển thị khi nhấn
-                ds.setUnderlineText(false); // Gạch chân
-                ds.setFakeBoldText(true); // In đậm
+                ds.setColor(ContextCompat.getColor(requireContext(), R.color.mainColor));
+                ds.setUnderlineText(false);
+                ds.setFakeBoldText(true);
             }
         };
+
 
         // Xác định vị trí của từ "Sign in" hoặc "Đăng nhập" dựa trên chuỗi hiện tại
         int start, end;
@@ -91,6 +89,65 @@ public class SignUpFragment extends Fragment {
         loginText.setText(spannable);
         loginText.setMovementMethod(LinkMovementMethod.getInstance());
 
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        EditText etFirstName = view.findViewById(R.id.etFirstName);
+        EditText etLastName = view.findViewById(R.id.etLastName);
+        EditText etEmail = view.findViewById(R.id.etEmail);
+        EditText etPassword = view.findViewById(R.id.etPassword);
+        EditText etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
+        Button btnSignUp = view.findViewById(R.id.btnSignUp);
+
+        btnSignUp.setOnClickListener(v -> {
+            String firstName = etFirstName.getText().toString().trim();
+            String lastName = etLastName.getText().toString().trim();
+            String email = etEmail.getText().toString().trim().toLowerCase();
+            String password = etPassword.getText().toString();
+            String confirmPassword = etConfirmPassword.getText().toString();
+
+            // Kiểm tra đầu vào
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(getContext(), "Invalid email format!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (password.length() < 6) {
+                Toast.makeText(getContext(), "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Mã hóa mật khẩu
+            String hashedPassword = viewModel.hashPassword(password);
+
+            // Tạo user model
+            UserModel user = new UserModel(firstName, lastName, email, hashedPassword, false);
+
+            // Đăng ký user
+            viewModel.registerUser(user, task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
+                    navigateToFragment(new SignInFragment());
+                } else {
+                    Exception exception = task.getException();
+                    if (exception != null) {
+                        Toast.makeText(getContext(), "Error: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Registration failed for unknown reasons!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        });
+
         return view;
     }
 
@@ -111,6 +168,22 @@ public class SignUpFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void navigateToFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+        // Áp dụng hiệu ứng chuyển đổi
+        transaction.setCustomAnimations(
+                R.anim.slide_in_left,  // Animation vào của fragment mới
+                R.anim.slide_out_right,  // Animation ra của fragment hiện tại
+                R.anim.slide_in_right,  // Animation quay lại vào của fragment cũ
+                R.anim.slide_out_left  // Animation quay lại ra của fragment mới
+        );
+
+        transaction.replace(R.id.auth_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
 

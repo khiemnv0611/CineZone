@@ -1,33 +1,35 @@
 package com.khiemnv.cinezone.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UserModel {
     private String userId;
-    private String username;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
     private boolean isAdmin;
     private long createdAt;
-    private long updatedAt;
     private List<String> favoriteMovieIds;
 
     // Constructor
-    public UserModel() {}
+    public UserModel() {
+    }
 
-    public UserModel(String userId, String username, String email, String password, boolean isAdmin, long createdAt, long updatedAt, List<String> favoriteMovieIds) {
-        this.userId = userId;
-        this.username = username;
+    public UserModel(String firstName, String lastName, String email, String password, boolean isAdmin) {
+        this.userId = UUID.randomUUID().toString();
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.favoriteMovieIds = favoriteMovieIds;
+        this.createdAt = System.currentTimeMillis();
+        this.favoriteMovieIds = new ArrayList<>();
     }
 
     // Getters and Setters
-
     public String getUserId() {
         return userId;
     }
@@ -36,12 +38,20 @@ public class UserModel {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -74,14 +84,6 @@ public class UserModel {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public List<String> getFavoriteMovieIds() {
