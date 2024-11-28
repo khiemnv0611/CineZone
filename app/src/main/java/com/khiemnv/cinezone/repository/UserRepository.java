@@ -1,6 +1,7 @@
 package com.khiemnv.cinezone.repository;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -11,6 +12,10 @@ public class UserRepository {
 
     public UserRepository() {
         userRef = FirebaseDatabase.getInstance().getReference("Users");
+    }
+
+    public Task<DataSnapshot> getUserByEmail(String email) {
+        return userRef.orderByChild("email").equalTo(email).get();
     }
 
     public void registerUser(UserModel user, OnCompleteListener<Void> listener) {

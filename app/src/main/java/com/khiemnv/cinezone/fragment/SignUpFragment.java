@@ -105,8 +105,7 @@ public class SignUpFragment extends Fragment {
             String password = etPassword.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
 
-            // Kiểm tra đầu vào
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            if (firstName.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(getContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -126,24 +125,24 @@ public class SignUpFragment extends Fragment {
                 return;
             }
 
-            // Mã hóa mật khẩu
-            String hashedPassword = viewModel.hashPassword(password);
-
-            // Tạo user model
-            UserModel user = new UserModel(firstName, lastName, email, hashedPassword, false);
-
-            // Đăng ký user
-            viewModel.registerUser(user, task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
-                    navigateToFragment(new SignInFragment());
-                } else {
-                    Exception exception = task.getException();
-                    if (exception != null) {
-                        Toast.makeText(getContext(), "Error: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+            viewModel.checkEmailExists(email, task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    if (task.getResult().exists()) {
+                        Toast.makeText(getContext(), "Email already exists!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "Registration failed for unknown reasons!", Toast.LENGTH_SHORT).show();
+                        String hashedPassword = viewModel.hashPassword(password);
+                        UserModel user = new UserModel(firstName, lastName, email, hashedPassword, false, null);
+                        viewModel.registerUser(user, registerTask -> {
+                            if (registerTask.isSuccessful()) {
+                                Toast.makeText(getContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
+                                navigateToFragment(new SignInFragment());
+                            } else {
+                                Toast.makeText(getContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
+                } else {
+                    Toast.makeText(getContext(), "Error checking email!", Toast.LENGTH_SHORT).show();
                 }
             });
         });

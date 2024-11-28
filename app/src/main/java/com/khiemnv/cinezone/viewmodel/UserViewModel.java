@@ -10,22 +10,26 @@ import com.khiemnv.cinezone.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class UserViewModel extends ViewModel {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     public UserViewModel() {
-        repository = new UserRepository();
+        userRepository = new UserRepository();
     }
 
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+    public void checkEmailExists(String email, OnCompleteListener<DataSnapshot> listener) {
+        userRepository.getUserByEmail(email).addOnCompleteListener(listener);
+    }
+
     public void registerUser(UserModel user, OnCompleteListener<Void> listener) {
-        repository.registerUser(user, listener);
+        userRepository.registerUser(user, listener);
     }
 
     public void loginUser(String email, String password, OnCompleteListener<DataSnapshot> listener) {
-        repository.loginUser(email, password, listener);
+        userRepository.loginUser(email, password, listener);
     }
 }
 
