@@ -1,6 +1,8 @@
 package com.khiemnv.cinezone.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -163,13 +165,22 @@ public class SignInFragment extends Fragment {
                                 if (isPasswordValid) {
                                     isPasswordCorrect = true;
 
+                                    // Lưu trạng thái đăng nhập vào SharedPreferences
+                                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
+                                    sharedPreferences.edit()
+                                            .putBoolean("isLoggedIn", true)  // Trạng thái đăng nhập
+                                            .putString("fullName", user.getFirstName() + " " + user.getLastName())
+                                            .putString("email", user.getEmail())
+                                            .putString("avatarUrl", user.getAvatarUrl())
+                                            .putBoolean("isAdmin", user.isAdmin()) // Lưu trạng thái admin nếu cần
+                                            .apply();
+
                                     Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_LONG).show();
 
                                     // Điều hướng tới MainActivity
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    intent.putExtra("isAdmin", user.isAdmin());
                                     startActivity(intent);
-                                    if (getActivity() != null) getActivity().finish();
+                                    getActivity().finish();
                                     return;
                                 }
                             }

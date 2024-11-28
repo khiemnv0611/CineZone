@@ -45,17 +45,16 @@
         android:id="@+id/btnStart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
+        android:paddingVertical="14dp"
         android:layout_marginBottom="20dp"
         android:text="@string/start"
         android:textAllCaps="true"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:backgroundTint="@color/mainColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.95"
-        app:cornerRadius="2dp"/>
+        app:cornerRadius="8dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

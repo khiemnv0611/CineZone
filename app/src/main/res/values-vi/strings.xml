@@ -27,6 +27,7 @@
     <string name="send_verification_code">Gửi mã xác minh</string>
     <string name="sign_in">Đăng nhập</string>
     <string name="sign_up">Đăng ký</string>
+    <string name="sign_out">Đăng xuất</string>
     <string name="create_acc">Tạo tài khoản mới</string>
     <string name="create_info">Nhập thông tin cá nhân của bạn để tạo tài khoản</string>
     <string name="welcome_back">Chào mừng trở lại!</string>
@@ -54,4 +55,6 @@
     <string name="country">Quốc gia :</string>
     <string name="directors">Đạo diễn :</string>
     <string name="production_companies">Hãng sản xuất :</string>
+    <string name="back_press_exit_message">Nhấn lần nữa để thoát</string>
+    <string name="ad_manage">Quản lý (Quản trị viên)</string>
 </resources>
