@@ -1,6 +1,8 @@
 package com.khiemnv.cinezone.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -25,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.model.UserModel;
@@ -105,7 +108,7 @@ public class SignUpFragment extends Fragment {
             String password = etPassword.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
 
-            if (firstName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(getContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -125,29 +128,43 @@ public class SignUpFragment extends Fragment {
                 return;
             }
 
-            viewModel.checkEmailExists(email, task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    if (task.getResult().exists()) {
-                        Toast.makeText(getContext(), "Email already exists!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        String hashedPassword = viewModel.hashPassword(password);
-                        UserModel user = new UserModel(firstName, lastName, email, hashedPassword, false, null);
-                        viewModel.registerUser(user, registerTask -> {
-                            if (registerTask.isSuccessful()) {
-                                Toast.makeText(getContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
-                                navigateToFragment(new SignInFragment());
-                            } else {
-                                Toast.makeText(getContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+            viewModel.registerUser(email, password, task -> {
+                if (task.isSuccessful()) {
+                    FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                            .addOnCompleteListener(tokenTask -> {
+                                if (tokenTask.isSuccessful()) {
+                                    String token = tokenTask.getResult().getToken();
+                                    saveAuthToken(token, email);
+
+                                    UserModel user = new UserModel(firstName, lastName, email, password, false, null);
+                                    viewModel.addUserToDatabase(user, dbTask -> {
+                                        if (dbTask.isSuccessful()) {
+                                            Toast.makeText(getContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
+                                            navigateToFragment(new SignInFragment());
+                                        } else {
+                                            Toast.makeText(getContext(), "Error saving user data!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getContext(), "Error fetching token!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 } else {
-                    Toast.makeText(getContext(), "Error checking email!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
 
         return view;
+    }
+
+    private void saveAuthToken(String token, String email) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
+        sharedPreferences.edit()
+                .putString("auth_token", token)
+                .putBoolean("isLoggedIn", true)
+                .putString("email", email)
+                .apply();
     }
 
     @Override

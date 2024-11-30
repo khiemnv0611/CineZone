@@ -31,14 +31,13 @@ public class MainActivity extends BaseActivity {
 
         // Kiểm tra trạng thái đăng nhập từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("user_session", Context.MODE_PRIVATE);
-        String email = sharedPreferences.getString("email", null);
+        String token = sharedPreferences.getString("auth_token", null);
 
-        // Nếu chưa đăng nhập, chuyển sang AuthActivity
-        if (email == null) {
+        if (token == null) {
+            // Chuyển đến AuthActivity nếu không có token
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
             finish();
-            return;
         } else {
             // Đã đăng nhập, hiển thị MainActivity
             setContentView(R.layout.activity_main);
@@ -95,7 +94,7 @@ public class MainActivity extends BaseActivity {
                 // Xử lý khi nhấn Back
                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
                     if (backToast != null) backToast.cancel();
-                    finishAffinity();  // Đóng tất cả các Activity và thoát ứng dụng
+                    moveTaskToBack(true);
                 } else {
                     backToast = Toast.makeText(MainActivity.this, R.string.back_press_exit_message, Toast.LENGTH_SHORT);
                     backToast.show();

@@ -10,15 +10,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.activity.AuthActivity;
 import com.khiemnv.cinezone.activity.StartActivity;
+import com.khiemnv.cinezone.model.UserModel;
 
 public class ProfileFragment extends Fragment {
 
@@ -37,25 +45,58 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = requireActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
 
         // Lấy thông tin người dùng từ SharedPreferences
-        String fullName = sharedPreferences.getString("fullName", "N/A");
         String email = sharedPreferences.getString("email", "N/A");
-        String avatarUrl = sharedPreferences.getString("avatarUrl", "");
 
-        tvFullName.setText(fullName);
-        tvEmail.setText(email);
+        // Kiểm tra nếu email không phải "N/A", nghĩa là người dùng đã đăng nhập
+        if (!email.equals("N/A")) {
+            // Lấy thông tin người dùng từ Firebase
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference userRef = database.getReference("Users");
 
-        if (!avatarUrl.isEmpty()) {
-            Glide.with(this).load(avatarUrl).into(ivAvatar);
+            userRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Giả sử bạn lưu thông tin người dùng trong từng node với key là userId
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                            UserModel user = userSnapshot.getValue(UserModel.class);
+
+                            // Hiển thị thông tin người dùng
+                            String fullName = user.getFirstName() + " " + user.getLastName();
+                            tvFullName.setText(fullName);
+                            tvEmail.setText(user.getEmail());
+
+                            if (!user.getAvatarUrl().isEmpty()) {
+                                Glide.with(ProfileFragment.this).load(user.getAvatarUrl()).into(ivAvatar);
+                            }
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "User data not found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Failed to load user data", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // Người dùng chưa đăng nhập, bạn có thể điều hướng họ đến màn hình đăng nhập
+            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
         }
 
-        // Xử lý đăng xuất
+        // Xử lý sự kiện đăng xuất
         btnSignOut.setOnClickListener(v -> {
-            sharedPreferences.edit().clear().apply();
+            FirebaseAuth.getInstance().signOut();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+
             Intent intent = new Intent(getActivity(), AuthActivity.class);
             startActivity(intent);
-            requireActivity().finish();
+            getActivity().finish();
         });
-        
+
         return view;
     }
 }

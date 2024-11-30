@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
@@ -134,10 +135,9 @@ public class SignInFragment extends Fragment {
         MaterialButton btnSignIn = view.findViewById(R.id.btnSignIn);
 
         btnSignIn.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim().toLowerCase(); // Normalize email
+            String email = etEmail.getText().toString().trim().toLowerCase();
             String password = etPassword.getText().toString();
 
-            // Kiểm tra đầu vào
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(getContext(), "Email and password are required!", Toast.LENGTH_SHORT).show();
                 return;
@@ -148,57 +148,38 @@ public class SignInFragment extends Fragment {
                 return;
             }
 
-            // Hash mật khẩu
-            String hashedPassword = viewModel.hashPassword(password);
-
-            // Đăng nhập user
             viewModel.loginUser(email, password, task -> {
                 if (task.isSuccessful()) {
-                    if (task.getResult() != null && task.getResult().exists()) {
-                        boolean isPasswordCorrect = false;
-
-                        for (DataSnapshot snapshot : task.getResult().getChildren()) {
-                            UserModel user = snapshot.getValue(UserModel.class);
-                            if (user != null) {
-                                boolean isPasswordValid = BCrypt.checkpw(password, user.getPassword());
-
-                                if (isPasswordValid) {
-                                    isPasswordCorrect = true;
-
-                                    // Lưu trạng thái đăng nhập vào SharedPreferences
-                                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
-                                    sharedPreferences.edit()
-                                            .putBoolean("isLoggedIn", true)  // Trạng thái đăng nhập
-                                            .putString("fullName", user.getFirstName() + " " + user.getLastName())
-                                            .putString("email", user.getEmail())
-                                            .putString("avatarUrl", user.getAvatarUrl())
-                                            .putBoolean("isAdmin", user.isAdmin()) // Lưu trạng thái admin nếu cần
-                                            .apply();
-
+                    FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                            .addOnCompleteListener(tokenTask -> {
+                                if (tokenTask.isSuccessful()) {
+                                    String token = tokenTask.getResult().getToken();
+                                    saveAuthToken(token, email);
                                     Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_LONG).show();
 
-                                    // Điều hướng tới MainActivity
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
-                                    return;
+                                } else {
+                                    Toast.makeText(getContext(), "Error fetching token!", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                        }
-
-                        if (!isPasswordCorrect) {
-                            Toast.makeText(getContext(), "Incorrect password!", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Email not found!", Toast.LENGTH_SHORT).show();
-                    }
+                            });
                 } else {
-                    Toast.makeText(getContext(), "Login failed! Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
 
         return view;
+    }
+
+    private void saveAuthToken(String token, String email) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
+        sharedPreferences.edit()
+                .putString("auth_token", token)
+                .putBoolean("isLoggedIn", true)
+                .putString("email", email)
+                .apply();
     }
 }
 
