@@ -13,10 +13,14 @@
     <string name="notifications">Notifications</string>
     <string name="intro">Explore a diverse library of movies and TV shows, indulge in millions of options</string>
     <string name="sub_intro">Flexible movie viewing experience, store your favorites and enjoy them anytime</string>
+    <string name="avt">Avatar</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="full_name">Full Name</string>
+    <string name="display_name">Name displayed on profile</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="enter_url_avt">Your URL avatar</string>
     <string name="enter_first_name">Your first name</string>
     <string name="enter_last_name">Your last name</string>
     <string name="confirm_password">Confirm Password</string>
@@ -57,4 +61,6 @@
     <string name="production_companies">Production Companies :</string>
     <string name="back_press_exit_message">Press again to exit</string>
     <string name="ad_manage">Manage (Admin)</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
 </resources>

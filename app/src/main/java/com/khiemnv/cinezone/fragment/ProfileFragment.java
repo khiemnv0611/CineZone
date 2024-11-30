@@ -25,11 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.activity.AuthActivity;
-import com.khiemnv.cinezone.activity.StartActivity;
+import com.khiemnv.cinezone.activity.ProfileDetailActivity;
 import com.khiemnv.cinezone.model.UserModel;
 
 public class ProfileFragment extends Fragment {
-
     private SharedPreferences sharedPreferences;
 
     @Nullable
@@ -84,6 +83,18 @@ public class ProfileFragment extends Fragment {
             // Người dùng chưa đăng nhập, bạn có thể điều hướng họ đến màn hình đăng nhập
             Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
         }
+
+        ImageView icEdit = view.findViewById(R.id.icEdit);
+        icEdit.setOnClickListener(v -> {
+            try {
+                Intent intent = new Intent(getActivity(), ProfileDetailActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         // Xử lý sự kiện đăng xuất
         btnSignOut.setOnClickListener(v -> {

@@ -16,32 +16,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Avatar -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
             android:clipToOutline="true"
+            android:layout_gravity="center"
             app:shapeAppearanceOverlay="@style/CircularShape"
             app:strokeColor="@color/textColor"
-            app:strokeWidth="2dp"
-            android:layout_gravity="center" />
+            app:strokeWidth="2dp" />
 
         <!-- Icon Edit -->
         <ImageView
             android:id="@+id/icEdit"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:padding="4dp"
+            android:padding="6dp"
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:src="@drawable/ic_edit"
             android:background="@drawable/circular_background" />
-
     </FrameLayout>
-
 
     <!-- User's Full Name -->
     <TextView

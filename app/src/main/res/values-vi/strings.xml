@@ -13,10 +13,14 @@
     <string name="notifications">Thông báo</string>
     <string name="intro">Khám phá kho tàng phim ảnh và chương trình truyền hình đa dạng, thỏa sức đắm chìm trong hàng triệu lựa chọn</string>
     <string name="sub_intro">Trải nghiệm xem phim linh hoạt, lưu trữ yêu thích và thưởng thức bất cứ lúc nào</string>
+    <string name="avt">Ảnh đại diện</string>
     <string name="first_name">Tên</string>
     <string name="last_name">Họ</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="display_name">Tên được hiển thị trên hồ sơ</string>
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
+    <string name="enter_url_avt">URL ảnh đại diện của bạn</string>
     <string name="enter_first_name">Tên của bạn</string>
     <string name="enter_last_name">Họ của bạn</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
@@ -57,4 +61,6 @@
     <string name="production_companies">Hãng sản xuất :</string>
     <string name="back_press_exit_message">Nhấn lần nữa để thoát</string>
     <string name="ad_manage">Quản lý (Quản trị viên)</string>
+    <string name="cancel">Hủy</string>
+    <string name="update">Cập nhật</string>
 </resources>

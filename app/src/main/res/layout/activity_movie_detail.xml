@@ -59,12 +59,12 @@
 
                 <LinearLayout
                     android:id="@+id/trailer_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_button_trailer"
                     android:paddingVertical="10dp"
-                    android:paddingHorizontal="16dp"
+                    android:gravity="center"
                     android:layout_marginEnd="8dp">
 
                     <ImageView
@@ -89,11 +89,11 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_button_watch"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
+                    android:gravity="center"
                     android:paddingVertical="10dp">
 
                     <ImageView
