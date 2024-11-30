@@ -75,8 +75,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/enter_email"
             android:textColorHint="@color/grey"
-            android:textColor="@color/black"
-            android:text="test@gmail.com" />
+            android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Password Label -->

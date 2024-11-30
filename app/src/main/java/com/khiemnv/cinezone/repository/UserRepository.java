@@ -15,31 +15,26 @@ public class UserRepository {
     private final DatabaseReference userRef;
 
     public UserRepository() {
-        firebaseAuth = FirebaseAuth.getInstance(); // Firebase Authentication
+        firebaseAuth = FirebaseAuth.getInstance();
         userRef = FirebaseDatabase.getInstance().getReference("Users");
     }
 
-    // Đăng ký người dùng qua Firebase Authentication
     public void registerUser(String email, String password, OnCompleteListener<AuthResult> listener) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(listener);
     }
 
-    // Đăng nhập người dùng qua Firebase Authentication
     public void loginUser(String email, String password, OnCompleteListener<AuthResult> listener) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(listener);
     }
 
-    // Đăng xuất người dùng
     public void logout() {
         firebaseAuth.signOut();
     }
 
-    // Kiểm tra người dùng hiện tại
     public FirebaseUser getCurrentUser() {
         return firebaseAuth.getCurrentUser();
     }
 
-    // Thêm người dùng vào Realtime Database (không lưu mật khẩu)
     public void addUserToDatabase(UserModel user, OnCompleteListener<Void> listener) {
         userRef.child(user.getUserId()).setValue(user).addOnCompleteListener(listener);
     }

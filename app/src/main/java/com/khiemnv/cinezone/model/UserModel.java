@@ -11,7 +11,6 @@ public class UserModel {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private boolean isAdmin;
     private String avatarUrl;
     private long createdAt;
@@ -21,12 +20,11 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(String firstName, String lastName, String email, String password, boolean isAdmin, String avatarUrl) {
-        this.userId = UUID.randomUUID().toString();
+    public UserModel(String firstName, String lastName, String email, boolean isAdmin, String avatarUrl) {
+        this.userId = "";
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
         this.isAdmin = isAdmin;
         this.avatarUrl = (avatarUrl == null || avatarUrl.isEmpty()) ? getRandomAvatar() : avatarUrl;
         this.createdAt = System.currentTimeMillis();
@@ -76,14 +74,6 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isAdmin() {

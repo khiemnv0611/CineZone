@@ -25,7 +25,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.model.UserModel;
@@ -150,20 +155,43 @@ public class SignInFragment extends Fragment {
 
             viewModel.loginUser(email, password, task -> {
                 if (task.isSuccessful()) {
-                    FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                            .addOnCompleteListener(tokenTask -> {
-                                if (tokenTask.isSuccessful()) {
-                                    String token = tokenTask.getResult().getToken();
-                                    saveAuthToken(token, email);
-                                    Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_LONG).show();
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (currentUser != null && currentUser.isEmailVerified()) {
+                        // Lấy token sau khi đăng nhập thành công
+                        currentUser.getIdToken(true).addOnCompleteListener(tokenTask -> {
+                            if (tokenTask.isSuccessful()) {
+                                String token = tokenTask.getResult().getToken();
+                                // Lưu token vào SharedPreferences
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("auth_token", token);
+                                editor.putString("user_email", currentUser.getEmail());
+                                editor.apply();
 
-                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(intent);
-                                    getActivity().finish();
-                                } else {
-                                    Toast.makeText(getContext(), "Error fetching token!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                // Kiểm tra người dùng trong Realtime Database
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users");
+                                userRef.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            proceedToMainActivity();  // Người dùng đã tồn tại
+                                        } else {
+                                            Toast.makeText(getContext(), "User data missing. Please contact support.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(getContext(), "Error checking user data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getContext(), "Error fetching token!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -175,11 +203,17 @@ public class SignInFragment extends Fragment {
 
     private void saveAuthToken(String token, String email) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
-        sharedPreferences.edit()
-                .putString("auth_token", token)
-                .putBoolean("isLoggedIn", true)
-                .putString("email", email)
-                .apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("auth_token", token);
+        editor.putString("user_email", email);
+        editor.apply();
+    }
+
+    private void proceedToMainActivity() {
+        Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 }
 

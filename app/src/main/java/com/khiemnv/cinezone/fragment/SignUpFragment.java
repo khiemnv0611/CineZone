@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.model.UserModel;
@@ -130,25 +131,28 @@ public class SignUpFragment extends Fragment {
 
             viewModel.registerUser(email, password, task -> {
                 if (task.isSuccessful()) {
-                    FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                            .addOnCompleteListener(tokenTask -> {
-                                if (tokenTask.isSuccessful()) {
-                                    String token = tokenTask.getResult().getToken();
-                                    saveAuthToken(token, email);
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (firebaseUser != null) {
+                        UserModel user = new UserModel(firstName, lastName, email, false, "");
+                        user.setUserId(firebaseUser.getUid()); // Gán UID Firebase làm userId
 
-                                    UserModel user = new UserModel(firstName, lastName, email, password, false, null);
-                                    viewModel.addUserToDatabase(user, dbTask -> {
-                                        if (dbTask.isSuccessful()) {
-                                            Toast.makeText(getContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
-                                            navigateToFragment(new SignInFragment());
-                                        } else {
-                                            Toast.makeText(getContext(), "Error saving user data!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(getContext(), "Error fetching token!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        viewModel.addUserToDatabase(user, dbTask -> {
+                            if (dbTask.isSuccessful()) {
+                                firebaseUser.sendEmailVerification().addOnCompleteListener(emailTask -> {
+                                    if (emailTask.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Registration successful! Verify your email.", Toast.LENGTH_SHORT).show();
+                                        navigateToFragment(new SignInFragment());
+                                    } else {
+                                        Toast.makeText(getContext(), "Error sending verification email.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getContext(), "Failed to save user data!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getContext(), "User registration failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -160,11 +164,10 @@ public class SignUpFragment extends Fragment {
 
     private void saveAuthToken(String token, String email) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
-        sharedPreferences.edit()
-                .putString("auth_token", token)
-                .putBoolean("isLoggedIn", true)
-                .putString("email", email)
-                .apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("auth_token", token);
+        editor.putString("user_email", email);
+        editor.apply();
     }
 
     @Override

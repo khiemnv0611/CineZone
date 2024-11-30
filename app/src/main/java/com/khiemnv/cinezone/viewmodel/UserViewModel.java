@@ -38,7 +38,7 @@ public class UserViewModel extends ViewModel {
         return userRepository.getCurrentUser();
     }
 
-    // Thêm người dùng vào Realtime Database (không lưu mật khẩu)
+    // Thêm người dùng vào Realtime Database
     public void addUserToDatabase(UserModel user, OnCompleteListener<Void> listener) {
         userRepository.addUserToDatabase(user, listener);
     }

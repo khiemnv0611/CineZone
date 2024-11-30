@@ -34,12 +34,12 @@ public class MainActivity extends BaseActivity {
         String token = sharedPreferences.getString("auth_token", null);
 
         if (token == null) {
-            // Chuyển đến AuthActivity nếu không có token
+            // Nếu không có token, chuyển đến AuthActivity
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
             finish();
         } else {
-            // Đã đăng nhập, hiển thị MainActivity
+            // Nếu có token, hiển thị MainActivity
             setContentView(R.layout.activity_main);
 
             // Kiểm tra Intent để xem có yêu cầu chuyển tới HomeFragment không

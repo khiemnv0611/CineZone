@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = requireActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
 
         // Lấy thông tin người dùng từ SharedPreferences
-        String email = sharedPreferences.getString("email", "N/A");
+        String email = sharedPreferences.getString("user_email", "N/A");
 
         // Kiểm tra nếu email không phải "N/A", nghĩa là người dùng đã đăng nhập
         if (!email.equals("N/A")) {
@@ -89,7 +89,8 @@ public class ProfileFragment extends Fragment {
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
+            editor.remove("auth_token");
+            editor.remove("user_email");
             editor.apply();
 
             Intent intent = new Intent(getActivity(), AuthActivity.class);
