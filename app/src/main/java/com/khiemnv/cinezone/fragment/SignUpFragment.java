@@ -162,14 +162,6 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
-    private void saveAuthToken(String token, String email) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("auth_token", token);
-        editor.putString("user_email", email);
-        editor.apply();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
