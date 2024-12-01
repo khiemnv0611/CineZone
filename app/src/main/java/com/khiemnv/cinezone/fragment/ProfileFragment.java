@@ -1,9 +1,12 @@
 package com.khiemnv.cinezone.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import com.khiemnv.cinezone.model.UserModel;
 
 public class ProfileFragment extends Fragment {
     private SharedPreferences sharedPreferences;
+    private static final int REQUEST_CODE_EDIT = 101;
 
     @Nullable
     @Override
@@ -40,27 +44,26 @@ public class ProfileFragment extends Fragment {
         TextView tvFullName = view.findViewById(R.id.tvFullName);
         TextView tvEmail = view.findViewById(R.id.tvEmail);
         Button btnSignOut = view.findViewById(R.id.btnSignOut);
+        ImageView icEdit = view.findViewById(R.id.icEdit);
 
         sharedPreferences = requireActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
 
-        // Lấy thông tin người dùng từ SharedPreferences
         String email = sharedPreferences.getString("user_email", "N/A");
+        if (email == null || email.isEmpty() || email.equals("N/A")) {
+            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return view;
+        }
 
-        // Kiểm tra nếu email không phải "N/A", nghĩa là người dùng đã đăng nhập
-        if (!email.equals("N/A")) {
-            // Lấy thông tin người dùng từ Firebase
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference userRef = database.getReference("Users");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = database.getReference("Users");
 
-            userRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Giả sử bạn lưu thông tin người dùng trong từng node với key là userId
-                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                            UserModel user = userSnapshot.getValue(UserModel.class);
-
-                            // Hiển thị thông tin người dùng
+        userRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        UserModel user = userSnapshot.getValue(UserModel.class);
+                        if (user != null) {
                             String fullName = user.getFirstName() + " " + user.getLastName();
                             tvFullName.setText(fullName);
                             tvEmail.setText(user.getEmail());
@@ -68,35 +71,26 @@ public class ProfileFragment extends Fragment {
                             if (!user.getAvatarUrl().isEmpty()) {
                                 Glide.with(ProfileFragment.this).load(user.getAvatarUrl()).into(ivAvatar);
                             }
+                            break;
                         }
-                    } else {
-                        Toast.makeText(getContext(), "User data not found", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getContext(), "User data not found", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getContext(), "Failed to load user data", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            // Người dùng chưa đăng nhập, bạn có thể điều hướng họ đến màn hình đăng nhập
-            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
-        }
-
-        ImageView icEdit = view.findViewById(R.id.icEdit);
-        icEdit.setOnClickListener(v -> {
-            try {
-                Intent intent = new Intent(getActivity(), ProfileDetailActivity.class);
-                startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ProfileFragment", "Firebase error: " + error.getMessage());
+                Toast.makeText(getContext(), "Failed to load user data", Toast.LENGTH_SHORT).show();
             }
         });
 
+        icEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ProfileDetailActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_EDIT);
+        });
 
-        // Xử lý sự kiện đăng xuất
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -110,5 +104,18 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK && data != null) {
+            String fullName = data.getStringExtra("fullName");
+            if (fullName != null && !fullName.isEmpty()) {
+                TextView tvFullName = getView().findViewById(R.id.tvFullName);
+                tvFullName.setText(fullName);
+            }
+        }
     }
 }
