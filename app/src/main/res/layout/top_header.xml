@@ -45,9 +45,10 @@
         android:layout_gravity="center_vertical"
         android:text=""
         android:contentDescription="@string/change_language"
+        android:backgroundTint="@color/backgroundColor"
         android:foreground="@drawable/ic_vietnam_flag"
         app:icon="@drawable/ic_vietnam_flag"
         app:iconGravity="textStart"
-        app:iconPadding="0dp"/>
+        app:iconPadding="0dp" />
 
 </LinearLayout>

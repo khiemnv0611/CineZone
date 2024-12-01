@@ -4,11 +4,13 @@
     <color name="textColor">#FFFFFF</color>
     <color name="textColorDark">#000000</color>
     <color name="changeTheme">#FFFF00</color>
+    <color name="mainTextTheme">#FFFFFF</color>
 
     <style name="Base.Theme.CineZone" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/backgroundColor</item>
+        <item name="colorPrimary">@color/mainTextTheme</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textColorDark</item>
         <item name="colorAccent">@color/changeTheme</item>
+        <item name="background">@color/backgroundColor</item>
     </style>
 </resources>

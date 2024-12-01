@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -29,16 +30,19 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("MainActivity", "onStart: Checking user session");
         // Kiểm tra trạng thái đăng nhập từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("user_session", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("auth_token", null);
 
         if (token == null) {
+            Log.d("MainActivity", "No token found. Redirecting to AuthActivity.");
             // Nếu không có token, chuyển đến AuthActivity
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
             finish();
         } else {
+            Log.d("MainActivity", "Token found: " + token);
             // Nếu có token, hiển thị MainActivity
             setContentView(R.layout.activity_main);
 

@@ -25,26 +25,6 @@ public class StartActivity extends BaseActivity {
         // Khóa màn hình dọc
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-//        showLoading();
-//
-//        new Handler().postDelayed(() -> {
-//            hideLoading();
-//            setContentLayout(R.layout.activity_start);
-//
-//            // Thiết lập top header và nút Start
-//            findViewById(R.id.topHeaderLayout);
-//
-//            MaterialButton btnStart = findViewById(R.id.btnStart);
-//            btnStart.setOnClickListener(v -> {
-//                // Điều hướng tới AuthActivity
-//                Intent intent = new Intent(StartActivity.this, AuthActivity.class);
-//                startActivity(intent);
-//
-//                // Hiệu ứng chuyển màn hình
-//                overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
-//            });
-//        }, 2000);
-
         setContentView(R.layout.activity_start);
 
         // Thiết lập top header

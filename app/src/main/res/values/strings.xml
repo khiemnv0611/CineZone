@@ -1,4 +1,5 @@
 <resources>
+    <string name="default_web_client_id">430409761504-ubtua0qa7mmpk5v0svoifr5btcgov465.apps.googleusercontent.com</string>
     <string name="app_name">CineZone</string>
     <string name="logo">Logo</string>
     <string name="close">Close</string>
@@ -30,6 +31,7 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="send_verification_code">Send verification code</string>
     <string name="sign_in">Sign in</string>
+    <string name="sign_in_gg">Sign in with Google</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
     <string name="create_acc">Create new account</string>

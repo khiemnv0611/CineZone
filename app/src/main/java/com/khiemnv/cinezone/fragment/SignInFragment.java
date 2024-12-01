@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +24,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.model.UserModel;
@@ -43,6 +52,10 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class SignInFragment extends Fragment {
     private UserViewModel viewModel;
+
+    private static final int RC_SIGN_IN = 123;
+    private GoogleSignInClient googleSignInClient;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,38 +170,7 @@ public class SignInFragment extends Fragment {
                 if (task.isSuccessful()) {
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     if (currentUser != null && currentUser.isEmailVerified()) {
-                        // Lấy token sau khi đăng nhập thành công
-                        currentUser.getIdToken(true).addOnCompleteListener(tokenTask -> {
-                            if (tokenTask.isSuccessful()) {
-                                String token = tokenTask.getResult().getToken();
-                                // Lưu token vào SharedPreferences
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("auth_token", token);
-                                editor.putString("user_email", currentUser.getEmail());
-                                editor.apply();
-
-                                // Kiểm tra người dùng trong Realtime Database
-                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users");
-                                userRef.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            proceedToMainActivity();  // Người dùng đã tồn tại
-                                        } else {
-                                            Toast.makeText(getContext(), "User data missing. Please contact support.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Toast.makeText(getContext(), "Error checking user data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(getContext(), "Error fetching token!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        handleUserLogin(currentUser, false);  // Đăng nhập bằng email, không tạo mới người dùng
                     } else {
                         Toast.makeText(getContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
                     }
@@ -198,7 +180,122 @@ public class SignInFragment extends Fragment {
             });
         });
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // Cấu hình Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
+
+        LinearLayout btnGoogleSignIn = view.findViewById(R.id.btnGoogleSignIn);
+        btnGoogleSignIn.setOnClickListener(v -> signInWithGoogle());
+
         return view;
+    }
+
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            try {
+                // Nhận tài khoản Google
+                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                }
+            } catch (ApiException e) {
+                Toast.makeText(getContext(), "Google Sign-In failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("GoogleSignIn", "ApiException: ", e);
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        Log.d("GoogleSignIn", "firebaseAuthWithGoogle: " + account.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Log.d("GoogleSignIn", "User logged in: " + currentUser.getDisplayName());
+                    handleUserLogin(currentUser, true);  // Đăng nhập qua Google, tạo mới người dùng nếu chưa có
+                }
+            } else {
+                Log.e("GoogleSignIn", "Authentication failed: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    private void handleUserLogin(FirebaseUser currentUser, boolean isGoogleLogin) {
+        // Lấy token và lưu vào SharedPreferences
+        currentUser.getIdToken(true).addOnCompleteListener(tokenTask -> {
+            if (tokenTask.isSuccessful()) {
+                String token = tokenTask.getResult().getToken();
+                Log.d("Login", "Token: " + token);
+
+                // Lưu token vào SharedPreferences
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_session", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("auth_token", token);
+                editor.putString("user_email", currentUser.getEmail());
+                editor.apply();
+
+                // Kiểm tra người dùng trong Realtime Database
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users");
+                userRef.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            proceedToMainActivity();  // Người dùng đã tồn tại, chuyển tới MainActivity
+                        } else {
+                            if (isGoogleLogin) {
+                                // Nếu là đăng nhập qua Google, tạo mới người dùng trong Realtime Database
+                                createNewUser(currentUser);
+                            } else {
+                                // Nếu là đăng nhập qua email/password và người dùng không tồn tại
+                                Toast.makeText(getContext(), "User data missing. Please contact support.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("Login", "Database error: " + error.getMessage());
+                    }
+                });
+            } else {
+                Log.e("Login", "Error fetching token: " + tokenTask.getException().getMessage());
+            }
+        });
+    }
+
+    private void createNewUser(FirebaseUser currentUser) {
+        UserModel newUser = new UserModel(
+                currentUser.getDisplayName().split(" ")[0],  // Tên đầu
+                currentUser.getDisplayName().split(" ").length > 1 ? currentUser.getDisplayName().split(" ")[1] : "",
+                currentUser.getEmail(),
+                false,
+                currentUser.getPhotoUrl() != null ? currentUser.getPhotoUrl().toString() : ""
+        );
+        newUser.setUserId(currentUser.getUid());
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users");
+        userRef.child(currentUser.getUid()).setValue(newUser).addOnCompleteListener(dbTask -> {
+            if (dbTask.isSuccessful()) {
+                proceedToMainActivity();  // Người dùng mới đã được tạo, chuyển tới MainActivity
+            } else {
+                Log.e("Login", "Error saving user data: " + dbTask.getException().getMessage());
+            }
+        });
     }
 
     private void proceedToMainActivity() {
