@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.khiemnv.cinezone.model.Actor;
+import com.khiemnv.cinezone.model.EpisodeModel;
 import com.khiemnv.cinezone.model.MovieModel;
 
 import java.text.ParseException;
@@ -22,79 +23,35 @@ import java.util.Date;
 import java.util.List;
 
 public class MovieRepository {
-    private DatabaseReference databaseReference;
-    private MutableLiveData<List<MovieModel>> moviesLiveData;
+    private final DatabaseReference movieRef;
+    private final DatabaseReference episodeRef;
+    private final MutableLiveData<List<MovieModel>> moviesLiveData;
 
     public MovieRepository() {
         // Tham chiếu đến "Movies" trong Firebase Realtime Database
-        databaseReference = FirebaseDatabase.getInstance().getReference("Movies");
+        movieRef = FirebaseDatabase.getInstance().getReference("Movies");
+        episodeRef = FirebaseDatabase.getInstance().getReference("Episodes");
         moviesLiveData = new MutableLiveData<>();
     }
 
-//    public void uploadSampleMovies() {
-//        List<MovieModel> movieList = new ArrayList<>();
-//
-//        // Tạo một số diễn viên mẫu
-//        Actor actor1 = new Actor("Tom Hanks", "https://example.com/actor1.jpg");
-//        Actor actor2 = new Actor("Natalie Portman", "https://example.com/actor2.jpg");
-//        Actor actor3 = new Actor("Robert Downey Jr.", "https://example.com/actor3.jpg");
-//
-//        List<Actor> actors = Arrays.asList(actor1, actor2, actor3);
-//
-//        // Tạo một số đạo diễn mẫu
-//        List<String> directors = Arrays.asList("Steven Spielberg", "Christopher Nolan");
-//
-//        // Tạo một số công ty sản xuất mẫu
-//        List<String> productionCompanies = Arrays.asList("Warner Bros.", "Marvel Studios");
-//
-//        // Tạo một số thể loại mẫu
-//        List<String> genre = Arrays.asList("Action", "Drama", "Adventure");
-//
-//        // Tạo movie mẫu đầu tiên
-//        movieList.add(new MovieModel(
-//                "Phi vụ triệu đô",  // Tên phim
-//                Arrays.asList("Crime", "Comedy", "Thriller"),  // Thể loại
-//                "Phim lẻ",  // Loại phim
-//                13,  // Đánh giá độ tuổi
-//                "Hoàn thành",  // Trạng thái
-//                "Một nhóm tội phạm tài ba thực hiện một vụ cướp khổng lồ tại Las Vegas.",  // Mô tả
-//                "https://example.com/heist.jpg",  // Hình ảnh
-//                "https://example.com/heist_video.mp4",  // Video chính
-//                "https://example.com/heist_trailer.mp4",  // Trailer
-//                "N/A",  // Season
-//                "Mỹ",  // Quốc gia
-//                Arrays.asList("Warner Bros."),  // Công ty sản xuất
-//                Arrays.asList("The Duffer Brothers"),  // Đạo diễn
-//                parseDate("2001-12-7"),  // Ngày phát hành
-//                116,  // Thời gian (phút)
-//                4000000,  // Số lượt xem
-//                8.0,  // Điểm đánh giá trung bình
-//                700000,  // Tổng số đánh giá
-//                actors  // Danh sách diễn viên
-//        ));
-//
-//        // Đẩy từng đối tượng MovieModel lên Firebase
-//        for (MovieModel movie : movieList) {
-//            // Thêm phim vào Firebase với movieId làm key
-//            databaseReference.child(movie.getMovieId().toString()).setValue(movie);
-//        }
-//    }
-
-    //     Phương thức chuyển chuỗi ngày thành Date
-//    private Date parseDate(String dateStr) {
-//        try {
-//            // Dùng SimpleDateFormat để chuyển chuỗi thành Date
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//            return format.parse(dateStr);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            return null;  // Trả về null nếu có lỗi
-//        }
-//    }
+    // Get episodes
+    public LiveData<List<EpisodeModel>> getEpisodesByIds(List<String> episodeIds) {
+        MutableLiveData<List<EpisodeModel>> episodesLiveData = new MutableLiveData<>();
+        List<EpisodeModel> episodes = new ArrayList<>();
+        for (String id : episodeIds) {
+            episodeRef.child(id).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult().exists()) {
+                    episodes.add(task.getResult().getValue(EpisodeModel.class));
+                    episodesLiveData.setValue(episodes);
+                }
+            });
+        }
+        return episodesLiveData;
+    }
 
     // Get all
     public LiveData<List<MovieModel>> getMoviesFromFirebase() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        movieRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<MovieModel> movieList = new ArrayList<>();
@@ -116,7 +73,7 @@ public class MovieRepository {
     // Get top 10
     public LiveData<List<MovieModel>> getTop10Movies() {
         MutableLiveData<List<MovieModel>> top10MoviesLiveData = new MutableLiveData<>();
-        Query top10Query = databaseReference.orderByChild("viewCount").limitToLast(10);
+        Query top10Query = movieRef.orderByChild("viewCount").limitToLast(10);
 
         top10Query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -143,7 +100,7 @@ public class MovieRepository {
     // Up coming
     public LiveData<List<MovieModel>> getUpcomingMovies() {
         MutableLiveData<List<MovieModel>> upcomingMoviesLiveData = new MutableLiveData<>();
-        Query upcomingQuery = databaseReference.orderByChild("status").equalTo("Sắp ra mắt");
+        Query upcomingQuery = movieRef.orderByChild("status").equalTo("Sắp ra mắt");
 
         upcomingQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -168,7 +125,7 @@ public class MovieRepository {
     // Theater
     public LiveData<List<MovieModel>> getMoviesInTheater() {
         MutableLiveData<List<MovieModel>> moviesInTheaterLiveData = new MutableLiveData<>();
-        Query inTheaterQuery = databaseReference.orderByChild("type").equalTo("Phim chiếu rạp");
+        Query inTheaterQuery = movieRef.orderByChild("type").equalTo("Phim chiếu rạp");
 
         inTheaterQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -217,7 +174,7 @@ public class MovieRepository {
             return;
         }
 
-        databaseReference.orderByChild("genre/0").equalTo(currentGenre)
+        movieRef.orderByChild("genre/0").equalTo(currentGenre)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -243,5 +200,4 @@ public class MovieRepository {
                     }
                 });
     }
-
 }

@@ -197,8 +197,16 @@ public class SignInFragment extends Fragment {
     }
 
     private void signInWithGoogle() {
-        Intent signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        // Đăng xuất Google trước khi mở giao diện chọn tài khoản
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Sau khi đăng xuất, khởi động Intent đăng nhập
+                Intent signInIntent = googleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            } else {
+                Log.e("GoogleSignIn", "Sign out failed: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+            }
+        });
     }
 
     @Override
