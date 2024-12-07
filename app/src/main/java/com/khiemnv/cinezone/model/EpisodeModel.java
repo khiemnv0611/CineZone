@@ -3,6 +3,8 @@ package com.khiemnv.cinezone.model;
 public class EpisodeModel {
     private String episodeId;
     private String title;
+    private int season;
+    private int episodeNumber;
     private String description;
     private int duration;
     private String releaseDate;
@@ -13,10 +15,12 @@ public class EpisodeModel {
     public EpisodeModel() {
     }
 
-    public EpisodeModel(String episodeId, String title, String description, int duration,
+    public EpisodeModel(String episodeId, String title, int season, int episodeNumber, String description, int duration,
                         String releaseDate, String videoUrl, String thumbnailUrl) {
         this.episodeId = episodeId;
         this.title = title;
+        this.season = season;
+        this.episodeNumber = episodeNumber;
         this.description = description;
         this.duration = duration;
         this.releaseDate = releaseDate;
@@ -39,6 +43,22 @@ public class EpisodeModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
+    }
+
+    public int getEpisodeNumber() {
+        return episodeNumber;
+    }
+
+    public void setEpisodeNumber(int episodeNumber) {
+        this.episodeNumber = episodeNumber;
     }
 
     public String getDescription() {

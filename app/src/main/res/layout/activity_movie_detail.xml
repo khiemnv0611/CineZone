@@ -89,6 +89,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:id="@+id/watch_btn"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_button_watch"
@@ -264,6 +265,20 @@
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="2dp"
                     android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/movieStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:text="status"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/border_status_green"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="4dp"
+                    android:gravity="center"
+                    android:layout_marginStart="24dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -292,18 +307,42 @@
                     android:lineSpacingMultiplier="1.2" />
 
                 <TextView
-                    android:id="@+id/movieStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:text="status"
-                    android:textSize="14sp"
+                    android:text="@string/episode"
+                    android:textSize="16sp"
                     android:textColor="@color/white"
-                    android:background="@drawable/border_status_green"
-                    android:paddingHorizontal="24dp"
-                    android:paddingVertical="4dp"
-                    android:gravity="center"
+                    android:textStyle="bold"
                     android:layout_marginStart="24dp" />
+
+                <TextView
+                    android:id="@+id/movieEpisode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="episode"
+                    android:layout_marginStart="12dp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:lineSpacingMultiplier="1.2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:lineSpacingMultiplier="1.2" />
+
+                <TextView
+                    android:id="@+id/movieTotalEpisodes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="totalEpisodes"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:lineSpacingMultiplier="1.2" />
             </LinearLayout>
 
             <LinearLayout

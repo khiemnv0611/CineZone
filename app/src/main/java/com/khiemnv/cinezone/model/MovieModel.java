@@ -26,7 +26,7 @@ public class MovieModel {
     private int totalRatings;
     private List<Actor> actors;
     private boolean isSeries;
-    private int numberOfSeasons;
+    private int totalEpisodes;
     private List<String> episodeIds;
 
     // Constructor
@@ -36,7 +36,7 @@ public class MovieModel {
     public MovieModel(String title, List<String> genre, String type, int ageRating, String status, String description,
                       String imageUrl, String videoUrl, String trailerUrl, String season, String country, List<String> productionCompanies,
                       List<String> directors, Date releaseDate, int duration, int viewCount, double averageRating, int totalRatings, List<Actor> actors,
-                      boolean isSeries, int numberOfSeasons, List<String> episodeIds) {
+                      boolean isSeries, int totalEpisodes, List<String> episodeIds) {
         this.movieId = UUID.randomUUID().toString();
         this.title = title;
         this.genre = genre;
@@ -58,7 +58,7 @@ public class MovieModel {
         this.totalRatings = totalRatings;
         this.actors = actors;
         this.isSeries = isSeries;
-        this.numberOfSeasons = numberOfSeasons;
+        this.totalEpisodes = totalEpisodes;
         this.episodeIds = episodeIds;
     }
 
@@ -232,12 +232,12 @@ public class MovieModel {
         isSeries = series;
     }
 
-    public int getNumberOfSeasons() {
-        return numberOfSeasons;
+    public int getTotalEpisodes() {
+        return totalEpisodes;
     }
 
-    public void setNumberOfSeasons(int numberOfSeasons) {
-        this.numberOfSeasons = numberOfSeasons;
+    public void setTotalEpisodes(int totalEpisodes) {
+        this.totalEpisodes = totalEpisodes;
     }
 
     public List<String> getEpisodeIds() {

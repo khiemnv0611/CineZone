@@ -24,29 +24,12 @@ import java.util.List;
 
 public class MovieRepository {
     private final DatabaseReference movieRef;
-    private final DatabaseReference episodeRef;
     private final MutableLiveData<List<MovieModel>> moviesLiveData;
 
     public MovieRepository() {
         // Tham chiếu đến "Movies" trong Firebase Realtime Database
         movieRef = FirebaseDatabase.getInstance().getReference("Movies");
-        episodeRef = FirebaseDatabase.getInstance().getReference("Episodes");
         moviesLiveData = new MutableLiveData<>();
-    }
-
-    // Get episodes
-    public LiveData<List<EpisodeModel>> getEpisodesByIds(List<String> episodeIds) {
-        MutableLiveData<List<EpisodeModel>> episodesLiveData = new MutableLiveData<>();
-        List<EpisodeModel> episodes = new ArrayList<>();
-        for (String id : episodeIds) {
-            episodeRef.child(id).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult().exists()) {
-                    episodes.add(task.getResult().getValue(EpisodeModel.class));
-                    episodesLiveData.setValue(episodes);
-                }
-            });
-        }
-        return episodesLiveData;
     }
 
     // Get all

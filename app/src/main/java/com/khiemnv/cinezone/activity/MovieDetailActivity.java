@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieDetailActivity extends BaseActivity {
-    private TextView movieTitle, movieGenre, movieType, movieAgeRating, movieStatus, movieDescription,
+    private TextView movieTitle, movieGenre, movieType, movieAgeRating, movieStatus, movieTotalEpisodes, movieDescription,
             movieCountry, movieSeason, movieDirectors, movieProductionCompanies, movieReleaseDate, movieDuration,
             movieViewCount, movieAverageRating, movieTotalRatings;
     private ImageView moviePoster;
@@ -73,6 +73,7 @@ public class MovieDetailActivity extends BaseActivity {
         movieType = findViewById(R.id.movieType);
         movieAgeRating = findViewById(R.id.movieAgeRating);
         movieStatus = findViewById(R.id.movieStatus);
+        movieTotalEpisodes = findViewById(R.id.movieTotalEpisodes);
         movieDescription = findViewById(R.id.movieDescription);
         movieCountry = findViewById(R.id.movieCountry);
         movieSeason = findViewById(R.id.movieSeason);
@@ -97,6 +98,7 @@ public class MovieDetailActivity extends BaseActivity {
         String type = intent.getStringExtra("type");
         int ageRating = intent.getIntExtra("ageRating", -1);
         String status = intent.getStringExtra("status");
+        int totalEpisodes = intent.getIntExtra("totalEpisodes", 0);
         String description = intent.getStringExtra("description");
         String country = intent.getStringExtra("country");
         String season = intent.getStringExtra("season");
@@ -138,6 +140,8 @@ public class MovieDetailActivity extends BaseActivity {
         } else {
             movieStatus.setBackgroundResource(R.drawable.border_status_blue);
         }
+        
+        movieTotalEpisodes.setText(String.valueOf(totalEpisodes));
 
         movieDescription.setText(description);
         movieCountry.setText(country);
