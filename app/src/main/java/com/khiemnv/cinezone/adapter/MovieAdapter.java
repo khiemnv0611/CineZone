@@ -78,6 +78,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         int hours = movie.getDuration() / 60;
         int minutes = movie.getDuration() % 60;
 
+        List<String> episodeIds = movie.getEpisodeIds();
+        if (episodeIds == null) {
+            episodeIds = new ArrayList<>();
+        }
+        // Lưu giá trị số tập vào biến cục bộ
+        final int episodeCount = episodeIds.size();
+
         // Thiết lập sự kiện click cho mỗi item
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MovieDetailActivity.class);
@@ -130,12 +137,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             NumberFormat numberFormatRating = NumberFormat.getInstance();
             String formattedRatings = numberFormatRating.format(totalRatings);
             intent.putExtra("totalRatings", formattedRatings);
-
             intent.putExtra("imageUrl", movie.getImageUrl());
+            intent.putExtra("videoUrl", movie.getVideoUrl());
             intent.putExtra("trailerUrl", movie.getTrailerUrl());
             intent.putExtra("actors", (Serializable) movie.getActors());
-            intent.putExtra("isSeries", movie.isSeries());
+            intent.putExtra("isSeries", movie.getIsSeries());
+            intent.putExtra("episodeCount", episodeCount);
             intent.putExtra("totalEpisodes", movie.getTotalEpisodes());
+
+            if (movie.getEpisodeIds() != null) {
+                intent.putStringArrayListExtra("episodeIds", new ArrayList<>(movie.getEpisodeIds()));
+            }
+
             context.startActivity(intent);
 
             // Hiệu ứng

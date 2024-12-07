@@ -49,6 +49,11 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="sensor" />
 
+        <!-- Watch Movie -->
+        <activity
+            android:name=".activity.WatchMovieActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

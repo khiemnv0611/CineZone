@@ -224,12 +224,12 @@ public class MovieModel {
         this.actors = actors;
     }
 
-    public boolean isSeries() {
+    public boolean getIsSeries() {
         return isSeries;
     }
 
-    public void setSeries(boolean series) {
-        isSeries = series;
+    public void setIsSeries(boolean isSeries) {
+        this.isSeries = isSeries;
     }
 
     public int getTotalEpisodes() {

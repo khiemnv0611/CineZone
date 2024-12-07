@@ -1,30 +1,21 @@
 package com.khiemnv.cinezone.activity;
 
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.khiemnv.cinezone.BaseActivity;
 import com.khiemnv.cinezone.R;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.khiemnv.cinezone.utils.YouTubePlayerHelper;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 public class TrailerActivity extends BaseActivity {
     private YouTubePlayerView trailerPlayerView;
     private ImageView fullScreenButton, collapseButton;
-    private YouTubePlayer youTubePlayerInstance;
-    private float currentSecond = 0f; // Lưu thời gian hiện tại của video
-    private boolean isPlaying = false; // Trạng thái phát video
+    private YouTubePlayerHelper youTubePlayerHelper;
     private boolean isFullScreen = false; // Kiểm tra trạng thái full-screen
 
     @Override
@@ -37,28 +28,13 @@ public class TrailerActivity extends BaseActivity {
         fullScreenButton = findViewById(R.id.fullScreenButton);
         collapseButton = findViewById(R.id.collapseButton);
 
+        // Khởi tạo YouTubePlayerHelper
+        youTubePlayerHelper = new YouTubePlayerHelper();
+
         // Lấy URL video từ Intent
         String trailerUrl = getIntent().getStringExtra("trailerUrl");
         if (trailerUrl != null) {
-            String videoId = extractVideoId(trailerUrl);
-
-            trailerPlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                @Override
-                public void onReady(YouTubePlayer youTubePlayer) {
-                    youTubePlayerInstance = youTubePlayer;
-                    youTubePlayer.loadVideo(videoId, currentSecond); // Phát video từ vị trí đã lưu
-                }
-
-                @Override
-                public void onCurrentSecond(YouTubePlayer youTubePlayer, float second) {
-                    currentSecond = second; // Lưu lại thời gian hiện tại
-                }
-
-                @Override
-                public void onStateChange(YouTubePlayer youTubePlayer, PlayerConstants.PlayerState state) {
-                    isPlaying = (state == PlayerConstants.PlayerState.PLAYING); // Lưu trạng thái phát video
-                }
-            });
+            youTubePlayerHelper.playVideo(trailerPlayerView, trailerUrl);
         }
 
         // Xử lý phóng to
@@ -77,22 +53,6 @@ public class TrailerActivity extends BaseActivity {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toggleFullScreen(true);
         }
-    }
-
-    // Phương thức để lấy video ID từ URL YouTube
-    private String extractVideoId(String youtubeUrl) {
-        String videoId = "";
-        try {
-            Uri uri = Uri.parse(youtubeUrl);
-            if (uri.getHost().contains("youtube.com")) {
-                videoId = uri.getQueryParameter("v");
-            } else if (uri.getHost().contains("youtu.be")) {
-                videoId = uri.getLastPathSegment();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return videoId;
     }
 
     @Override
@@ -172,21 +132,15 @@ public class TrailerActivity extends BaseActivity {
         }
     }
 
-    // Quản lý video khi ứng dụng không hoạt động
     @Override
     protected void onPause() {
         super.onPause();
-        if (youTubePlayerInstance != null && isPlaying) {
-            youTubePlayerInstance.pause(); // Dừng video khi ứng dụng không hoạt động
-        }
+        youTubePlayerHelper.onPause(); // Dừng video khi ứng dụng không hoạt động
     }
 
-    // Quản lý video khi quay lại ứng dụng
     @Override
     protected void onResume() {
         super.onResume();
-        if (youTubePlayerInstance != null && !isPlaying) {
-            youTubePlayerInstance.play(); // Tiếp tục video khi quay lại ứng dụng
-        }
+        youTubePlayerHelper.onResume(); // Tiếp tục video khi quay lại ứng dụng
     }
 }

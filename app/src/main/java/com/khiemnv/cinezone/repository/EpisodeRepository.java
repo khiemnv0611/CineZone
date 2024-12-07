@@ -25,23 +25,26 @@ public class EpisodeRepository {
         MutableLiveData<List<EpisodeModel>> liveData = new MutableLiveData<>();
         List<EpisodeModel> episodes = new ArrayList<>();
 
-        for (String id : episodeIds) {
-            episodesRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    EpisodeModel episode = snapshot.getValue(EpisodeModel.class);
-                    if (episode != null) {
-                        episodes.add(episode);
-                        liveData.setValue(episodes);
+        episodesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (String id : episodeIds) {
+                    if (snapshot.hasChild(id)) {
+                        EpisodeModel episode = snapshot.child(id).getValue(EpisodeModel.class);
+                        if (episode != null) {
+                            episodes.add(episode);
+                        }
                     }
                 }
+                liveData.setValue(episodes);
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    liveData.setValue(null);
-                }
-            });
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                liveData.setValue(null);
+            }
+        });
+
         return liveData;
     }
 }

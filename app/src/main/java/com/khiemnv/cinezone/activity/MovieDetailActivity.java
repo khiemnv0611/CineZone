@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -40,11 +41,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieDetailActivity extends BaseActivity {
-    private TextView movieTitle, movieGenre, movieType, movieAgeRating, movieStatus, movieTotalEpisodes, movieDescription,
+    private TextView movieTitle, movieGenre, movieType, movieAgeRating, movieStatus, movieEpisode, movieTotalEpisodes, movieDescription,
             movieCountry, movieSeason, movieDirectors, movieProductionCompanies, movieReleaseDate, movieDuration,
             movieViewCount, movieAverageRating, movieTotalRatings;
     private ImageView moviePoster;
     private RecyclerView recyclerViewActors;
+    private View episodeContainer;
     private ImageButton homeButton;
 
     @Override
@@ -73,7 +75,9 @@ public class MovieDetailActivity extends BaseActivity {
         movieType = findViewById(R.id.movieType);
         movieAgeRating = findViewById(R.id.movieAgeRating);
         movieStatus = findViewById(R.id.movieStatus);
+        movieEpisode = findViewById(R.id.movieEpisode);
         movieTotalEpisodes = findViewById(R.id.movieTotalEpisodes);
+        episodeContainer = findViewById(R.id.episodeContainer);
         movieDescription = findViewById(R.id.movieDescription);
         movieCountry = findViewById(R.id.movieCountry);
         movieSeason = findViewById(R.id.movieSeason);
@@ -92,13 +96,15 @@ public class MovieDetailActivity extends BaseActivity {
 
         // Lấy dữ liệu từ Intent
         Intent intent = getIntent();
-        String currentMovieId = intent.getStringExtra("movieId");
+        String movieId = intent.getStringExtra("movieId");
         String title = intent.getStringExtra("title");
         String genre = intent.getStringExtra("genre");
         String type = intent.getStringExtra("type");
         int ageRating = intent.getIntExtra("ageRating", -1);
         String status = intent.getStringExtra("status");
+        boolean isSeries = intent.getBooleanExtra("isSeries", false);
         int totalEpisodes = intent.getIntExtra("totalEpisodes", 0);
+        int episodeCount = intent.getIntExtra("episodeCount", 0);
         String description = intent.getStringExtra("description");
         String country = intent.getStringExtra("country");
         String season = intent.getStringExtra("season");
@@ -110,8 +116,10 @@ public class MovieDetailActivity extends BaseActivity {
         double averageRating = intent.getDoubleExtra("averageRating", 0);
         String totalRatings = intent.getStringExtra("totalRatings");
         String imageUrl = intent.getStringExtra("imageUrl");
+        String videoUrl = intent.getStringExtra("videoUrl");
         String trailerUrl = intent.getStringExtra("trailerUrl");
         List<Actor> actors = (List<Actor>) getIntent().getSerializableExtra("actors");
+        ArrayList<String> episodeIds = intent.getStringArrayListExtra("episodeIds");
 
         // Hiển thị dữ liệu lên giao diện
         movieTitle.setText(title);
@@ -140,8 +148,15 @@ public class MovieDetailActivity extends BaseActivity {
         } else {
             movieStatus.setBackgroundResource(R.drawable.border_status_blue);
         }
-        
-        movieTotalEpisodes.setText(String.valueOf(totalEpisodes));
+
+        // Hiển thị thông tin nếu là phim bộ
+        if (isSeries) {
+            episodeContainer.setVisibility(View.VISIBLE); // Hiện container chứa các TextView
+            movieEpisode.setText(String.valueOf(episodeCount));
+            movieTotalEpisodes.setText(String.valueOf(totalEpisodes));
+        } else {
+            episodeContainer.setVisibility(View.GONE); // Ẩn toàn bộ container nếu không phải phim bộ
+        }
 
         movieDescription.setText(description);
         movieCountry.setText(country);
@@ -178,7 +193,7 @@ public class MovieDetailActivity extends BaseActivity {
         // Lấy ViewModel và gọi phương thức
         MovieViewModel movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
-        movieViewModel.getSuggestedMoviesByGenres(genreList, currentMovieId).observe(this, new Observer<List<MovieModel>>() {
+        movieViewModel.getSuggestedMoviesByGenres(genreList, movieId).observe(this, new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
                 similarMoviesAdapter.setMovieList(movieModels);
@@ -188,6 +203,20 @@ public class MovieDetailActivity extends BaseActivity {
         // Nút trailer
         LinearLayout trailerButton = findViewById(R.id.trailer_btn);
         trailerButton.setOnClickListener(v -> openTrailerActivity(trailerUrl));
+
+        LinearLayout watchBtn = findViewById(R.id.watch_btn);
+        watchBtn.setOnClickListener(v -> {
+            Intent watchIntent = new Intent(MovieDetailActivity.this, WatchMovieActivity.class);
+            watchIntent.putExtra("movieId", movieId);
+            watchIntent.putExtra("isSeries", isSeries);
+            watchIntent.putExtra("videoUrl", videoUrl);
+
+            if (episodeIds != null) {
+                watchIntent.putStringArrayListExtra("episodeIds", episodeIds);
+            }
+
+            startActivity(watchIntent);
+        });
 
         // Ánh xạ nút Home
         homeButton = findViewById(R.id.home_button);

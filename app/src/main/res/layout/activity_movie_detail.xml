@@ -306,43 +306,52 @@
                     android:gravity="center_vertical"
                     android:lineSpacingMultiplier="1.2" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/episodeContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/episode"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_marginStart="24dp" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/movieEpisode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="episode"
-                    android:layout_marginStart="12dp"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical"
-                    android:lineSpacingMultiplier="1.2" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/episode"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_marginStart="24dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="/"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical"
-                    android:lineSpacingMultiplier="1.2" />
+                    <TextView
+                        android:id="@+id/movieEpisode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="episode"
+                        android:layout_marginStart="12dp"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:lineSpacingMultiplier="1.2" />
 
-                <TextView
-                    android:id="@+id/movieTotalEpisodes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="totalEpisodes"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical"
-                    android:lineSpacingMultiplier="1.2" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:lineSpacingMultiplier="1.2" />
+
+                    <TextView
+                        android:id="@+id/movieTotalEpisodes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="totalEps"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:lineSpacingMultiplier="1.2" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
