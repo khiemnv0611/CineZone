@@ -1,12 +1,12 @@
 package com.khiemnv.cinezone.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,12 +23,10 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
     private final List<EpisodeModel> episodeList;
     private final OnEpisodeClickListener listener;
 
-    // Interface cho callback khi click vào tập
     public interface OnEpisodeClickListener {
         void onEpisodeClick(String videoUrl);
     }
 
-    // Constructor
     public EpisodeAdapter(Context context, List<EpisodeModel> episodeList, OnEpisodeClickListener listener) {
         this.context = context;
         this.episodeList = episodeList;
@@ -46,18 +44,27 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
     public void onBindViewHolder(@NonNull EpisodeViewHolder holder, int position) {
         EpisodeModel episode = episodeList.get(position);
 
-        // Bind dữ liệu
-        holder.title.setText(episode.getTitle());
-        holder.description.setText(episode.getDescription());
-        holder.duration.setText(episode.getDuration());
-        Glide.with(context).load(episode.getThumbnailUrl()).into(holder.thumbnail);
+        if (episode != null) {
+            // Gán các giá trị cho các thành phần trong ViewHolder
+            holder.title.setText(episode.getTitle() != null ? episode.getTitle() : "Unknown Title");
+            holder.description.setText(episode.getDescription() != null ? episode.getDescription() : "No description available");
+            holder.duration.setText(episode.getDuration() != 0 ? String.valueOf(episode.getDuration()) : "Duration not available");
 
-        // Gắn sự kiện click
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onEpisodeClick(episode.getVideoUrl());
-            }
-        });
+            Glide.with(context)
+                    .load(episode.getThumbnailUrl() != null ? episode.getThumbnailUrl() : R.drawable.sample_poster)
+                    .into(holder.thumbnail);
+
+            // Đặt sự kiện click vào mỗi item
+            holder.itemView.setOnClickListener(v -> {
+//                Log.d("EpisodeAdapter", "Item clicked at position: " + position);
+                if (listener != null && episode.getVideoUrl() != null) {
+                    listener.onEpisodeClick(episode.getVideoUrl());
+                } else {
+//                    Log.e("EpisodeAdapter", "Error: videoUrl is null for episode at position: " + position);
+                    Toast.makeText(context, "Video URL not available", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
@@ -65,7 +72,6 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
         return episodeList.size();
     }
 
-    // ViewHolder
     public static class EpisodeViewHolder extends RecyclerView.ViewHolder {
         TextView title, description, duration;
         ImageView thumbnail;

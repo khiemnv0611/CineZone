@@ -1,5 +1,7 @@
 package com.khiemnv.cinezone.model;
 
+import java.util.UUID;
+
 public class EpisodeModel {
     private String episodeId;
     private String title;
@@ -15,9 +17,9 @@ public class EpisodeModel {
     public EpisodeModel() {
     }
 
-    public EpisodeModel(String episodeId, String title, int season, int episodeNumber, String description, int duration,
+    public EpisodeModel(String title, int season, int episodeNumber, String description, int duration,
                         String releaseDate, String videoUrl, String thumbnailUrl) {
-        this.episodeId = episodeId;
+        this.episodeId = UUID.randomUUID().toString();
         this.title = title;
         this.season = season;
         this.episodeNumber = episodeNumber;

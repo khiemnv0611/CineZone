@@ -16,23 +16,24 @@ public class YouTubePlayerHelper {
     public void playVideo(YouTubePlayerView youTubePlayerView, String videoUrl) {
         String videoId = extractVideoId(videoUrl);
 
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(YouTubePlayer youTubePlayer) {
-                youTubePlayerInstance = youTubePlayer;
-                youTubePlayer.loadVideo(videoId, currentSecond); // Phát video từ vị trí hiện tại
-            }
+        if (youTubePlayerInstance != null) {
+            // Nếu đã có instance, chỉ cần phát video mới
+            youTubePlayerInstance.loadVideo(videoId, 0); // Phát từ đầu video
+        } else {
+            // Nếu chưa có instance, thêm listener
+            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(YouTubePlayer youTubePlayer) {
+                    youTubePlayerInstance = youTubePlayer;
+                    youTubePlayer.loadVideo(videoId, 0); // Phát từ đầu video
+                }
 
-            @Override
-            public void onCurrentSecond(YouTubePlayer youTubePlayer, float second) {
-                currentSecond = second; // Lưu lại thời gian hiện tại của video
-            }
-
-            @Override
-            public void onStateChange(YouTubePlayer youTubePlayer, PlayerConstants.PlayerState state) {
-                isPlaying = (state == PlayerConstants.PlayerState.PLAYING); // Cập nhật trạng thái phát video
-            }
-        });
+                @Override
+                public void onCurrentSecond(YouTubePlayer youTubePlayer, float second) {
+                    currentSecond = second; // Lưu lại thời gian hiện tại của video
+                }
+            });
+        }
     }
 
     // Dừng video khi ứng dụng không hoạt động

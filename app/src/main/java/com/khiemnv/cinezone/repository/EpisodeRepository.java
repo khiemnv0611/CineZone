@@ -1,5 +1,7 @@
 package com.khiemnv.cinezone.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,25 +27,34 @@ public class EpisodeRepository {
         MutableLiveData<List<EpisodeModel>> liveData = new MutableLiveData<>();
         List<EpisodeModel> episodes = new ArrayList<>();
 
-        episodesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (String id : episodeIds) {
-                    if (snapshot.hasChild(id)) {
-                        EpisodeModel episode = snapshot.child(id).getValue(EpisodeModel.class);
+        if (episodeIds == null || episodeIds.isEmpty()) {
+            liveData.setValue(episodes); // Trả về danh sách rỗng nếu không có ID
+            return liveData;
+        }
+
+        for (String id : episodeIds) {
+            episodesRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        EpisodeModel episode = snapshot.getValue(EpisodeModel.class);
                         if (episode != null) {
                             episodes.add(episode);
                         }
                     }
-                }
-                liveData.setValue(episodes);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                liveData.setValue(null);
-            }
-        });
+                    // Cập nhật LiveData khi tất cả các ID đã được xử lý
+                    if (episodes.size() == episodeIds.size()) {
+                        liveData.setValue(episodes);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    liveData.setValue(null); // Trả về null nếu có lỗi
+                }
+            });
+        }
 
         return liveData;
     }

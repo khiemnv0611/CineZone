@@ -209,10 +209,19 @@ public class MovieDetailActivity extends BaseActivity {
             Intent watchIntent = new Intent(MovieDetailActivity.this, WatchMovieActivity.class);
             watchIntent.putExtra("movieId", movieId);
             watchIntent.putExtra("isSeries", isSeries);
-            watchIntent.putExtra("videoUrl", videoUrl);
 
-            if (episodeIds != null) {
+            // Kiểm tra nếu videoUrl không phải là null trước khi truyền
+            if (videoUrl != null) {
+                watchIntent.putExtra("videoUrl", videoUrl);
+            } else {
+                Log.e("MovieDetailActivity", "videoUrl is null");
+            }
+
+            // Kiểm tra nếu episodeIds không phải là null trước khi truyền
+            if (episodeIds != null && !episodeIds.isEmpty()) {
                 watchIntent.putStringArrayListExtra("episodeIds", episodeIds);
+            } else {
+                Log.e("MovieDetailActivity", "episodeIds is null or empty");
             }
 
             startActivity(watchIntent);
