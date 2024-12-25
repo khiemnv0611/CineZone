@@ -2,7 +2,10 @@ package com.khiemnv.cinezone.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.khiemnv.cinezone.BaseActivity;
 import com.khiemnv.cinezone.R;
@@ -15,6 +18,8 @@ public class TrailerActivity extends BaseActivity {
     private ImageView fullScreenButton, collapseButton;
     private YouTubePlayerHelper youTubePlayerHelper;
     private FullScreenHelper fullScreenHelper;
+    private TextView movieTitleWithTrailer;
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,13 @@ public class TrailerActivity extends BaseActivity {
         trailerPlayerView = findViewById(R.id.trailerPlayerView);
         fullScreenButton = findViewById(R.id.fullScreenButton);
         collapseButton = findViewById(R.id.collapseButton);
+        movieTitleWithTrailer = findViewById(R.id.movieTitleWithTrailer);
+        backButton = findViewById(R.id.back_button);
+
+        String title = getIntent().getStringExtra("title");
+        if (title != null) {
+            movieTitleWithTrailer.setText(title + " - Trailer");
+        }
 
         // Khởi tạo YouTubePlayerHelper
         youTubePlayerHelper = new YouTubePlayerHelper();
@@ -32,7 +44,6 @@ public class TrailerActivity extends BaseActivity {
         // Khởi tạo FullScreenHelper
         fullScreenHelper = new FullScreenHelper(this, trailerPlayerView, fullScreenButton, collapseButton);
 
-        // Lấy URL video từ Intent
         String trailerUrl = getIntent().getStringExtra("trailerUrl");
         if (trailerUrl != null) {
             youTubePlayerHelper.playVideo(trailerPlayerView, trailerUrl);
@@ -52,6 +63,13 @@ public class TrailerActivity extends BaseActivity {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             fullScreenHelper.toggleFullScreen(true);
         }
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

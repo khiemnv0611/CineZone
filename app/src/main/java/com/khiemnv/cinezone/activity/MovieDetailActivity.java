@@ -6,9 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowInsets;
-import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -200,15 +196,31 @@ public class MovieDetailActivity extends BaseActivity {
             }
         });
 
-        // Nút trailer
         LinearLayout trailerButton = findViewById(R.id.trailer_btn);
-        trailerButton.setOnClickListener(v -> openTrailerActivity(trailerUrl));
+        trailerButton.setOnClickListener(v -> {
+            // Kiểm tra trailerUrl
+            if (trailerUrl == null || trailerUrl.isEmpty()) {
+                Toast.makeText(MovieDetailActivity.this, "Trailer không khả dụng", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String movieTitleText = movieTitle.getText().toString(); // Lấy chuỗi từ TextView
+
+            // Tạo Intent cho TrailerActivity và truyền trailerUrl và movieTitle
+            Intent trailerIntent = new Intent(MovieDetailActivity.this, TrailerActivity.class);
+            trailerIntent.putExtra("trailerUrl", trailerUrl);
+            trailerIntent.putExtra("title", movieTitleText); // Truyền title vào TrailerActivity
+            startActivity(trailerIntent);
+        });
 
         LinearLayout watchBtn = findViewById(R.id.watch_btn);
         watchBtn.setOnClickListener(v -> {
+            String movieTitleText = movieTitle.getText().toString(); // Lấy chuỗi từ TextView
+
             Intent watchIntent = new Intent(MovieDetailActivity.this, WatchMovieActivity.class);
             watchIntent.putExtra("movieId", movieId);
             watchIntent.putExtra("isSeries", isSeries);
+            watchIntent.putExtra("title", movieTitleText);
 
             // Kiểm tra nếu videoUrl không phải là null trước khi truyền
             if (videoUrl != null) {
@@ -265,7 +277,7 @@ public class MovieDetailActivity extends BaseActivity {
         }
 
         Intent intent = new Intent(this, TrailerActivity.class);
-        intent.putExtra("trailerUrl", trailerUrl); // Truyền URL video
+        intent.putExtra("trailerUrl", trailerUrl);
         startActivity(intent);
     }
 }

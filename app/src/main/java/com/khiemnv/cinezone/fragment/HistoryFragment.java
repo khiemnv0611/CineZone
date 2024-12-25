@@ -11,13 +11,10 @@ import androidx.fragment.app.Fragment;
 
 import com.khiemnv.cinezone.R;
 
-public class NotificationsFragment extends Fragment {
-
+public class HistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate layout cho fragment Notifications
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 }
-

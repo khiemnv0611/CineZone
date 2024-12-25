@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.flexbox)
     implementation(libs.jbcrypt)
     implementation(libs.androidyoutubeplayer.core)
     implementation(libs.glide)

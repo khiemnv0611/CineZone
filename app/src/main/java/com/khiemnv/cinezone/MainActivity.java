@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khiemnv.cinezone.activity.AuthActivity;
 import com.khiemnv.cinezone.fragment.HomeFragment;
-import com.khiemnv.cinezone.fragment.NotificationsFragment;
+import com.khiemnv.cinezone.fragment.HistoryFragment;
 import com.khiemnv.cinezone.fragment.ProfileFragment;
 import com.khiemnv.cinezone.fragment.SearchFragment;
 
@@ -72,8 +72,8 @@ public class MainActivity extends BaseActivity {
                     selectedFragment = new HomeFragment();
                 } else if (item.getItemId() == R.id.nav_search) {
                     selectedFragment = new SearchFragment();
-                } else if (item.getItemId() == R.id.nav_notifications) {
-                    selectedFragment = new NotificationsFragment();
+                } else if (item.getItemId() == R.id.nav_history) {
+                    selectedFragment = new HistoryFragment();
                 } else if (item.getItemId() == R.id.nav_profile) {
                     selectedFragment = new ProfileFragment();
                 }
