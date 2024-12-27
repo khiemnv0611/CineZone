@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/secondBackgroundColor" /> <!-- Màu nền của CardView -->
+    <corners android:radius="8dp" /> <!-- Tùy chỉnh bo góc -->
+    <stroke
+        android:color="@color/textColor"
+        android:width="1dp" />
+</shape>

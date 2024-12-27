@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <color name="backgroundColor">#191B24</color>
+    <color name="secondBackgroundColor">#363840</color>
     <color name="textColor">#FFFFFF</color>
     <color name="textColorDark">#000000</color>
     <color name="changeTheme">#FFFF00</color>
@@ -12,5 +13,6 @@
         <item name="android:textColorSecondary">@color/textColorDark</item>
         <item name="colorAccent">@color/changeTheme</item>
         <item name="background">@color/backgroundColor</item>
+        <item name="colorPrimaryDark">@color/secondBackgroundColor</item>
     </style>
 </resources>

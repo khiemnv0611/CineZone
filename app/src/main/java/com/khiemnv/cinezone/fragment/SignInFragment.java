@@ -14,15 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -44,11 +45,6 @@ import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.model.UserModel;
 import com.khiemnv.cinezone.viewmodel.UserViewModel;
-
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 public class SignInFragment extends Fragment {
     private UserViewModel viewModel;

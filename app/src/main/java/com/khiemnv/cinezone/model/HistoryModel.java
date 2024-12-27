@@ -2,16 +2,17 @@ package com.khiemnv.cinezone.model;
 
 public class HistoryModel {
     private String historyId;
-    private String userId;
+    private String email;
     private String movieId;
     private long watchedAt;
 
     // Constructor
-    public HistoryModel() {}
+    public HistoryModel() {
+    }
 
-    public HistoryModel(String historyId, String userId, String movieId, long watchedAt) {
+    public HistoryModel(String historyId, String email, String movieId, long watchedAt) {
         this.historyId = historyId;
-        this.userId = userId;
+        this.email = email;
         this.movieId = movieId;
         this.watchedAt = watchedAt;
     }
@@ -25,12 +26,12 @@ public class HistoryModel {
         this.historyId = historyId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getMovieId() {

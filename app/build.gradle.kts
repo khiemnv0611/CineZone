@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.prettytime)
     implementation(libs.flexbox)
     implementation(libs.jbcrypt)
     implementation(libs.androidyoutubeplayer.core)

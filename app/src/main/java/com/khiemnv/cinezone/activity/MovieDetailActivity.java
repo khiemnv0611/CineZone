@@ -2,7 +2,6 @@ package com.khiemnv.cinezone.activity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.khiemnv.cinezone.BaseActivity;
 import com.khiemnv.cinezone.MainActivity;
 import com.khiemnv.cinezone.R;
@@ -30,6 +30,7 @@ import com.khiemnv.cinezone.adapter.ActorAdapter;
 import com.khiemnv.cinezone.adapter.MovieAdapter;
 import com.khiemnv.cinezone.model.Actor;
 import com.khiemnv.cinezone.model.MovieModel;
+import com.khiemnv.cinezone.viewmodel.HistoryViewModel;
 import com.khiemnv.cinezone.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class MovieDetailActivity extends BaseActivity {
     private RecyclerView recyclerViewActors;
     private View episodeContainer;
     private ImageButton homeButton;
+
+    private HistoryViewModel historyViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,6 +216,9 @@ public class MovieDetailActivity extends BaseActivity {
             startActivity(trailerIntent);
         });
 
+        // Khởi tạo ViewModel
+        historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+
         LinearLayout watchBtn = findViewById(R.id.watch_btn);
         watchBtn.setOnClickListener(v -> {
             String movieTitleText = movieTitle.getText().toString(); // Lấy chuỗi từ TextView
@@ -237,6 +243,15 @@ public class MovieDetailActivity extends BaseActivity {
             }
 
             startActivity(watchIntent);
+
+            String email = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : null;
+
+            if (email != null && movieId != null) {
+                // Gọi ViewModel để lưu lịch sử
+                historyViewModel.saveHistory(email, movieId);
+            } else {
+                Log.e("MovieDetailActivity", "email hoặc movieId bị null");
+            }
         });
 
         // Ánh xạ nút Home
