@@ -1,6 +1,9 @@
 package com.khiemnv.cinezone.adapter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,18 +24,19 @@ import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.activity.MovieDetailActivity;
 import com.khiemnv.cinezone.model.HistoryModel;
 import com.khiemnv.cinezone.model.MovieModel;
-import com.khiemnv.cinezone.utils.TimeAgoUtils;
 
-import java.text.DateFormat;
+import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private final List<HistoryModel> historyList;
+    private final Context context;
 
-    public HistoryAdapter(List<HistoryModel> historyList) {
+    public HistoryAdapter(Context context, List<HistoryModel> historyList) {
+        this.context = context;
         this.historyList = historyList;
     }
 
@@ -45,31 +49,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @NonNull
     @Override
     public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.featured_movie_card, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.featured_movie_card, parent, false);
         return new HistoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         HistoryModel history = historyList.get(position);
-
         String movieId = history.getMovieId();
+        String timeAgo = getTimeAgo(context, history.getWatchedAt());
 
-        String watchedAt = formatTimestamp(history.getWatchedAt());
-
-        long watchedAtTimestamp = convertStringToTimestamp(watchedAt);
-        String timeAgo = TimeAgoUtils.formatTimestamp(watchedAtTimestamp);
-
-        // Fetch movie details (giả lập với Firebase hoặc một nguồn khác)
+        // Fetch movie details
         fetchMovieDetails(movieId, holder);
 
         holder.watchAt.setText(timeAgo);
 
         // Sự kiện click để mở MovieDetailActivity
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), MovieDetailActivity.class);
+            Intent intent = new Intent(context, MovieDetailActivity.class);
             intent.putExtra("movieId", movieId);
-            holder.itemView.getContext().startActivity(intent);
+            context.startActivity(intent);
         });
     }
 
@@ -91,12 +90,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         }
     }
 
-    // Định dạng timestamp thành chuỗi ngày tháng
-    private String formatTimestamp(long timestamp) {
-        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        return dateFormat.format(new Date(timestamp));
-    }
-
     // Fetch movie details từ Firebase
     private void fetchMovieDetails(String movieId, HistoryViewHolder holder) {
         DatabaseReference movieRef = FirebaseDatabase.getInstance().getReference("Movies").child(movieId);
@@ -112,6 +105,88 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                             .placeholder(R.drawable.sample_poster)
                             .into(holder.movieThumbnail);
 
+                    // Sự kiện click mở MovieDetailActivity với thông tin chi tiết
+                    holder.itemView.setOnClickListener(v -> {
+                        Context context = holder.itemView.getContext();
+
+                        Intent intent = new Intent(context, MovieDetailActivity.class);
+
+                        // Truyền dữ liệu chi tiết qua Intent
+                        intent.putExtra("movieId", movie.getMovieId());
+                        intent.putExtra("title", movie.getTitle());
+
+                        List<String> genreList = movie.getGenre();
+                        intent.putExtra("genre", genreList != null && !genreList.isEmpty() ? TextUtils.join(", ", genreList) : "N/A");
+
+                        intent.putExtra("type", movie.getType());
+                        intent.putExtra("ageRating", movie.getAgeRating());
+                        intent.putExtra("status", movie.getStatus());
+                        intent.putExtra("description", movie.getDescription());
+                        intent.putExtra("country", movie.getCountry());
+                        intent.putExtra("season", movie.getSeason());
+                        intent.putExtra("directors", movie.getDirectors() != null ? String.join(", ", movie.getDirectors()) : "N/A");
+                        intent.putExtra("productionCompanies", movie.getProductionCompanies() != null ? String.join(", ", movie.getProductionCompanies()) : "N/A");
+
+                        // Định dạng ngày tháng
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String formattedDate = (movie.getReleaseDate() != null) ? dateFormat.format(movie.getReleaseDate()) : "N/A";
+                        intent.putExtra("releaseDate", formattedDate);
+
+                        // Định dạng thời gian
+                        String formattedDuration;
+                        int hours = movie.getDuration() / 60;
+                        int minutes = movie.getDuration() % 60;
+
+                        if (hours > 0) {
+                            formattedDuration = hours + " " + (hours == 1 ? context.getString(R.string.hour) : context.getString(R.string.hours));
+                            if (minutes > 0) {
+                                formattedDuration += " " + minutes + " " + (minutes == 1 ? context.getString(R.string.minute) : context.getString(R.string.minutes));
+                            }
+                        } else {
+                            formattedDuration = minutes > 0
+                                    ? minutes + " " + (minutes == 1 ? context.getString(R.string.minute) : context.getString(R.string.minutes))
+                                    : "0 " + context.getString(R.string.minutes);
+                        }
+                        intent.putExtra("duration", formattedDuration);
+
+                        // Định dạng số cho viewCount
+                        int viewCount = movie.getViewCount();
+                        NumberFormat numberFormatViewCount = NumberFormat.getInstance();
+                        String formattedViewCount = numberFormatViewCount.format(viewCount);
+                        intent.putExtra("viewCount", formattedViewCount);
+
+                        intent.putExtra("averageRating", movie.getAverageRating());
+
+                        // Định dạng số cho totalRatings
+                        int totalRatings = movie.getTotalRatings();
+                        NumberFormat numberFormatRating = NumberFormat.getInstance();
+                        String formattedRatings = numberFormatRating.format(totalRatings);
+                        intent.putExtra("totalRatings", formattedRatings);
+                        intent.putExtra("imageUrl", movie.getImageUrl());
+                        intent.putExtra("videoUrl", movie.getVideoUrl());
+                        intent.putExtra("trailerUrl", movie.getTrailerUrl());
+                        intent.putExtra("actors", (Serializable) movie.getActors());
+                        intent.putExtra("isSeries", movie.getIsSeries());
+
+                        List<String> episodeIds = movie.getEpisodeIds();
+                        if (episodeIds == null) {
+                            episodeIds = new ArrayList<>();
+                        }
+
+                        // Số tập trong series
+                        final int episodeCount = episodeIds.size();
+                        intent.putExtra("episodeCount", episodeCount);
+                        intent.putExtra("totalEpisodes", movie.getTotalEpisodes());
+
+                        if (movie.getEpisodeIds() != null) {
+                            intent.putStringArrayListExtra("episodeIds", new ArrayList<>(movie.getEpisodeIds()));
+                        }
+
+                        context.startActivity(intent);
+
+                        // Hiệu ứng chuyển trang
+                        ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    });
                 }
             }
 
@@ -122,17 +197,33 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         });
     }
 
-    // Hàm chuyển đổi String (ISO 8601) sang timestamp (long)
-    private long convertStringToTimestamp(String dateString) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-            Date date = sdf.parse(dateString);
-            if (date != null) {
-                return date.getTime();  // Trả về timestamp (long)
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static String getTimeAgo(Context context, long timestamp) {
+        long now = System.currentTimeMillis();
+        long diff = now - timestamp;
+
+        // Tính toán các đơn vị thời gian
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+        long weeks = days / 7;
+        long months = days / 30;
+        long years = days / 365;
+
+        if (seconds < 60) {
+            return context.getString(R.string.just_now);
+        } else if (minutes < 60) {
+            return context.getString(R.string.minutes_ago, minutes);
+        } else if (hours < 24) {
+            return context.getString(R.string.hours_ago, hours);
+        } else if (days < 7) {
+            return context.getString(R.string.days_ago, days);
+        } else if (weeks < 4) {
+            return context.getString(R.string.weeks_ago, weeks);
+        } else if (months < 12) {
+            return context.getString(R.string.months_ago, months);
+        } else {
+            return context.getString(R.string.years_ago, years);
         }
-        return 0;  // Nếu không thể chuyển đổi, trả về 0 (hoặc giá trị mặc định nào đó)
     }
 }

@@ -67,4 +67,11 @@
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="no_history">No history</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">Viewed %1$d minutes ago</string>
+    <string name="hours_ago">Viewed %1$d hours ago</string>
+    <string name="days_ago">Viewed %1$d days ago</string>
+    <string name="weeks_ago">Viewed %1$d weeks ago</string>
+    <string name="months_ago">Viewed %1$d months ago</string>
+    <string name="years_ago">Viewed %1$d years ago</string>
 </resources>

@@ -11,6 +11,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.khiemnv.cinezone.model.HistoryModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HistoryRepository {
@@ -40,6 +42,15 @@ public class HistoryRepository {
                                 historyList.add(history);
                             }
                         }
+
+                        // Sắp xếp danh sách theo watchedAt giảm dần (mới nhất lên đầu)
+                        Collections.sort(historyList, new Comparator<HistoryModel>() {
+                            @Override
+                            public int compare(HistoryModel o1, HistoryModel o2) {
+                                return Long.compare(o2.getWatchedAt(), o1.getWatchedAt()); // Sắp xếp từ mới nhất
+                            }
+                        });
+
                         listener.onSuccess(historyList);
                     }
 

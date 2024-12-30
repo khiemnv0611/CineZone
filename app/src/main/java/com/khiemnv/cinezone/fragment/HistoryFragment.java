@@ -43,7 +43,7 @@ public class HistoryFragment extends Fragment {
 
         // Tạo danh sách trống và adapter
         List<HistoryModel> historyList = new ArrayList<>();
-        historyAdapter = new HistoryAdapter(historyList);
+        historyAdapter = new HistoryAdapter(getContext(), historyList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(historyAdapter);
