@@ -10,16 +10,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.khiemnv.cinezone.model.Actor;
-import com.khiemnv.cinezone.model.EpisodeModel;
 import com.khiemnv.cinezone.model.MovieModel;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class MovieRepository {
@@ -36,7 +30,7 @@ public class MovieRepository {
     public LiveData<List<MovieModel>> getMoviesFromFirebase() {
         movieRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<MovieModel> movieList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MovieModel movie = snapshot.getValue(MovieModel.class);
@@ -46,7 +40,7 @@ public class MovieRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Xử lý lỗi nếu cần
             }
         });
@@ -60,7 +54,7 @@ public class MovieRepository {
 
         top10Query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<MovieModel> movieList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MovieModel movie = snapshot.getValue(MovieModel.class);
@@ -72,7 +66,7 @@ public class MovieRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Xử lý lỗi nếu cần
             }
         });
@@ -87,7 +81,7 @@ public class MovieRepository {
 
         upcomingQuery.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<MovieModel> movieList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MovieModel movie = snapshot.getValue(MovieModel.class);
@@ -97,7 +91,7 @@ public class MovieRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Xử lý lỗi nếu cần
             }
         });
@@ -112,7 +106,7 @@ public class MovieRepository {
 
         inTheaterQuery.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<MovieModel> movieList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MovieModel movie = snapshot.getValue(MovieModel.class);
@@ -122,7 +116,7 @@ public class MovieRepository {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Xử lý lỗi nếu cần
             }
         });
@@ -165,8 +159,11 @@ public class MovieRepository {
                             MovieModel movie = data.getValue(MovieModel.class);
 
                             // Loại bỏ phim hiện tại và kiểm tra trùng lặp
-                            if (!aggregatedList.contains(movie) && !movie.getMovieId().equals(currentMovieId)) {
-                                aggregatedList.add(movie);
+                            if (!aggregatedList.contains(movie)) {
+                                assert movie != null;
+                                if (!movie.getMovieId().equals(currentMovieId)) {
+                                    aggregatedList.add(movie);
+                                }
                             }
 
                             if (aggregatedList.size() >= 10) break;

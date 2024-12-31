@@ -20,7 +20,6 @@ import com.khiemnv.cinezone.R;
 import com.khiemnv.cinezone.adapter.MovieAdapter;
 import com.khiemnv.cinezone.adapter.ViewPagerAdapter;
 import com.khiemnv.cinezone.model.MovieModel;
-import com.khiemnv.cinezone.repository.MovieRepository;
 import com.khiemnv.cinezone.viewmodel.MovieViewModel;
 
 import java.util.Arrays;
@@ -106,7 +105,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Trả về view sau khi thực hiện các thao tác cần thiết
         return view;
     }
 }

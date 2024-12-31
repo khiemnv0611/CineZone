@@ -66,6 +66,7 @@
     <string name="cancel">Hủy</string>
     <string name="update">Cập nhật</string>
     <string name="no_history">Không có lịch sử</string>
+    <string name="all">Tất cả</string>
     <string name="just_now">Vừa xong</string>
     <string name="minutes_ago">Đã xem %1$d phút trước</string>
     <string name="hours_ago">Đã xem %1$d giờ trước</string>
